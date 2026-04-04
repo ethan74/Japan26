@@ -173,6 +173,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <button class="nav-btn" onclick="show('yen',this)">Yen</button>
     <button class="nav-btn" onclick="show('wetter',this)">Wetter</button>
     <button class="nav-btn" onclick="show('packliste',this)">Packliste</button>
+    <button class="nav-btn" onclick="show('phrasen',this)">Phrasen</button>
     <button class="nav-btn" onclick="show('infos',this)">Infos</button>
   </div>
   <div class="content">
@@ -187,6 +188,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <div class="section" id="sec-yen"></div>
     <div class="section" id="sec-wetter"></div>
     <div class="section" id="sec-packliste"></div>
+    <div class="section" id="sec-phrasen"></div>
     <div class="section" id="sec-infos"></div>
   </div>
 </div>
@@ -1350,6 +1352,269 @@ function calcYenToEur() {
 }
 
 // Yen wird via zentraler show() geladen
+
+
+// ── PHRASEN ───────────────────────────────────────────────────────────────
+const PHRASEN = [
+  {
+    cat: '🙏 Basics & Höflichkeit',
+    items: [
+      {de: 'Hallo / Guten Tag',       jp: 'こんにちは',      ro: 'Konnichiwa',        tip: ''},
+      {de: 'Guten Morgen',            jp: 'おはようございます', ro: 'Ohayō gozaimasu',  tip: ''},
+      {de: 'Guten Abend',             jp: 'こんばんは',      ro: 'Konbanwa',          tip: ''},
+      {de: 'Danke (herzlich)',         jp: 'ありがとうございます', ro: 'Arigatō gozaimasu', tip: 'Häufigste Phrase – immer passend'},
+      {de: 'Danke (kurz)',            jp: 'ありがとう',      ro: 'Arigatō',           tip: 'Unter Gleichaltrigen'},
+      {de: 'Bitte / Gern geschehen',  jp: 'どうぞ',          ro: 'Dōzo',              tip: 'Auch: Hier bitte, Nach Ihnen'},
+      {de: 'Entschuldigung',          jp: 'すみません',      ro: 'Sumimasen',         tip: 'Auch zum Rufen von Kellnern!'},
+      {de: 'Es tut mir leid',         jp: 'ごめんなさい',    ro: 'Gomen nasai',       tip: ''},
+      {de: 'Ja',                      jp: 'はい',            ro: 'Hai',               tip: ''},
+      {de: 'Nein',                    jp: 'いいえ',          ro: 'Iie',               tip: 'Selten direkt – Japaner vermeiden'},
+      {de: 'Auf Wiedersehen',         jp: 'さようなら',      ro: 'Sayōnara',          tip: 'Eher formell/endgültig'},
+      {de: 'Tschüss (bald wieder)',   jp: 'またね',          ro: 'Mata ne',           tip: 'Unter Freunden'},
+      {de: 'Ich verstehe nicht',      jp: 'わかりません',    ro: 'Wakarimasen',       tip: 'Sehr wichtig!'},
+      {de: 'Sprechen Sie Englisch?',  jp: '英語を話せますか？', ro: 'Eigo wo hanasemasu ka?', tip: ''},
+    ]
+  },
+  {
+    cat: '🍜 Restaurant & Essen',
+    items: [
+      {de: 'Vor dem Essen',           jp: 'いただきます',    ro: 'Itadakimasu',       tip: 'Pflicht! Wie "Mahlzeit" auf Japanisch'},
+      {de: 'Nach dem Essen',          jp: 'ごちそうさまでした', ro: 'Gochisōsama deshita', tip: 'Pflicht! Danke für das Essen'},
+      {de: 'Einen Tisch für 3',       jp: '3人です',         ro: 'San-nin desu',      tip: 'Zahl + nin desu'},
+      {de: 'Die Speisekarte bitte',   jp: 'メニューをください', ro: 'Menyū wo kudasai', tip: ''},
+      {de: 'Das hier bitte',          jp: 'これをください',   ro: 'Kore wo kudasai',   tip: 'Einfach auf Bild zeigen'},
+      {de: 'Lecker!',                 jp: 'おいしい！',       ro: 'Oishii!',           tip: 'Freut jeden Koch'},
+      {de: 'Die Rechnung bitte',      jp: 'お会計をください', ro: 'Okaikei wo kudasai', tip: 'Oder: Check please'},
+      {de: 'Ich bin allergisch gegen…', jp: 'アレルギーがあります', ro: '…Arerugī ga arimasu', tip: 'Wichtig!'},
+      {de: 'Kein Fleisch',            jp: '肉なしで',         ro: 'Niku nashi de',     tip: ''},
+      {de: 'Kein Fisch',              jp: '魚なしで',         ro: 'Sakana nashi de',   tip: ''},
+      {de: 'Sehr lecker! Empfehlung?', jp: 'おすすめは何ですか？', ro: 'Osusume wa nan desu ka?', tip: 'Was empfehlen Sie?'},
+      {de: 'Zum Mitnehmen',           jp: 'テイクアウトで',   ro: 'Teiku-auto de',     tip: ''},
+    ]
+  },
+  {
+    cat: '🛍️ Einkaufen',
+    items: [
+      {de: 'Wie viel kostet das?',    jp: 'いくらですか？',   ro: 'Ikura desu ka?',    tip: 'Wichtigste Shopping-Phrase'},
+      {de: 'Zu teuer',                jp: '高すぎます',       ro: 'Taka-sugimasu',     tip: ''},
+      {de: 'Ich schaue nur',          jp: '見ているだけです', ro: 'Mite iru dake desu', tip: 'Wenn Verkäufer anspricht'},
+      {de: 'Kann ich das sehen?',     jp: '見せてください',   ro: 'Misete kudasai',    tip: ''},
+      {de: 'Haben Sie Größe…?',       jp: 'サイズ…はありますか？', ro: 'Saizu … wa arimasu ka?', tip: ''},
+      {de: 'Duty Free bitte',         jp: '免税でお願いします', ro: 'Menzei de onegaishimasu', tip: 'Ab ¥5.000 mit Pass'},
+      {de: 'Kann ich mit Karte zahlen?', jp: 'カードで払えますか？', ro: 'Kādo de haraemasu ka?', tip: ''},
+      {de: 'Einen Beutel bitte',      jp: '袋をください',     ro: 'Fukuro wo kudasai', tip: 'Plastiktüte kostet extra'},
+    ]
+  },
+  {
+    cat: '🚃 Transport & Orientierung',
+    items: [
+      {de: 'Wo ist…?',               jp: '…はどこですか？',  ro: '… wa doko desu ka?', tip: 'Universalphrase!'},
+      {de: 'Bahnhof',                jp: '駅',               ro: 'Eki',               tip: ''},
+      {de: 'Flughafen',              jp: '空港',             ro: 'Kūkō',              tip: ''},
+      {de: 'Toilette',               jp: 'トイレ',           ro: 'Toire',             tip: 'Überall sauber & kostenlos'},
+      {de: 'Links',                  jp: '左',               ro: 'Hidari',            tip: ''},
+      {de: 'Rechts',                 jp: '右',               ro: 'Migi',              tip: ''},
+      {de: 'Geradeaus',              jp: 'まっすぐ',         ro: 'Massugu',           tip: ''},
+      {de: 'Zum Hotel bitte',        jp: 'ホテルまでお願いします', ro: 'Hoteru made onegaishimasu', tip: 'Im Taxi: Adresse zeigen'},
+      {de: 'Bitte halten Sie hier',  jp: 'ここで止めてください', ro: 'Koko de tomete kudasai', tip: 'Im Taxi'},
+      {de: 'Einen Fahrschein nach…', jp: '…まで一枚ください', ro: '… made ichimai kudasai', tip: ''},
+      {de: 'Welcher Zug nach…?',     jp: '…行きはどれですか？', ro: '… yuki wa dore desu ka?', tip: ''},
+    ]
+  },
+  {
+    cat: '♨️ Hotel & Ryokan',
+    items: [
+      {de: 'Check-in bitte',         jp: 'チェックインをお願いします', ro: 'Chekku-in wo onegaishimasu', tip: ''},
+      {de: 'Mein Name ist…',         jp: '…と申します',      ro: '… to mōshimasu',    tip: 'Formell'},
+      {de: 'Reservierung unter…',    jp: '…で予約しています', ro: '… de yoyaku shite imasu', tip: ''},
+      {de: 'Gepäck aufbewahren?',    jp: '荷物を預かってもらえますか？', ro: 'Nimotsu wo azukatte moraemasu ka?', tip: 'Vor Check-in'},
+      {de: 'Schuhe ausziehen',       jp: '靴を脱いでください', ro: 'Kutsu wo nuide kudasai', tip: 'Im Genkan (Eingang)'},
+      {de: 'Sehr schön!',            jp: 'きれいですね！',   ro: 'Kirei desu ne!',    tip: 'Zimmer/Aussicht loben'},
+    ]
+  },
+  {
+    cat: '🚨 Notfall',
+    items: [
+      {de: 'Hilfe!',                 jp: '助けてください！', ro: 'Tasukete kudasai!', tip: ''},
+      {de: 'Polizei rufen!',         jp: '警察を呼んでください！', ro: 'Keisatsu wo yonde kudasai!', tip: 'Polizei: 110'},
+      {de: 'Krankenwagen!',          jp: '救急車を呼んでください！', ro: 'Kyūkyūsha wo yonde kudasai!', tip: 'Notruf: 119'},
+      {de: 'Ich brauche einen Arzt', jp: '医者が必要です',   ro: 'Isha ga hitsuyō desu', tip: ''},
+      {de: 'Ich habe mich verlaufen', jp: '迷子になりました', ro: 'Maigo ni narimashita', tip: ''},
+      {de: 'Mein Pass wurde gestohlen', jp: 'パスポートが盗まれました', ro: 'Pasupōto ga nusumaremashita', tip: ''},
+    ]
+  },
+  {
+    cat: '😄 Spaß & Konversation',
+    items: [
+      {de: 'Sehr schön hier!',       jp: 'とても素晴らしい！', ro: 'Totemo subarashii!', tip: ''},
+      {de: 'Das macht Spaß!',        jp: '楽しい！',          ro: 'Tanoshii!',         tip: ''},
+      {de: 'Ich liebe Japan!',       jp: '日本が大好きです！', ro: 'Nihon ga daisuki desu!', tip: 'Macht jeden happy'},
+      {de: 'Ein Foto zusammen?',     jp: '一緒に写真を撮っていいですか？', ro: 'Issho ni shashin wo totte ii desu ka?', tip: ''},
+      {de: 'Prost!',                 jp: '乾杯！',            ro: 'Kanpai!',           tip: 'Alle warten bis alle Gläser gefüllt'},
+      {de: 'Das ist köstlich!',      jp: '最高においしい！',  ro: 'Saikō ni oishii!',  tip: 'Steigerung von Oishii'},
+      {de: 'Wie heißen Sie?',        jp: 'お名前は何ですか？', ro: 'Onamae wa nan desu ka?', tip: ''},
+      {de: 'Ich heiße…',             jp: '私は…です',         ro: 'Watashi wa … desu', tip: ''},
+      {de: 'Ich komme aus Deutschland', jp: 'ドイツから来ました', ro: 'Doitsu kara kimashita', tip: ''},
+    ]
+  },
+];
+
+(function buildPhrasen() {
+  let html = `<div class="info-block" style="margin-bottom:10px">
+    <div class="info-title">Aussprache-Tipps</div>
+    <div class="info-text">
+      <strong>a</strong> = ah &nbsp;·&nbsp; <strong>i</strong> = ih &nbsp;·&nbsp; <strong>u</strong> = uh &nbsp;·&nbsp; <strong>e</strong> = eh &nbsp;·&nbsp; <strong>o</strong> = oh<br>
+      <strong>ō / ū</strong> = langer Vokal &nbsp;·&nbsp; <strong>r</strong> = zwischen r und l<br>
+      Jede Silbe gleich betonen — kein Wort ist lauter als ein anderes.
+    </div>
+  </div>`;
+
+  PHRASEN.forEach(cat => {
+    html += `<div class="sec-head">${cat.cat}</div><div class="card" style="padding:0">`;
+    cat.items.forEach(p => {
+      html += `<div style="padding:10px 14px;border-bottom:0.5px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div style="flex:1">
+            <div style="font-size:12px;color:var(--text2);margin-bottom:1px">${p.de}</div>
+            <div style="font-size:17px;font-weight:600;color:var(--accent);letter-spacing:0.5px">${p.ro}</div>
+            <div style="font-size:13px;color:var(--text3);margin-top:1px">${p.jp}</div>
+            ${p.tip ? `<div style="font-size:10px;color:var(--green);margin-top:2px">💡 ${p.tip}</div>` : ''}
+          </div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  document.getElementById('sec-phrasen').innerHTML = html;
+})();
+
+
+// ── USELESS KNOWLEDGE ─────────────────────────────────────────────────────
+const USELESS = [
+  {
+    emoji: '🎌',
+    title: 'Japan hat mehr als 6.800 Inseln',
+    text: 'Aber nur 421 davon sind bewohnt. Der Rest ist einfach... da. Für die Aussicht.',
+  },
+  {
+    emoji: '🍣',
+    title: 'Sushi bedeutet nicht Fisch',
+    text: 'Sushi heißt auf Japanisch "saurer Reis". Der Fisch ist optional. Ein vegetarisches Sushi ist also genauso echter Sushi wie eines mit Thunfisch.',
+  },
+  {
+    emoji: '🚽',
+    title: 'Japanische Toiletten haben durchschnittlich 7 Knöpfe',
+    text: 'Manche bis zu 17. Einer davon spielt Meeresrauschen ab – damit niemand hört was man macht. Ein anderer heizt den Sitz vor. Keiner öffnet die Tür.',
+  },
+  {
+    emoji: '🦟',
+    title: 'Japan hat Mücken-Automaten',
+    text: 'Neben Kaffee, Bier, Regenschirmen und heißen Mahlzeiten findet man in japanischen Automaten auch Mückenspray. Und Krawatten. Und lebende Krabben.',
+  },
+  {
+    emoji: '😴',
+    title: 'Schlafen bei der Arbeit ist erlaubt',
+    text: 'Inemuri (居眠り) – das Einschlafen in der Öffentlichkeit – gilt als Zeichen von Fleiß. Wer im Meeting einschläft, hat offensichtlich so hart gearbeitet dass er erschöpft ist. Respekt.',
+  },
+  {
+    emoji: '🐈',
+    title: 'Es gibt mehr Haustier-Katzen als Kinder unter 15',
+    text: 'In Japan leben ca. 9,5 Millionen Hauskatzen – und ca. 15 Millionen Kinder unter 15. Die Katzen holen auf. Es gibt auch Katzen-Cafés, Katzen-Züge, und eine Katzeninsel (Aoshima) auf der 6 Menschen und 120 Katzen leben.',
+  },
+  {
+    emoji: '🏪',
+    title: 'Konbinis sind eigentlich Superkräfte',
+    text: 'Im japanischen Convenience Store kann man: Steuern zahlen, Konzerttickets kaufen, Pakete verschicken, einen Reisepass beantragen, Faxe senden, frisch gekochte Mahlzeiten kaufen, drucken, kopieren und gelegentlich heiraten (nicht überall).',
+  },
+  {
+    emoji: '🌸',
+    title: 'Es gibt eine offizielle Kirschblüten-Wettervorhersage',
+    text: 'Die japanische Meteorologische Gesellschaft veröffentlicht jedes Jahr eine "Sakura-Front" – eine animierte Karte die zeigt wie die Kirschblüte von Süden nach Norden durch Japan zieht. Die Nation plant Urlaub danach.',
+  },
+  {
+    emoji: '🍜',
+    title: 'Instant-Ramen wurde als wichtigste Erfindung des 20. Jahrhunderts gewählt',
+    text: 'In einer japanischen Umfrage schlug Instant-Ramen Karaoke, dem Walkman und dem Faxgerät. Der Erfinder Momofuku Ando aß täglich Chicken Ramen – bis zu seinem Tod mit 96 Jahren.',
+  },
+  {
+    emoji: '🎮',
+    title: 'Japan hat das älteste Unternehmen der Welt',
+    text: 'Kongō Gumi, eine Baufirma die Tempel baut, wurde im Jahr 578 gegründet. Das Unternehmen überlebte 1.400 Jahre – bis es 2006 von einem Konzern geschluckt wurde. Ironie.',
+  },
+  {
+    emoji: '🚆',
+    title: 'Der Shinkansen hat eine durchschnittliche Verspätung von 54 Sekunden',
+    text: 'Pro Jahr. Nicht pro Fahrt. Pro JAHR. Zum Vergleich: Die Deutsche Bahn definiert Pünktlichkeit als "weniger als 6 Minuten Verspätung".',
+  },
+  {
+    emoji: '🤖',
+    title: 'Japan hat einen Roboter-Hotel-Rezeptionisten namens Henn-na',
+    text: 'Das Henn-na Hotel (奇妙なホテル = "seltsames Hotel") in Tokio wird von Robotern betrieben. Die Rezeption staffeln ein Dino-Roboter und eine humanoide Roboterdame. Der Dino spricht fließend Japanisch und Englisch. Die Gäste finden es entweder toll oder terrifying.',
+  },
+  {
+    emoji: '🎯',
+    title: 'Pachinko ist legal, obwohl es Glücksspiel ist',
+    text: 'Glücksspiel ist in Japan illegal. Pachinko (eine Art Flipper-Spielautomat) auch. Aber: Man gewinnt keine Geld direkt, sondern Murmeln. Die Murmeln tauscht man in einem anderen Geschäft (gegenüber) gegen Bargeld. Das andere Geschäft hat nichts mit dem Pachinko-Laden zu tun. Natürlich nicht.',
+  },
+  {
+    emoji: '🦊',
+    title: 'Fushimi Inari hat über 10.000 Torii-Tore',
+    text: 'Die orangeroten Tore werden von Firmen und Privatpersonen gespendet. Der Preis? Je nach Größe zwischen 400.000 und über 1 Million Yen. Auf jedem Tor steht der Name des Spenders. Es ist quasi ein sehr teurer, sehr orangefarbener Walk of Fame.',
+  },
+  {
+    emoji: '🍫',
+    title: 'Kit Kat ist Japans beliebtester Schokoriegel – aus einem einzigen Grund',
+    text: '"Kit Kat" klingt auf Japanisch wie "Kitto Katsu" – was ungefähr "Du wirst sicher gewinnen" bedeutet. Studenten essen Kit Kats vor Prüfungen. Es gibt über 300 Sorten: Matcha, Sake, Wasabi, Apfelkuchen, Käsekuchen, Erdbeere und "Tokio Banana".',
+  },
+  {
+    emoji: '🎵',
+    title: 'Japanische Ampeln piepen eine Melodie',
+    text: 'Grüne Fußgängerampeln spielen oft "Toryanse" – ein altes japanisches Kinderlied aus dem 18. Jahrhundert. Der Text handelt von einem Kind das durch ein Torii-Tor gehen will um den Tempel zu besuchen. Warum dieser Song? Niemand weiß es mehr genau.',
+  },
+  {
+    emoji: '🌋',
+    title: 'Japan sitzt auf 10% aller aktiven Vulkane der Welt',
+    text: 'Es gibt ca. 111 aktive Vulkane auf japanischem Territorium. Das Land liegt auf drei tektonischen Platten gleichzeitig. Als Ausgleich: Die Erdbeben und Vulkane erzeugen die heißen Quellen für die Onsens. Japan macht Onsen aus seiner geologischen Katastrophenlage.',
+  },
+  {
+    emoji: '📦',
+    title: 'Verpackung ist Kunst',
+    text: 'Ein einzelnes Stück Obst kann in Japan in bis zu sieben Lagen verpackt sein: Papier, Schaumstoffnetz, Pappschachtel, Seidenpapier, Plastikfolie, Geschenkpapier, Tragetasche. Ein Einkauf bei einem guten Obst-Laden braucht manchmal 10 Minuten. Das Auspacken dauert länger als das Essen.',
+  },
+  {
+    emoji: '🐡',
+    title: 'Fugu-Köche brauchen eine Sonderlizenz',
+    text: 'Kugelfisch (Fugu) enthält Tetrodotoxin – eines der stärksten Gifte der Natur, 1.200× tödlicher als Zyanid. Um ihn zubereiten zu dürfen braucht man in Japan eine mehrjährige Ausbildung und eine staatliche Prüfung. Der Kaiser von Japan darf ihn trotzdem nicht essen – per Gesetz.',
+  },
+  {
+    emoji: '🎎',
+    title: 'Kawaii ist offizielle Außenpolitik',
+    text: 'Japan hat "Kawaii-Botschafterinnen" – offiziell ernannte junge Frauen die japanische Pop-Kultur im Ausland verbreiten. Das japanische Außenministerium hat ein eigenes "Cool Japan"-Budget. Hello Kitty ist offizieller Tourismusbotschafterin für Japan in China und Hong Kong.',
+  },
+];
+
+(function buildUseless() {
+  // Find the infos section and append useless knowledge
+  const el = document.getElementById('sec-infos');
+  if (!el) return;
+
+  let html = '<div class="sec-head">🤓 Useless Knowledge — Japan</div>';
+  
+  USELESS.forEach(item => {
+    html += `<div class="card" style="margin-bottom:8px">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="font-size:28px;flex-shrink:0;line-height:1.2">${item.emoji}</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">${item.title}</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">${item.text}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML += html;
+})();
 
 </script>
 </body>
