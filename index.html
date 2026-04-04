@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Japan 2026">
+<title>Japan 2026 — Reiseführer</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --accent:#C0750A;
+  --accent-light:rgba(192,117,10,0.1);
+  --green:#1D9E75;
+  --green-light:rgba(29,158,117,0.08);
+  --red:#A32D2D;
+  --bg:#ffffff;
+  --bg2:#f5f5f5;
+  --bg3:#ebebeb;
+  --text:#1a1a1a;
+  --text2:#666666;
+  --text3:#999999;
+  --border:rgba(0,0,0,0.1);
+  --border2:rgba(0,0,0,0.18);
+  --radius:12px;
+  --radius-sm:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1c1c1e;
+    --bg2:#2c2c2e;
+    --bg3:#3a3a3c;
+    --text:#f2f2f7;
+    --text2:#ababab;
+    --text3:#6e6e73;
+    --border:rgba(255,255,255,0.1);
+    --border2:rgba(255,255,255,0.18);
+    --accent-light:rgba(192,117,10,0.18);
+    --green-light:rgba(29,158,117,0.12);
+  }
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;color:var(--text);font-size:16px}
+.app{display:flex;flex-direction:column;height:100%;max-width:500px;margin:0 auto}
+
+/* HEADER */
+.header{background:var(--accent);color:#fff;padding:env(safe-area-inset-top,12px) 16px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.header-flag{font-size:22px}
+.header h1{font-size:16px;font-weight:600;flex:1}
+.header-date{font-size:11px;background:rgba(255,255,255,0.22);padding:3px 9px;border-radius:20px;white-space:nowrap}
+
+/* NAV */
+.nav{display:flex;overflow-x:auto;border-bottom:0.5px solid var(--border);background:var(--bg);flex-shrink:0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:11px 15px;font-size:12px;border:none;background:none;color:var(--text2);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;font-weight:500}
+.nav-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0}
+.section{display:none;padding:12px 14px 80px}
+.section.active{display:block}
+
+/* CARDS */
+.card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px}
+.card-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--text2);margin-bottom:10px}
+
+/* ROWS */
+.row{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid var(--border);gap:8px}
+.row:last-child{border-bottom:none}
+.row-label{font-size:12px;color:var(--text2);flex-shrink:0;padding-top:1px}
+.row-val{font-size:12px;color:var(--text);text-align:right;font-weight:500}
+
+/* MAPS BUTTON */
+.maps-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--accent);text-decoration:none;background:var(--accent-light);padding:4px 10px;border-radius:20px;margin-top:7px;font-weight:500}
+
+/* SECTION HEADER */
+.sec-head{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin:14px 0 6px;padding:0 2px}
+
+/* TAGE */
+.day-card{border-left:3px solid var(--accent);padding:10px 12px;margin-bottom:8px;background:var(--bg2);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.day-card.today{border-left-color:var(--green);background:var(--green-light)}
+.day-card.past{opacity:0.55}
+.day-date{font-size:11px;font-weight:600;color:var(--accent);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.day-card.today .day-date{color:var(--green)}
+.today-pill{font-size:10px;background:var(--green);color:#fff;padding:1px 7px;border-radius:10px}
+.day-text{font-size:13px;color:var(--text);line-height:1.5}
+.day-sub{font-size:11px;color:var(--text2);margin-top:3px}
+
+/* CHECKLIST */
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border)}
+.check-item:last-child{border-bottom:none}
+.check-box{width:20px;height:20px;border:1.5px solid var(--border2);border-radius:5px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;background:var(--bg)}
+.check-box.done{background:var(--green);border-color:var(--green)}
+.check-text{font-size:13px;color:var(--text);flex:1;line-height:1.4}
+.check-text.done{text-decoration:line-through;color:var(--text3)}
+.progress-wrap{background:var(--bg2);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
+.progress-label{font-size:13px;font-weight:600;margin-bottom:8px}
+.progress-bar{height:5px;background:var(--bg3);border-radius:3px}
+.progress-fill{height:100%;background:var(--green);border-radius:3px;transition:width 0.3s}
+.progress-info{font-size:11px;color:var(--text2);margin-top:5px}
+
+/* HOTELS */
+.hotel-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.hotel-name{font-size:14px;font-weight:600}
+.hotel-price{font-size:12px;color:var(--green);font-weight:600}
+.hotel-type{font-size:11px;color:var(--accent);font-weight:500;margin-bottom:8px}
+.hotel-note{font-size:11px;color:var(--text2);line-height:1.5;margin-top:7px;padding-top:7px;border-top:0.5px solid var(--border)}
+
+/* FLIGHTS */
+.flight-leg{background:var(--bg2);border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:8px}
+.leg-route{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.leg-ap{font-size:18px;font-weight:700;color:var(--text)}
+.leg-line{flex:1;height:1px;background:var(--border2);position:relative}
+.leg-line::after{content:'▶';position:absolute;right:-6px;top:-7px;font-size:10px;color:var(--text2)}
+.leg-info{font-size:12px;color:var(--text2);line-height:1.6}
+.leg-info strong{color:var(--accent)}
+.flight-note{background:var(--accent-light);border-radius:var(--radius-sm);padding:9px 11px;font-size:11px;color:var(--accent);margin-top:6px;line-height:1.5;font-weight:500}
+
+/* RESTAURANTS & BARS */
+.place-item{padding:9px 0;border-bottom:0.5px solid var(--border)}
+.place-item:last-child{border-bottom:none}
+.place-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.place-desc{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* INFOS */
+.info-block{background:var(--bg2);border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:8px}
+.info-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px}
+.info-text{font-size:13px;color:var(--text);line-height:1.6}
+.emergency{background:rgba(163,45,45,0.06);border:0.5px solid rgba(163,45,45,0.25);border-radius:var(--radius-sm);padding:12px 13px;margin-bottom:8px}
+.emergency-title{font-size:11px;font-weight:600;color:var(--red);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.emergency-nums{display:flex;gap:16px;flex-wrap:wrap}
+.e-num{font-size:18px;font-weight:700;color:var(--red)}
+.e-label{font-size:10px;color:var(--text2);margin-top:1px}
+.booking-code{font-family:ui-monospace,monospace;font-size:15px;font-weight:700;letter-spacing:3px;color:var(--accent)}
+
+.lock-screen{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:2rem}
+.lock-flag{font-size:60px;margin-bottom:1rem}
+.lock-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:0.5rem}
+.lock-sub{font-size:14px;color:var(--text2);margin-bottom:2rem;text-align:center}
+.lock-input{width:100%;max-width:280px;padding:14px 16px;font-size:18px;border:1.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);text-align:center;letter-spacing:3px;margin-bottom:1rem;outline:none}
+.lock-input:focus{border-color:var(--accent)}
+.lock-btn{width:100%;max-width:280px;padding:14px;font-size:16px;font-weight:600;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);cursor:pointer}
+.lock-error{font-size:13px;color:#A32D2D;margin-top:0.5rem;min-height:20px}
+</style>
+</head>
+<body>
+<div id="lock-screen" class="lock-screen">
+  <div class="lock-flag">🇯🇵</div>
+  <div class="lock-title">Japan 2026</div>
+  <div class="lock-sub">Reiseführer · Uwe, Sven & Chris</div>
+  <input class="lock-input" type="password" id="pw-input" placeholder="Passwort" onkeydown="if(event.key==='Enter')checkPw()"/>
+  <button class="lock-btn" onclick="checkPw()">Öffnen</button>
+  <div class="lock-error" id="pw-error"></div>
+</div>
+<div class="app" id="main-app" style="display:none">
+  <div class="header">
+    <div class="header-flag">🇯🇵</div>
+    <h1>Japan 2026</h1>
+    <div class="header-date" id="hdate">Apr 2026</div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn active" onclick="show('tage',this)">Tage</button>
+    <button class="nav-btn" onclick="show('check',this)">Checkliste</button>
+    <button class="nav-btn" onclick="show('hotels',this)">Hotels</button>
+    <button class="nav-btn" onclick="show('fluege',this)">Flüge</button>
+    <button class="nav-btn" onclick="show('essen',this)">Essen</button>
+    <button class="nav-btn" onclick="show('manami',this)">Manamis Tipps</button>
+    <button class="nav-btn" onclick="show('bars',this)">Bars</button>
+    <button class="nav-btn" onclick="show('karte',this)">Karte</button>
+    <button class="nav-btn" onclick="show('infos',this)">Infos</button>
+  </div>
+  <div class="content">
+    <div class="section active" id="sec-tage"></div>
+    <div class="section" id="sec-check"></div>
+    <div class="section" id="sec-hotels"></div>
+    <div class="section" id="sec-fluege"></div>
+    <div class="section" id="sec-essen"></div>
+    <div class="section" id="sec-manami"></div>
+    <div class="section" id="sec-bars"></div>
+    <div class="section" id="sec-karte"></div>
+    <div class="section" id="sec-infos"></div>
+  </div>
+</div>
+
+<script>
+
+const PW_KEY = 'japan2026_auth';
+const CORRECT_PW = 'Japan2026';
+
+function checkPw() {
+  const input = document.getElementById('pw-input').value;
+  if (input === CORRECT_PW) {
+    localStorage.setItem(PW_KEY, '1');
+    unlockApp();
+  } else {
+    document.getElementById('pw-error').textContent = 'Falsches Passwort';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function unlockApp() {
+  document.getElementById('lock-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'flex';
+}
+
+// Check if already authenticated
+if (localStorage.getItem(PW_KEY) === '1') {
+  unlockApp();
+}
+
+document.addEventListener('click', function(e) {
+  var a = e.target.closest('a');
+  if (a && a.href && a.href.startsWith('maps://')) {
+    e.preventDefault();
+    window.location.href = a.href;
+  }
+});
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function maps(name, ll) {
+  const url = 'maps://?q=' + encodeURIComponent(name) + '&ll=' + ll;
+  return '<a class="maps-btn" href="' + url + '" onclick="openMap(event,\'' + url + '\')">📍 Apple Maps</a>';
+}
+
+function openMap(e, url) {
+  e.preventDefault();
+  window.location.href = url;
+}
+
+const TODAY = new Date();
+const MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+function fmtDate(d) {
+  return d.getDate() + '. ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function dayKey(dateStr) {
+  // parse "12.04." as 2026
+  const [d, m] = dateStr.split('.');
+  return new Date(2026, parseInt(m)-1, parseInt(d)).getTime();
+}
+
+function todayKey() {
+  return new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate()).getTime();
+}
+
+document.getElementById('hdate').textContent = fmtDate(TODAY);
+
+// ── TAGE ──────────────────────────────────────────────────────────────────
+const TAGE = [
+  {d:'10.04.',city:'Frankfurt',e:'✈️',text:'DB Köln Messe → Frankfurt (19:30, DB 1015). Check-in Staycity Airport. Shuttle vom Terminal. Kein frühes Aufstehen nötig — Abflug morgen erst 11:30.',sub:'Staycity Frankfurt Airport · Amelia-Mary-Earhart-Str. 9'},
+  {d:'11.04.',city:'Abflug',e:'🛫',text:'AY1412 FRA→HEL 11:30 (Terminal 1). Layover Helsinki 3 Std. — Abendessen möglich. JL48/AY5073 HEL→HND 17:55, Sitze 10A/10C/11A. Langer Nachtflug! Business Class JAL SKY SUITE.',sub:'Buchungsref. 8IXEO4 · Ankunft Tokio 12.04. um 13:55'},
+  {d:'12.04.',city:'Tokio — Ankunft',e:'🗼',text:'Ankunft Haneda 13:55. Transfer Chinichi (Ref. 931593331) → Cerulean Tower Shibuya ca. 28 Min. Check-in ab 15:00. Erster Spaziergang Shibuya Crossing. Abend: Izakaya.',sub:'Cerulean Tower Tokyu Hotel · Shibuya'},
+  {d:'13.04.',city:'Tokio',e:'⛩️',text:'Shibuya Crossing & Sky (Sonnenuntergang!). Meiji-Schrein & Yoyogi-Park vormittags. Takeshita Street, Harajuku Backstreets. Ab 18:30 → Toyosu: teamLab Planets 19:00 ✓ (barfuß, Hose hochkrempeln!)',sub:'teamLab Planets gebucht & bezahlt'},
+  {d:'14.04.',city:'Tokio',e:'🎮',text:'Asakusa: Senso-ji früh (vor den Touristengruppen), Nakamise-dori. Nachmittag Akihabara: Elektronik, Game-Shops, Maid Café optional. Abends Ramen/Izakaya Shibuya/Shinjuku.',sub:'Yodobashi Camera für Elektronik-Shopping'},
+  {d:'15.04.',city:'Tokio → Hiroshima',e:'🚄',text:'Vormittag frei in Shibuya. Nozomi 37 ab 13:30 → Hiroshima 17:27, Wagen 14, Pl. 2A/2B/2C. Abends Okonomiyaki in Hiroshima.',sub:'¥58.080 · Res. Nr. 2000 · Randor Hotel Hiroshima'},
+  {d:'16.04.',city:'Hiroshima',e:'☮️',text:'Peace Memorial Park & Museum (mindestens halber Tag!), A-Bomb Dome. Emotional intensiv — danach bewusste Pause. Nachmittag Hondori Shopping Street. Abends Seafood & Izakaya.',sub:'Hiroshima Peace Memorial Park · Danach: durchatmen'},
+  {d:'17.04.',city:'Rabbit Island',e:'🐇',text:'Tagesausflug Ōkunoshima! JR bis Tadanoumi (ca. 1 Std.) + Fähre 15 Min. Hunderte freilaufende Kaninchen. Ca. 5-6 Std. unterwegs. Futter am Anleger kaufen (100-200 Yen). Letzte Fähre ca. 17 Uhr!',sub:'Beste Zeit: Wochentag vormittags · Budget ca. 2.000-3.000 Yen'},
+  {d:'18.04.',city:'Miyajima → Kyoto',e:'⛩️',text:'Früh: Miyajima (Itsukushima-Schrein, Torii — Gezeiten beachten!). Hirsche auf der Insel passen auf! Gepäck per Takkyubin vorausschicken. Nozomi 42 ab 16:22 → Kyoto 17:59, Wagen 5, Pl. 18A/18B/18C.',sub:'¥35.220 · Res. Nr. 2002 · Kyoto Tokyu Hotel'},
+  {d:'19.04.',city:'Kyoto',e:'🏯',text:'Higashiyama: Kiyomizu-dera früh starten (Holzterrasse, Weitblick)! Sannenzaka & Ninenzaka (Souvenirs, Süßigkeiten). Gion Nachmittag. Philosopher\'s Path → Ginkaku-ji. Abends Pontocho Izakaya.',sub:'Teezeremonie heute oder morgen buchen'},
+  {d:'20.04.',city:'Kyoto',e:'🦊',text:'Fushimi Inari so früh wie möglich (je früher desto leerer!). Kinkaku-ji & Ryoan-ji (ca. 30 Min. Bus). Nishiki-Markt nachmittags (schließt 17-18 Uhr!). Abends Gion / Pontocho.',sub:'Kinkaku-ji öffnet 9:00 · Ryoan-ji 15 Gehmin. entfernt'},
+  {d:'21.04.',city:'Arashiyama → Osaka',e:'🎍',text:'Früh: Arashiyama Bambuswald (vor 8 Uhr — fast leer!), Togetsukyo-Brücke, optional Tenryu-ji oder Affenpark. Ca. 2-3 Std. Dann JR → Osaka (45-60 Min.). Check-in Elcient. Abend Dotonbori/Namba.',sub:'Hotel Elcient Osaka Umeda · Namba 10 Min. Metro'},
+  {d:'22.04.',city:'Nara',e:'🦌',text:'Tagesausflug Nara (45 Min. ab Osaka). Tōdai-ji (riesiger Bronze-Buddha!), Nara-Park (Hirsche füttern — die sind gierig und clever!), Kasuga-Taisha Schrein. Nachmittags Osaka: Shopping Shinsaibashi.',sub:'Abend: Nachtleben Doyamachō (Gay-Viertel)'},
+  {d:'23.04.',city:'Osaka',e:'🦀',text:'Dotonbori: Leuchtreklamen, Glico-Mann, Kani-Doraku-Krabbe. Kuromon Ichiba Markt mittags (bis 17 Uhr! Austern, Wagyu direkt am Stand). Shinsekai mit Kushikatsu. Umeda Sky Building bei Sonnenuntergang.',sub:'Abend: Streetfood + Cocktails + Doyamachō'},
+  {d:'24.04.',city:'Osaka → Hakone',e:'♨️',text:'Kodama 820 ab Shin-Osaka 10:54 → Odawara 14:09, Wagen 11, Pl. 1A/1B/1C. Limousine ab Shinkansen-Gate Odawara 14:15 (Fahrer mit Namensschild, ¥6.500). Check-in Kinnotake ~15-16 Uhr. Abend: Kaiseki-Dinner + Onsen.',sub:'Kinnotake Suite „Sora" · ¥424.710 · Res. C260118000022354'},
+  {d:'25.04.',city:'Hakone',e:'🗻',text:'Frühstück ab 7:30 Uhr im Ryokan. ¥100-Bus ab Deyama 9:00 → Hakone-Yumoto 9:10. Rundkurs: Bus → Ashi-See → Piratenschiff → Ropeway → Owakudani (schwarze Eier!) → Gora → Tozan-Bahn. Abend: Onsen, zweites Kaiseki.',sub:'Hakone Freepass aktiviert! Control-Nr: Sven 2908065 · Chris 2908072 · Uwe 2908076'},
+  {d:'26.04.',city:'Hakone → Tokio 2',e:'🚃',text:'Limousine ab Kinnotake 10:45 → Hakone-Yumoto (¥3.300). Romancecar GSE Hakone 6 ab 11:38 → Shinjuku 13:05, Wagen 7, Front Observation Deck, Sitze 12B/12C/12D. Check-in Stoke Villa ab 16:00.',sub:'MK Tokyo Stay (Stoke Villa) · Oki (Superhost) · kein Aufzug'},
+  {d:'27.04.',city:'Tokio',e:'🎨',text:'Ginza erkunden (Mitsukoshi, Ginza Six, Wako-Uhrenturm). 18:30 teamLab Borderless (Azabudai Hills) ✓ — inkl. Tea House Ticket. Bequeme, waschbare Kleidung! Danach Golden Gai Shinjuku.',sub:'teamLab Borderless gebucht & bezahlt'},
+  {d:'28.04.',city:'Tokio',e:'🏛️',text:'Ueno Park & Tokyo National Museum. Yanaka Ginza (Snacks, Souvenirs, altes Tokio). Nachmittag Akihabara. Abend: Ameyoko-Markt Streetfood, dann Akihabara Nachtleben.',sub:'Yanaka = am besten erhaltenes altes Tokio'},
+  {d:'29.04.',city:'Tokio',e:'🎸',text:'Shimokitazawa: Vintage-Shops, Indie-Platten, Cafés (Tokios Hipster-Hub). Nakameguro Kanal & Daikanyama: Tsutaya Books (eine der schönsten Buchhandlungen der Welt!). Abend: Live Music.',sub:'Nakameguro liegt zwischen Shibuya & Shimokitazawa'},
+  {d:'30.04.',city:'Kawaguchiko',e:'🗻',text:'Tagesausflug Kawaguchiko (2 Std. Bus). Fuji-Reflexion im See. Lawson-Konbini Fuji-Foto! Chureito Pagode. Bei schlechtem Wetter: Plan B → Nikko (2 Std. JR) oder Yokohama (30 Min.).',sub:'Wetter morgens prüfen! Plan B bereithalten'},
+  {d:'01.05.',city:'Kamakura',e:'🙏',text:'Tagesausflug Kamakura (1 Std. JR). Großer Buddha (Daibutsu), Hasedera-Tempel mit Meerblick. Enoshima optional (Höhlen, Aquarium). Abends zurück, Ni-chome Nachtleben.',sub:'Rückkehr ca. 1 Std. · Ni-chome: ca. 200-300 Bars'},
+  {d:'02.05.',city:'Odaiba',e:'🤖',text:'Sushi-Frühstück am Toyosu-Markt früh (7-8 Uhr!). Dann Odaiba: Gundam-Statue DiverCity, Miraikan (Wissenschaftsmuseum), Rainbow Bridge bei Nacht. Waterfront-Dinner.',sub:'Toyosu = Nachfolger Tsukiji · Reservierung empfohlen'},
+  {d:'03.05.',city:'Tokio',e:'🏔️',text:'Freier Tag — Mt. Takao wandern, Shinjuku Gyoen schlendern, oder letzte Lieblingsviertel. Abends Themed Bars Shinjuku (Vampire, Prison Café). Letzter Abend Tokyo!',sub:'Koffer am Abend per Takkyubin → KIX aufgeben!'},
+  {d:'04.05.',city:'Abreise',e:'🛬',text:'Checkout Stoke Villa 10:00 Uhr (Airbnb-Key zurückgeben). Haneda: AY5209 HND→KIX 12:35 (Economy, Pl. 16H/16J/16K). KIX: 8 Std. Aufenthalt — letztes Mittagessen Dotonbori! AY068 KIX→HEL 22:15 Business.',sub:'Koffer bereits am Vortag per Takkyubin aufgegeben ✓'},
+  {d:'05.05.',city:'Zuhause',e:'🏠',text:'Ankunft Helsinki 05:20 (AY068). Layover ca. 2 Std. 20 Min. — Iittala, Marimekko, Fazer-Schokolade shoppen! AY1411 HEL→FRA 07:40 → Frankfurt 09:20. Und dann: Stall.',sub:'Business Class · Welcome back!'},
+];
+
+(function buildTage() {
+  const el = document.getElementById('sec-tage');
+  const tk = todayKey();
+  let html = '';
+  TAGE.forEach(t => {
+    const k = dayKey(t.d);
+    const isToday = k === tk;
+    const isPast = k < tk;
+    let cls = 'day-card';
+    if(isToday) cls += ' today';
+    if(isPast) cls += ' past';
+    const todayBadge = isToday ? '<span class="today-pill">Heute</span>' : '';
+    html += `<div class="${cls}">
+      <div class="day-date">${t.e} ${t.d} — ${t.city}${todayBadge}</div>
+      <div class="day-text">${t.text}</div>
+      ${t.sub ? `<div class="day-sub">${t.sub}</div>` : ''}
+    </div>`;
+  });
+  el.innerHTML = html;
+})();
+
+// ── CHECKLISTE ─────────────────────────────────────────────────────────────
+const CHECKS = [
+  {id:'c1',done:true,cat:'✅ Zugtickets',text:'Shinkansen Tokio→Hiroshima (15.04.) — Nozomi 37, Pl. 2A/2B/2C ¥58.080'},
+  {id:'c2',done:true,cat:'✅ Zugtickets',text:'Shinkansen Hiroshima→Kyoto (18.04.) — Nozomi 42, Pl. 18A/18B/18C ¥35.220'},
+  {id:'c3',done:true,cat:'✅ Zugtickets',text:'Shinkansen Shin-Osaka→Odawara (24.04.) — Kodama 820, Wagen 11'},
+  {id:'c4',done:true,cat:'✅ Zugtickets',text:'Romancecar GSE Hakone 6 (26.04.) — Wagen 7, Front Deck, Sitze 12B/12C/12D'},
+  {id:'c5',done:true,cat:'✅ Zugtickets',text:'Hakone Freepass (24-25.04.) — ¥6.000/P, EMot ✓ (Sven 2908065 · Chris 2908072 · Uwe 2908076)'},
+  {id:'c6',done:false,cat:'🎟️ Attraktionen',text:'⚠️ Ghibli Museum Mitaka — Tickets kaufen! Lawson.co.jp, 10.04. ab 03:00 dt. Zeit'},
+  {id:'c7',done:true,cat:'🎟️ Attraktionen',text:'teamLab Borderless (27.04. 18:30) — gebucht & bezahlt ✓'},
+  {id:'c8',done:true,cat:'🎟️ Attraktionen',text:'teamLab Planets (13.04. 19:00) — gebucht & bezahlt ✓'},
+  {id:'c9',done:false,cat:'🎟️ Attraktionen',text:'Shibuya Sky — Tickets vorab buchen (ca. 2.500 Yen/P, shibuya-scramble-square.com)'},
+  {id:'c10',done:false,cat:'🎟️ Attraktionen',text:'Okutan Nanzen-ji Kyoto — Tischreservierung (+81-75-771-8709)'},
+  {id:'c11',done:false,cat:'🎟️ Attraktionen',text:'Teezeremonie Kyoto — Camellia Tea Experience (Gion), ca. 40 EUR/P'},
+  {id:'c12',done:false,cat:'📱 Kommunikation',text:'eSIM kaufen — Ubigi, 10GB/16,50€, Code TOKYOCHEAPO (10% Rabatt)'},
+  {id:'c13',done:false,cat:'📱 Kommunikation',text:'Google Maps offline: Tokio, Kyoto, Osaka, Hiroshima, Hakone'},
+  {id:'c14',done:false,cat:'📱 Kommunikation',text:'Google Translate Japanisch offline herunterladen'},
+  {id:'c15',done:false,cat:'📱 Kommunikation',text:'Spaceteam + Exploding Kittens + Ticket to Ride + Codenames Duet installieren & testen'},
+  {id:'c16',done:false,cat:'💴 Geld & Dokumente',text:'Yen besorgen — 50.000-70.000 Yen/Person Startbetrag (ca. 320-450 EUR)'},
+  {id:'c17',done:false,cat:'💴 Geld & Dokumente',text:'Reisepässe prüfen — gültig bis mindestens 04.11.2026 (alle 3!)'},
+  {id:'c18',done:false,cat:'💴 Geld & Dokumente',text:'Reisekrankenversicherung prüfen oder abschließen (alle 3)'},
+  {id:'c19',done:false,cat:'💴 Geld & Dokumente',text:'Suica/Pasmo in Apple Wallet einrichten — mind. 2.000 Yen aufladen'},
+  {id:'c20',done:false,cat:'🎒 Packen',text:'Steckeradapter Typ A (US-Stecker, flach) einpacken'},
+  {id:'c21',done:false,cat:'🎒 Packen',text:'Reiseapotheke: Schmerzmittel, Magentabletten, Blasenpflaster'},
+  {id:'c22',done:false,cat:'🎒 Packen',text:'Hallenschuhe für Fitnessstudio (Stoke Villa) & Onsen einpacken'},
+  {id:'c23',done:false,cat:'🎒 Packen',text:'Wechselklamotten für teamLab Planets (Wasser! Hose hochkrempeln)'},
+  {id:'c24',done:false,cat:'✈️ Check-in',text:'Online Check-in AY1412 (öffnet 36 Std. vor 11.04. = 10.04. ca. 11:30 Uhr)'},
+  {id:'c25',done:true,cat:'✅ Bereits erledigt',text:'Alle Flüge gebucht & bezahlt ✓ — Ref. 8IXEO4'},
+  {id:'c26',done:true,cat:'✅ Bereits erledigt',text:'Alle Hotels & Ryokan gebucht & bezahlt ✓'},
+  {id:'c27',done:true,cat:'✅ Bereits erledigt',text:'Transfer HND→Cerulean Tower — Chinichi Ref. 931593331 ✓'},
+  {id:'c28',done:true,cat:'✅ Bereits erledigt',text:'Limousine Kinnotake hin (14:15, ¥6.500) & zurück (10:45, ¥3.300) ✓'},
+];
+
+const ST = {};
+CHECKS.forEach(c => { ST[c.id] = c.done; });
+
+function buildChecklist() {
+  const done = Object.values(ST).filter(Boolean).length;
+  const total = CHECKS.length;
+  const pct = Math.round(done/total*100);
+  let html = `<div class="progress-wrap">
+    <div class="progress-label">Vorbereitungsstand</div>
+    <div class="progress-bar"><div class="progress-fill" id="pf" style="width:${pct}%"></div></div>
+    <div class="progress-info" id="pi">${done} von ${total} erledigt (${pct}%)</div>
+  </div>`;
+
+  const cats = {};
+  CHECKS.forEach(c => { if(!cats[c.cat]) cats[c.cat]=[]; cats[c.cat].push(c); });
+
+  Object.entries(cats).forEach(([cat, items]) => {
+    html += `<div class="sec-head">${cat}</div><div class="card" style="padding:4px 14px">`;
+    items.forEach(item => {
+      html += `<div class="check-item">
+        <div class="check-box ${ST[item.id]?'done':''}" id="cb-${item.id}" onclick="toggle('${item.id}')">
+          ${ST[item.id]?'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>':''}
+        </div>
+        <div class="check-text ${ST[item.id]?'done':''}" id="ct-${item.id}">${item.text}</div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('sec-check').innerHTML = html;
+}
+
+function toggle(id) {
+  ST[id] = !ST[id];
+  const box = document.getElementById('cb-'+id);
+  const txt = document.getElementById('ct-'+id);
+  const chk = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>';
+  if(ST[id]) { box.classList.add('done'); box.innerHTML=chk; txt.classList.add('done'); }
+  else { box.classList.remove('done'); box.innerHTML=''; txt.classList.remove('done'); }
+  const done = Object.values(ST).filter(Boolean).length;
+  const total = CHECKS.length;
+  const pct = Math.round(done/total*100);
+  document.getElementById('pf').style.width = pct+'%';
+  document.getElementById('pi').textContent = `${done} von ${total} erledigt (${pct}%)`;
+}
+
+buildChecklist();
+
+// ── HOTELS ────────────────────────────────────────────────────────────────
+const HOTELS = [
+  {dates:'10.04.',nights:'1 Nacht',name:'Staycity Frankfurt Airport',type:'Aparthotel am Flughafen',ci:'–',co:'–',price:'68,64 €',addr:'Amelia-Mary-Earhart-Str. 9, Frankfurt',ll:'50.0503,8.5697',note:'Shuttle vom Terminal. Vorabend vor Abflug — kein frühes Aufstehen nötig.'},
+  {dates:'12.–15.04.',nights:'3 Nächte',name:'Cerulean Tower Tokyu Hotel',type:'Luxushotel · Shibuya (Pan Pacific)',ci:'15:00',co:'12:00',price:'1.632,34 €',addr:'Sakuragaokacho 26-1, Shibuya-ku, Tokio',ll:'35.6563,139.6979',note:'Transfer: Chinichi (Ref. 931593331) · JL48 wird getrackt · 40 Stockwerke, Fuji-Blick · Jazzbar JZ Brat im Keller'},
+  {dates:'15.–18.04.',nights:'3 Nächte',name:'Randor Hotel Hiroshima Prestige',type:'Business Hotel Prestige',ci:'15:00',co:'11:00',price:'531,51 €',addr:'Minami-ku, Nishikojin-machi 1-38, Hiroshima',ll:'34.3975,132.4757',note:'15 Gehminuten zum Peace Park · Frühstücksbuffet japanisch & westlich empfohlen'},
+  {dates:'18.–21.04.',nights:'3 Nächte',name:'Kyoto Tokyu Hotel',type:'Stadthotel · Shimogyo-ku',ci:'14:00',co:'11:00',price:'423,48 €',addr:'Horikawa-dori Gojo-sagaru, Shimogyo-ku, Kyoto',ll:'35.0037,135.7588',note:'Bus 15 Min. → Nishiki-Markt · JR 20 Min. → Fushimi Inari · Bus 30 Min. → Arashiyama'},
+  {dates:'21.–24.04.',nights:'3 Nächte',name:'Hotel Elcient Osaka Umeda',type:'Designhotel · Kita-ku',ci:'15:00',co:'11:00',price:'614,28 €',addr:'Sonezaki 1-2-7, Kita-ku, Osaka',ll:'34.6952,135.5001',note:'10 Min. Metro → Namba/Dotonbori · Doyamachō 5 Gehmin. nördlich'},
+  {dates:'24.–26.04.',nights:'2 Nächte',name:'Kinnotake Tonosawa',type:'Exklusives Ryokan (5★)',ci:'15–16 Uhr',co:'11:00',price:'2.318,15 €',addr:'191 Tonosawa, Hakone-cho, Kanagawa 250-0315',ll:'35.2481,139.0643',note:'Kinnotake Suite „Sora" mit Open-Air-Onsen · Kaiseki-Dinner & Frühstück inkl. · Res. C260118000022354 · Kitamura-san: 0460-85-9800 · Limo hin: 24.04. 14:15 Odawara (¥6.500) · Limo zurück: 26.04. 10:45 (¥3.300)'},
+  {dates:'26.04.–04.05.',nights:'8 Nächte',name:'MK Tokyo Stay (Stoke Villa)',type:'Airbnb Duplex · Shinjuku/Takadanobaba',ci:'16:00',co:'10:00',price:'2.963,52 €',addr:'1-chōme-6-8 Shimoochiai, Shinjuku, Tokio 161-0033',ll:'35.6896,139.6917',note:'Gastgeber Oki (Superhost, 5★, 57 Bewertungen) · 88m² Duplex, 4./5. OG, kein Aufzug (Oki hilft!) · Waschmaschine/Trockner inklusive · Fitnessstudio 7-22 Uhr · 6 Min. zu Fuß Bahnhof Takadanobaba (Yamanote + U-Bahn) · 7-Eleven 1 Min.'},
+];
+
+(function buildHotels() {
+  let html = `<div style="background:var(--green-light);border-radius:var(--radius-sm);padding:10px 13px;margin-bottom:10px;font-size:13px;color:var(--green);font-weight:500">Gesamtkosten Unterkunft: 8.552 € (ca. 2.851 €/Person) · Alle bezahlt & bestätigt ✓</div>`;
+  HOTELS.forEach(h => {
+    html += `<div class="card">
+      <div class="hotel-header">
+        <div>
+          <div class="hotel-name">${h.name}</div>
+          <div class="hotel-type">${h.dates} · ${h.nights}</div>
+        </div>
+        <div class="hotel-price">${h.price}</div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:8px">${h.type}</div>
+      <div class="row"><span class="row-label">Check-in</span><span class="row-val">${h.ci}</span></div>
+      <div class="row"><span class="row-label">Check-out</span><span class="row-val">${h.co}</span></div>
+      <div class="row"><span class="row-label">Adresse</span><span class="row-val" style="max-width:58%;font-size:11px">${h.addr}</span></div>
+      <div class="hotel-note">${h.note}</div>
+      ${maps(h.name, h.ll)}
+    </div>`;
+  });
+  document.getElementById('sec-hotels').innerHTML = html;
+})();
+
+// ── FLÜGE ─────────────────────────────────────────────────────────────────
+(function buildFluege() {
+  document.getElementById('sec-fluege').innerHTML = `
+    <div class="sec-head">Hinflug — 11. April 2026</div>
+    <div class="card">
+      <div class="card-title">Frankfurt → Helsinki → Tokio</div>
+      <div class="card-sub">Business Class · Buchungsref. 8IXEO4</div>
+      <div class="flight-leg">
+        <div class="leg-route"><span class="leg-ap">FRA</span><div class="leg-line"></div><span class="leg-ap">HEL</span></div>
+        <div class="leg-info"><strong>AY1412</strong> · 11:30 – 13:55 · 2 Std. 25 Min.<br>Finnair · Business Class · Terminal 1 Frankfurt</div>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--text2);padding:6px 0">Layover Helsinki: 3 Stunden · Abendessen möglich</div>
+      <div class="flight-leg">
+        <div class="leg-route"><span class="leg-ap">HEL</span><div class="leg-line"></div><span class="leg-ap">HND</span></div>
+        <div class="leg-info"><strong>JL48</strong> / AY5073 · 17:55 – 13:55+1 · 14 Stunden<br>JAL (Finnair Codeshare) · Business Class<br>JAL SKY SUITE · Sitze <strong>10A · 10C · 11A</strong></div>
+      </div>
+      <div class="flight-note">Ankunft Tokio Haneda 12.04. um 13:55 Uhr<br>Transfer: Chinichi (Ref. 931593331) · JL48 wird getrackt<br>Fahrt ca. 28 Min. → Cerulean Tower Shibuya</div>
+    </div>
+
+    <div class="sec-head">Rückflug — 4./5. Mai 2026</div>
+    <div class="card">
+      <div class="card-title">Tokio → Osaka → Helsinki → Frankfurt</div>
+      <div class="card-sub">Business Class (außer Inlandsflug Economy)</div>
+      <div class="flight-leg">
+        <div class="leg-route"><span class="leg-ap">HND</span><div class="leg-line"></div><span class="leg-ap">KIX</span></div>
+        <div class="leg-info"><strong>AY5209</strong> op. by JAL · 12:35 – 14:00 · Economy<br>Sitze 16H · 16J · 16K</div>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--text2);padding:6px 0">Osaka: ca. 8 Std. Aufenthalt · Letztes Mittagessen Dotonbori</div>
+      <div class="flight-leg">
+        <div class="leg-route"><span class="leg-ap">KIX</span><div class="leg-line"></div><span class="leg-ap">HEL</span></div>
+        <div class="leg-info"><strong>AY068</strong> · 22:15 – 05:20+1 · 13 Std. 5 Min.<br>Finnair A350-900 · Business Class · Nachtflug → schlafen!</div>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--text2);padding:6px 0">Helsinki: ca. 2 Std. 20 Min. · Iittala & Fazer shoppen</div>
+      <div class="flight-leg">
+        <div class="leg-route"><span class="leg-ap">HEL</span><div class="leg-line"></div><span class="leg-ap">FRA</span></div>
+        <div class="leg-info"><strong>AY1411</strong> · 07:40 – 09:20 · 2 Std. 40 Min.<br>Finnair (op. by Jettime) · Business Class</div>
+      </div>
+    </div>
+
+    <div class="sec-head">Buchungsnummern & Sitze</div>
+    <div class="card">
+      <div class="row"><span class="row-label">Flug Buchungsref.</span><span class="booking-code">8IXEO4</span></div>
+      <div class="row"><span class="row-label">Sitze JL48</span><span class="row-val">10A · 10C · 11A</span></div>
+      <div class="row"><span class="row-label">Sitze AY5209</span><span class="row-val">16H · 16J · 16K</span></div>
+      <div class="row"><span class="row-label">Transfer Chinichi</span><span class="row-val">Ref. 931593331</span></div>
+    </div>
+  `;
+})();
+
+// ── ESSEN ─────────────────────────────────────────────────────────────────
+const ESSEN = {
+  'Tokio': [
+    {name:'Ichiran Ramen',desc:'Solo-Ramen in Kabinen. Intensiv, ikonisch, günstig. Mehrere Filialen in Shibuya.',ll:'35.6612,139.6999'},
+    {name:'Uobei Shibuya Dogenzaka',desc:'Conveyor-Belt Sushi per Hochgeschwindigkeitsschiene. Günstig & unterhaltsam.',ll:'35.6601,139.6985'},
+    {name:'Zauo Shibuya',desc:'Angel-Restaurant ★4,5 — ihr angelt euer Essen selbst! Manamis Empfehlung.',ll:'35.6606,139.6977'},
+    {name:'MO-MO-PARADISE Shibuya',desc:'All-you-can-eat Shabu-Shabu ★4,9. Manamis absoluter Top-Pick!',ll:'35.6610,139.6990'},
+    {name:'Nihonshu Biyori',desc:'Sake-fokussiertes Sushi ★4,9. Winzig, persönlich, hervorragend.',ll:'35.6587,139.7006'},
+    {name:'Gyukatsu Motomura Shibuya',desc:'Frittiertes Rindfleisch-Schnitzel zum Selbst-Nachgaren. Unbedingt probieren!',ll:'35.6587,139.7001'},
+    {name:'Omoide Yokocho (Shinjuku)',desc:'Gässchen mit winzigen Yakitori-Lokalen. Authentisch, günstig, legendär.',ll:'35.6929,139.7003'},
+    {name:'Tsuta (Ramen)',desc:'Michelin-Stern-Ramen. Reservierung/früh kommen empfohlen.',ll:'35.7080,139.7054'},
+  ],
+  'Hiroshima': [
+    {name:'Okonomimura',desc:'Gebäude mit mehreren Ständen für Hiroshima-Style Okonomiyaki. Das Original!',ll:'34.3966,132.4569'},
+    {name:'Hondori Shopping Street',desc:'Abends: Seafood-Spots, Izakayas, casual bis modern. Nach Peace Museum ideal.',ll:'34.3965,132.4569'},
+  ],
+  'Kyoto': [
+    {name:'Okutan Nanzen-ji',desc:'Tofu-Kaiseki seit 1635 beim Nanzen-ji Tempel. 3.500-4.500 Yen. Vorab reservieren!',ll:'35.0110,135.7948'},
+    {name:'Pontocho Alley',desc:'GYUKATSU Katsugyu, Tempura Tententen, Kyoshikian Teppanyaki — alles in einer Gasse.',ll:'35.0055,135.7693'},
+    {name:'Nishiki-Markt',desc:'Überdachter Gang: Tamagoyaki, Matcha, Seafood. Schließt 17-18 Uhr — nicht zu spät!',ll:'35.0050,135.7657'},
+  ],
+  'Osaka': [
+    {name:'Kuromon Ichiba Markt',desc:'Kulinarisches Herz Osakas. Austern, Wagyu, Krabben direkt am Stand. Bis 17 Uhr!',ll:'34.6672,135.5068'},
+    {name:'Mizuno (Dotonbori)',desc:'Beste Osaka-Style Okonomiyaki. Schlange 30-60 Min. einplanen — lohnt sich!',ll:'34.6687,135.5013'},
+    {name:'Kinryu Ramen',desc:'Dotonbori-Klassiker, direkt an der Promenade. Günstig & lecker.',ll:'34.6687,135.5015'},
+    {name:'Kiji (Osaka Station)',desc:'Okonomiyaki im Umeda Station Building. Weniger Schlange als Dotonbori, gleiche Qualität.',ll:'34.7026,135.4982'},
+  ],
+  'Hakone': [
+    {name:'Hatago Zenbe',desc:'Soba-Restaurant mit hausgemachten Nudeln bei Hakone-Yumoto. Einfach, authentisch.',ll:'35.2329,139.0545'},
+    {name:'Amazake Chaya',desc:'Teehaus seit 1648 auf der alten Tokaido-Straße. Amazake + Mochi. Romantisch!',ll:'35.2201,139.0472'},
+  ],
+};
+
+(function buildEssen() {
+  let html = '';
+  Object.entries(ESSEN).forEach(([city, items]) => {
+    html += `<div class="sec-head">${city}</div><div class="card" style="padding:4px 14px">`;
+    items.forEach(r => {
+      html += `<div class="place-item"><div class="place-name">${r.name}</div><div class="place-desc">${r.desc}</div>${maps(r.name,r.ll)}</div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('sec-essen').innerHTML = html;
+})();
+
+// ── BARS ──────────────────────────────────────────────────────────────────
+const BARS = {
+  'Tokio — LGBTQ+': [
+    {name:'Shinjuku Ni-chome',desc:'Ca. 200-300 Bars — eines der größten LGBTQ+-Viertel Asiens. Ab 20-21 Uhr.',ll:'35.6898,139.7044'},
+    {name:'Aiiro Café',desc:'Guter, unkomplizierter Einstieg ins Ni-chome. Sehr welcome.',ll:'35.6905,139.7040'},
+    {name:'Arty Farty / Eagle Tokyo Blue',desc:'Beliebte Bars, unterschiedliches Publikum, lebhaft.',ll:'35.6930,139.7046'},
+  ],
+  'Tokio — Cocktailbars': [
+    {name:'The SG Club (Shibuya)',desc:'World\'s 50 Best Bars 2025 (Platz 65). Shingo Gokan. Mehrere Ebenen. 1.500-2.200 Yen.',ll:'35.6612,139.7001'},
+    {name:'Bar High Five (Ginza)',desc:'14 Jahre World\'s 50 Best. Hidetsugu Ueno, Hard Shake, Eisskulpturen. Unbedingt reservieren! 2.000-2.800 Yen.',ll:'35.6703,139.7634'},
+    {name:'Zoetrope (Shinjuku)',desc:'Whisky-Spezialist mit riesiger japanischer Auswahl. Gemütlich, Stammpublikum.',ll:'35.6938,139.7002'},
+    {name:'Shibuya Nonbei Yokocho',desc:'Shibuyas Golden Gai — winzige Bars in engen Gassen, direkt am Bahnhof.',ll:'35.6553,139.7015'},
+  ],
+  'Tokio — Skyline Bars': [
+    {name:'New York Bar (Park Hyatt)',desc:'Lost in Translation! 52. OG, 360°-Blick Shinjuku, täglich Live-Jazz. Dezember 2025 wiedereröffnet!',ll:'35.6865,139.6915'},
+    {name:'The Roof — Shibuya Sky',desc:'230m hoch, 360° Panorama, Fuji bei gutem Wetter. 2.500 Yen Eintritt + 1.500 Yen/Cocktail.',ll:'35.6580,139.7023'},
+    {name:'Andaz Tokyo Rooftop Bar',desc:'52. OG Toranomon Hills. Offenes Rooftop, Tokyo Bay. Aufschlag 20:00 Uhr (¥2.200).',ll:'35.6674,139.7490'},
+    {name:'Mandarin Bar (Mandarin Oriental)',desc:'38. OG, Nihonbashi, dim lighting, Live-Musik, Panorama. 2.200-2.800 Yen.',ll:'35.6880,139.7735'},
+    {name:'The Bar (Ritz-Carlton Tokyo)',desc:'45. Etage Midtown Tower, klassisch-luxuriös. Smart Casual. 2.000-3.000 Yen.',ll:'35.6657,139.7307'},
+  ],
+  'Kyoto': [
+    {name:"Bee's Knees (Kiyamachi)",desc:"Speakeasy, mehrfach Asia's Best. 1920s Art-Déco, Yuzu-Honig Bee's Knees. 1.500-2.000 Yen.",ll:'35.0041,135.7693'},
+    {name:'Bar Rocking Chair (Shimogyo)',desc:'Schaukelstühle, Kamin, Sansho-Pfeffer-Cocktails, KI NO BI Gin. Reservierung!',ll:'35.0017,135.7598'},
+    {name:"L'Escamoteur (Pontocho)",desc:'Barkeeper als Zauberkünstler! Jeder Cocktail mit Trick. Kleiner Raum. Einzigartig.',ll:'35.0052,135.7691'},
+    {name:'Apple, Bell, AZURE (Kiyamachi)',desc:"Men-Only Gay-Bars. Apple = bekanntester Treffpunkt, Bell intimer, AZURE stylischer. 1.500-2.000 Yen inkl. erstem Drink.",ll:'35.0040,135.7693'},
+  ],
+  'Hiroshima': [
+    {name:'Bar Alegre (Naka-ku)',desc:'Beste Cocktailbar Hiroshimas. Saisonale Früchte, große Whisky-Auswahl. 1.500-2.500 Yen.',ll:'34.3968,132.4562'},
+    {name:'The Lounge Top Note (Skybar)',desc:'Panoramablick auf Hiroshima-Skyline & Wasser. Ideal nach dem Peace Memorial Museum.',ll:'34.3970,132.4570'},
+    {name:'Hondori Street (Gay-friendly)',desc:'Kein eigenes Viertel, aber queer-freundliche Bars & Izakayas. Offene, entspannte Atmosphäre.',ll:'34.3965,132.4569'},
+  ],
+  'Osaka': [
+    {name:'Doyamachō (Gay-Viertel)',desc:"Japans entspanntestes LGBTQ+-Viertel. 5 Min. von Umeda Station. Sehr touristenfreundlich. Ab 20 Uhr.",ll:'34.7002,135.5022'},
+    {name:'EXPLOSION (Doyamachō)',desc:'Bekanntester Gay Club. Sa: Drag-Shows & Gogo-Dancer. Wochentags Shot-Bar ohne Eintritt.',ll:'34.7001,135.5021'},
+    {name:'EAGLE OSAKA (Doyamachō)',desc:'Größte Gay-Bar Westjapans, 3 Etagen, seit 2024. Mo-Do kein Eintritt, bargeldlos.',ll:'34.7002,135.5022'},
+    {name:'Grand Slam (Doyamachō)',desc:'Herzlicher Treffpunkt — Besitzer Masa spricht Englisch. Karaoke, familiäre Atmosphäre.',ll:'34.7003,135.5023'},
+    {name:'FrenZ FrenZY (Doyamachō)',desc:'Mixed Bar, offen für alle. Karaoke, Drinks ab 800 Yen. Lebhafter als Grand Slam.',ll:'34.7004,135.5020'},
+    {name:'Bar Nayuta (Namba)',desc:'Verstecktes Juwel nahe Dotonbori. Kreative Cocktails, Locals. 1.500-2.000 Yen.',ll:'34.6690,135.5015'},
+    {name:'Bible Club (Shinsaibashi)',desc:'Vintage-Interieur, große Weinauswahl, überraschendes Flavor-Pairing. English friendly.',ll:'34.6747,135.5040'},
+  ],
+};
+
+(function buildBars() {
+  let html = '';
+  Object.entries(BARS).forEach(([city, items]) => {
+    html += `<div class="sec-head">${city}</div><div class="card" style="padding:4px 14px">`;
+    items.forEach(b => {
+      html += `<div class="place-item"><div class="place-name">${b.name}</div><div class="place-desc">${b.desc}</div>${maps(b.name,b.ll)}</div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('sec-bars').innerHTML = html;
+})();
+
+// ── INFOS ─────────────────────────────────────────────────────────────────
+(function buildInfos() {
+  document.getElementById('sec-infos').innerHTML = `
+    <div class="sec-head">Notfallnummern</div>
+    <div class="emergency">
+      <div class="emergency-title">Japan Notruf</div>
+      <div class="emergency-nums">
+        <div><div class="e-num">110</div><div class="e-label">Polizei</div></div>
+        <div><div class="e-num">119</div><div class="e-label">Feuerwehr/Rettung</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--red);margin-top:10px;font-weight:500">Japan Helpline (24/7, Deutsch): 0570-000-911</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Deutsche Botschaft Tokio</div>
+      <div class="info-text">4-5-10 Minami-Azabu, Minato-ku, Tokio<br>Tel. +81-3-5791-7700 (Mo–Fr 8:00–11:30)<br>Notruf außerhalb: +81-3-5791-7711</div>
+    </div>
+
+    <div class="sec-head">Alle Buchungsnummern</div>
+    <div class="card">
+      <div class="row"><span class="row-label">Flug Buchungsref.</span><span class="booking-code">8IXEO4</span></div>
+      <div class="row"><span class="row-label">Transfer Chinichi</span><span class="row-val">Ref. 931593331</span></div>
+      <div class="row"><span class="row-label">Kinnotake Reserv.</span><span class="row-val">C260118000022354</span></div>
+      <div class="row"><span class="row-label">Romancecar</span><span class="row-val">Wagen 7 · 12B/12C/12D</span></div>
+      <div class="row"><span class="row-label">Freepass Sven</span><span class="row-val">2908065</span></div>
+      <div class="row"><span class="row-label">Freepass Chris</span><span class="row-val">2908072</span></div>
+      <div class="row"><span class="row-label">Freepass Uwe</span><span class="row-val">2908076</span></div>
+      <div class="row"><span class="row-label">Kinnotake Tel.</span><span class="row-val">0460-85-9800</span></div>
+    </div>
+
+    <div class="sec-head">Praktische Tipps</div>
+    <div class="info-block">
+      <div class="info-title">Steckdosen Japan</div>
+      <div class="info-text">Typ A (US-Stecker, flach, 2-polig). 100V. Adapter nötig! EU-Netzteile (100-240V) kompatibel — kein Spannungswandler nötig.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">eSIM — Ubigi</div>
+      <div class="info-text">10 GB / 30 Tage: 16,50 € · NTT Docomo Netz · 5G-fähig<br>Rabattcode: <strong>TOKYOCHEAPO</strong> (10% Rabatt)<br>cellulardata.ubigi.com</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Suica / Pasmo</div>
+      <div class="info-text">Digitale Suica in Apple Wallet laden (Einstellungen → Wallet → + → Suica). Startguthaben mind. 2.000 Yen/Person. Funktioniert in allen U-Bahnen & lokalen Zügen.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Takkyubin (Gepäckversand)</div>
+      <div class="info-text">18.04. (Hiroshima→Kyoto via Miyajima) und 26.04. (Hakone→Tokio): Koffer am Vorabend am Hotel-Empfang oder Convenience Store (FamilyMart, Lawson) abgeben. Ca. 1.500-2.000 Yen/Koffer.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Trinkgeld</div>
+      <div class="info-text">In Japan unüblich — kann als unhöflich gelten! Weder Restaurant, Hotel, Taxi noch Bar. Ausnahme: Kinnotake Ryokan — kleines Geldgeschenk im Umschlag (Kokorozuke) optional.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Müll</div>
+      <div class="info-text">Kaum öffentliche Mülleimer (Anti-Terror-Maßnahmen seit 1995). Müll in Konbinis entsorgen — immer Mülleimer beim Eingang (7-Eleven, FamilyMart, Lawson).</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Wäsche</div>
+      <div class="info-text">Stoke Villa: Kombi-Waschmaschine/Trockner vorhanden (kostenlos!). Cerulean Tower & Randor: Coin Laundry im Hotel oder Coin Laundries in der Nähe (ca. 200-400 Yen).</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Erdbeben-Verhalten</div>
+      <div class="info-text">Im Gebäude: unter stabilen Tisch, weg von Fenstern. Draußen: weg von Gebäuden & Stromleitungen. Shinkansen stoppt automatisch. J-Alert auf Handy beachten (auch auf Englisch).</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">Onsen-Regeln</div>
+      <div class="info-text">Körper vorher gründlich waschen. Keine Badekleidung. Kein Handy. Leise. Tattoos in vielen Onsens verboten (Kinnotake & Tenzan Tohji-kyo: Ausnahme).</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">teamLab Tipps</div>
+      <div class="info-text">Planets (13.04.): barfuß durch Wasser — Hose hochkrempeln, waschbare Kleidung! Keine hellen Farben (leuchten). Dry: Borderless (27.04.) — normale Kleidung ok.</div>
+    </div>
+  `;
+})();
+
+// ── MANAMIS TIPPS ──────────────────────────────────────────────────────────
+const MANAMI_REST = [
+  {name:'⭐ MO-MO-PARADISE Shibuya Koendori',desc:'Shabu-Shabu All-you-can-eat ★4,9 €€ — Manamis absoluter Top-Pick! Fast perfekte Bewertung.',ll:'35.6610,139.6990'},
+  {name:'⭐ Lily Shibuya (炭火焼き リリー)',desc:'Izakaya/Yakitori ★4,8 — Holzkohle-Grillküche. Authentisch, lokal, nicht touristisch.',ll:'35.6605,139.6993'},
+  {name:'Afuri Shibuya Dōgenzaka',desc:'Ramen ★4,8 · 1.000–2.000¥ — Leichtes Yuzu-Ramen. Manamis Bestätigung!',ll:'35.6601,139.6985'},
+  {name:'Hakushū Teppanyaki',desc:'Steak ★4,7 €€€ — Premium-Teppanyaki für einen besonderen Abend.',ll:'35.6603,139.6998'},
+  {name:'Kumogakure Shibuya (雲隠レ)',desc:'Izakaya ★4,7 · 4.000–5.000¥ — Gehobene Izakaya-Küche in toller Atmosphäre.',ll:'35.6598,139.7002'},
+  {name:'Zauo Shibuya',desc:'Angel-Restaurant ★4,5 €€€ — Fang wird sofort zubereitet. Unterhaltsam & lecker!',ll:'35.6606,139.6977'},
+  {name:'Tofu Cuisine Sorano Shibuya',desc:'Tofu ★4,4 €€ — Kreative Tofu-Küche. Leicht, saisonal, überraschend vielfältig.',ll:'35.6611,139.6994'},
+  {name:'Kaiseki Tempura Fujimoto Shibuya',desc:'Tempura ★4,3 — Feines Tempura in Kaiseki-Qualität.',ll:'35.6606,139.6988'},
+  {name:'Sushi no Midori Shibuya',desc:'Sushi ★4,3 € — Top Preis-Leistung. Früh hingehen (oft Schlange).',ll:'35.6583,139.7019'},
+  {name:'Tonkatsu Maisen Shibuya Hikarie',desc:'Tonkatsu ★4,1 · 1.000–2.000¥ — Legendäre Kette, perfekt frittiertes Schweineschnitzel.',ll:'35.6589,139.7033'},
+  {name:'Jojoen Daikanyama',desc:'Yakiniku ★4,3 €€€ — Premium japanisches BBQ in stilvollem Ambiente in Daikanyama.',ll:'35.6488,139.7029'},
+  {name:'TURTLES',desc:'Burger ★4,4 · ~1.000¥ — Für den Moment wenn ihr mal kein Sushi wollt. Günstig.',ll:'35.6608,139.6994'},
+  {name:'⭐ Nihonshu Biyori (にほん酒日和)',desc:'Sushi ★4,9 — Sake-fokussiert. Winzig, persönlich, hervorragend.',ll:'35.6587,139.7006'},
+  {name:'Kyobashi Sembikiya',desc:'Frucht-Café ★4,0 · 2.000–3.000¥ — Luxus-Obstladen seit 1834. Fruit Parfaits!',ll:'35.6795,139.7708'},
+];
+
+const MANAMI_COURTS = [
+  {name:'Shibuya Nonbei Yokocho',desc:'Bar-Gasse ★4,1 €€ — Shibuyas Antwort auf Golden Gai. Winzige Bars, atmosphärisch, lokal, günstig.',ll:'35.6553,139.7015'},
+  {name:'Shibuya Yokocho',desc:'Food-Court ★3,1 — Verschiedene japanische Küchen unter einem Dach. Praktisch.',ll:'35.6590,139.7030'},
+];
+
+const MANAMI_BARS2 = [
+  {name:'⭐ music bar 45',desc:'Bar ★4,9 · 1.000–2.000¥ — Manamis Geheimtipp! Winzige Musikbar mit Vinyl-Sammlung. Intim, perfekt für ruhigen Drink.',ll:'35.6590,139.6985'},
+  {name:'Shibuya Highball Bar',desc:'Bar ★4,0 €€ — Japanischer Highball (Whisky+Soda) in Perfektion. Casual & günstig.',ll:'35.6599,139.6992'},
+  {name:'Karaoke Pasela Shibuya',desc:'Karaoke ★4,3 €€ — Gehobenes Karaoke mit gutem Essen & Cocktails. Beste Atmosphäre.',ll:'35.6595,139.7000'},
+];
+
+const MANAMI_ERL = [
+  {name:'Cherry Blossoms Garden (Shinjuku)',desc:'Garten ★4,4 — Kleiner Kirschblüten-Garten. Im April möglicherweise noch späte Blüte.',ll:'35.6920,139.7034'},
+  {name:'TAITO Station Shibuya',desc:'Spielhalle ★3,8 — Mehrstöckige Arcade: Crane Games, Rhythm Games, Retro-Automaten. Macht auch Erwachsenen Spaß!',ll:'35.6595,139.7003'},
+  {name:'MEGA Don Quijote Shibuya',desc:'Shopping ★4,2 — Der legendäre Discounter. Souvenirs, Snacks, Kosmetik, Elektronik. 24/7. Unverzichtbar!',ll:'35.6594,139.7002'},
+  {name:'Meiji-Schrein',desc:'Shintō-Schrein ★4,6 — Bereits im Tagesplan 13.04. Manamis Bestätigung: Pflichtbesuch!',ll:'35.6764,139.6993'},
+];
+
+(function buildManami() {
+  let html = `<div style="background:rgba(192,117,10,0.08);border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:10px;font-size:13px;color:var(--accent);line-height:1.5">
+    <strong>Manamis 26 Insider-Tipps</strong> — Kollegin Manami Hiyama aus Japan hat diese Orte in Shibuya, Harajuku & Shinjuku markiert. Alle im Einzugsgebiet des Cerulean Tower (Phase 1) und der Stoke Villa (Phase 2).
+  </div>`;
+
+  const secs = [
+    ['🍜 Restaurants & Streetfood', MANAMI_REST],
+    ['🍺 Food-Courts & Bar-Gassen', MANAMI_COURTS],
+    ['🎵 Bars & Nightlife', MANAMI_BARS2],
+    ['🎉 Erlebnisse & Shopping', MANAMI_ERL],
+  ];
+
+  secs.forEach(([title, items]) => {
+    html += `<div class="sec-head">${title}</div><div class="card" style="padding:4px 14px">`;
+    items.forEach(r => {
+      html += `<div class="place-item"><div class="place-name">${r.name}</div><div class="place-desc">${r.desc}</div>${maps(r.name,r.ll)}</div>`;
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('sec-manami').innerHTML = html;
+})();
+
+
+// ── KARTE TOKIO ───────────────────────────────────────────────────────────
+(function buildKarte() {
+  const el = document.getElementById('sec-karte');
+  el.innerHTML = `
+    <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">Tokio-Viertel im Überblick — tippe auf einen Viertel-Namen für Apple Maps.</div>
+
+    <svg viewBox="0 0 360 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:12px;border:0.5px solid var(--border);background:#f0ede8;display:block;margin-bottom:12px">
+      <defs>
+        <style>
+          .water{fill:#b8d4e8}
+          .park{fill:#c8ddb0}
+          .street{stroke:#d4cfc8;stroke-width:1;fill:none}
+          .district{fill:rgba(255,255,255,0.55);stroke:#c8b89a;stroke-width:1;rx:6}
+          .d-label{font-family:-apple-system,sans-serif;font-size:10px;font-weight:600;fill:#4a3a28;text-anchor:middle}
+          .d-sub{font-family:-apple-system,sans-serif;font-size:8px;fill:#7a6a58;text-anchor:middle}
+          .pin{fill:#C0750A}
+          .pin-label{font-family:-apple-system,sans-serif;font-size:8px;fill:#4a3a28;text-anchor:middle;font-weight:500}
+          .river{fill:#b8d4e8;stroke:#9ab8cc;stroke-width:0.5}
+          .highlight{fill:rgba(192,117,10,0.12);stroke:#C0750A;stroke-width:1.5}
+          .hotel-pin{fill:#1D9E75}
+          .legend-dot{r:5}
+          .legend-text{font-family:-apple-system,sans-serif;font-size:9px;fill:#4a3a28}
+        </style>
+      </defs>
+
+      <!-- Background -->
+      <rect width="360" height="420" fill="#f0ede8"/>
+
+      <!-- Tokyo Bay -->
+      <path d="M280,200 Q300,230 310,270 Q320,310 315,350 Q305,380 290,400 L360,400 L360,200 Z" class="water"/>
+      <text x="320" y="300" class="d-sub" transform="rotate(70,320,300)" style="fill:#7aa8c0">Tokyo Bay</text>
+
+      <!-- Sumida River -->
+      <path d="M200,0 Q205,40 210,80 Q215,120 220,160 Q225,200 235,240 Q245,280 260,320 Q270,350 280,380 Q285,395 290,410" class="river" style="stroke-width:6;fill:none;stroke:#b8d4e8"/>
+
+      <!-- Parks -->
+      <ellipse cx="128" cy="95" rx="28" ry="22" class="park"/>
+      <text x="128" y="93" class="d-sub" style="fill:#4a7a4a;font-size:7px">Yoyogi</text>
+      <text x="128" y="102" class="d-sub" style="fill:#4a7a4a;font-size:7px">Park</text>
+
+      <ellipse cx="195" cy="65" rx="18" ry="14" class="park"/>
+      <text x="195" y="68" class="d-sub" style="fill:#4a7a4a;font-size:7px">Shinjuku</text>
+      <text x="195" y="76" class="d-sub" style="fill:#4a7a4a;font-size:7px">Gyoen</text>
+
+      <ellipse cx="218" cy="148" rx="20" ry="15" class="park"/>
+      <text x="218" y="151" class="d-sub" style="fill:#4a7a4a;font-size:7px">Imperial</text>
+      <text x="218" y="159" class="d-sub" style="fill:#4a7a4a;font-size:7px">Palace</text>
+
+      <ellipse cx="178" cy="248" rx="16" ry="12" class="park"/>
+      <text x="178" y="251" class="d-sub" style="fill:#4a7a4a;font-size:7px">Ueno</text>
+      <text x="178" y="259" class="d-sub" style="fill:#4a7a4a;font-size:7px">Park</text>
+
+      <!-- Major roads -->
+      <line x1="0" y1="155" x2="360" y2="155" class="street" style="stroke:#c0b8a8;stroke-width:2"/>
+      <line x1="155" y1="0" x2="155" y2="420" class="street" style="stroke:#c0b8a8;stroke-width:2"/>
+      <line x1="80" y1="0" x2="80" y2="420" class="street" style="stroke:#d4cfc8"/>
+      <line x1="0" y1="80" x2="360" y2="80" class="street" style="stroke:#d4cfc8"/>
+      <line x1="0" y1="230" x2="360" y2="230" class="street" style="stroke:#d4cfc8"/>
+
+      <!-- Yamanote Line (oval) -->
+      <ellipse cx="158" cy="195" rx="90" ry="130" fill="none" stroke="#9fc58a" stroke-width="2.5" stroke-dasharray="5,3" opacity="0.7"/>
+      <text x="60" y="198" style="font-family:-apple-system,sans-serif;font-size:7px;fill:#5a8a5a;font-weight:600">Yamanote</text>
+      <text x="60" y="207" style="font-family:-apple-system,sans-serif;font-size:7px;fill:#5a8a5a">Line</text>
+
+      <!-- DISTRICTS -->
+
+      <!-- Shinjuku (hotel Phase 2) -->
+      <rect x="100" y="42" width="80" height="58" rx="6" class="highlight"/>
+      <text x="140" y="64" class="d-label" style="fill:#8B4513">Shinjuku</text>
+      <text x="140" y="75" class="d-sub">Golden Gai · Ni-chome</text>
+      <text x="140" y="85" class="d-sub">Omoide Yokocho</text>
+      <circle cx="170" cy="55" r="4" class="hotel-pin"/>
+      <text x="170" y="47" class="pin-label" style="fill:#1D9E75">Stoke Villa</text>
+
+      <!-- Shibuya (hotel Phase 1) -->
+      <rect x="68" y="130" width="82" height="58" rx="6" class="highlight"/>
+      <text x="109" y="152" class="d-label" style="fill:#8B4513">Shibuya</text>
+      <text x="109" y="163" class="d-sub">Scramble · Sky · Harajuku</text>
+      <text x="109" y="173" class="d-sub">Takeshita Street</text>
+      <circle cx="80" cy="143" r="4" class="hotel-pin"/>
+      <text x="80" y="135" class="pin-label" style="fill:#1D9E75">Cerulean</text>
+
+      <!-- Harajuku / Omotesando -->
+      <rect x="68" y="95" width="60" height="38" rx="5" class="district"/>
+      <text x="98" y="111" class="d-label">Harajuku</text>
+      <text x="98" y="121" class="d-sub">Omotesandō</text>
+
+      <!-- Roppongi -->
+      <rect x="148" y="158" width="62" height="36" rx="5" class="district"/>
+      <text x="179" y="174" class="d-label">Roppongi</text>
+      <text x="179" y="184" class="d-sub">Azabudai Hills</text>
+
+      <!-- Ginza -->
+      <rect x="218" y="185" width="55" height="36" rx="5" class="district"/>
+      <text x="245" y="200" class="d-label">Ginza</text>
+      <text x="245" y="210" class="d-sub">Marunouchi</text>
+
+      <!-- Asakusa -->
+      <rect x="218" y="245" width="56" height="36" rx="5" class="district"/>
+      <text x="246" y="260" class="d-label">Asakusa</text>
+      <text x="246" y="270" class="d-sub">Senso-ji ⛩</text>
+
+      <!-- Ueno -->
+      <rect x="175" y="225" width="48" height="30" rx="5" class="district"/>
+      <text x="199" y="238" class="d-label">Ueno</text>
+      <text x="199" y="248" class="d-sub">Museum</text>
+
+      <!-- Akihabara -->
+      <rect x="205" y="218" width="52" height="30" rx="5" class="district"/>
+      <text x="231" y="231" class="d-label">Akihabara</text>
+      <text x="231" y="241" class="d-sub">Electric Town</text>
+
+      <!-- Shimokitazawa -->
+      <rect x="28" y="130" width="55" height="36" rx="5" class="district"/>
+      <text x="55" y="146" class="d-label">Shimoki-</text>
+      <text x="55" y="156" class="d-label">tazawa</text>
+
+      <!-- Nakameguro / Daikanyama -->
+      <rect x="68" y="188" width="72" height="34" rx="5" class="district"/>
+      <text x="104" y="202" class="d-label">Nakameguro</text>
+      <text x="104" y="212" class="d-sub">Daikanyama</text>
+
+      <!-- Toyosu -->
+      <rect x="240" y="295" width="55" height="32" rx="5" class="district" style="fill:rgba(29,158,117,0.1);stroke:#1D9E75"/>
+      <text x="267" y="309" class="d-label" style="fill:#085041">Toyosu</text>
+      <text x="267" y="319" class="d-sub" style="fill:#085041">teamLab ✓</text>
+
+      <!-- Odaiba -->
+      <rect x="268" y="340" width="55" height="32" rx="5" class="district" style="fill:rgba(55,138,221,0.1);stroke:#185FA5"/>
+      <text x="295" y="354" class="d-label" style="fill:#185FA5">Odaiba</text>
+      <text x="295" y="364" class="d-sub" style="fill:#185FA5">Gundam · Miraikan</text>
+
+      <!-- KEY PINS -->
+      <!-- teamLab Planets -->
+      <circle cx="252" cy="305" r="4" style="fill:#1D9E75"/>
+
+      <!-- teamLab Borderless -->
+      <circle cx="162" cy="168" r="4" style="fill:#1D9E75"/>
+      <text x="162" y="162" class="pin-label" style="fill:#085041;font-size:7px">Borderless</text>
+
+      <!-- Ghibli Museum -->
+      <circle cx="22" cy="60" r="4" class="pin"/>
+      <text x="22" y="53" class="pin-label">Ghibli</text>
+      <text x="22" y="44" class="pin-label">Museum</text>
+
+      <!-- Compass -->
+      <g transform="translate(326,22)">
+        <circle cx="0" cy="0" r="12" fill="white" opacity="0.8" stroke="#c0b8a8" stroke-width="0.5"/>
+        <polygon points="0,-9 -3,0 0,2 3,0" fill="#C0750A"/>
+        <polygon points="0,9 -3,0 0,-2 3,0" fill="#888"/>
+        <text x="0" y="-12" style="font-family:-apple-system,sans-serif;font-size:8px;font-weight:700;fill:#C0750A;text-anchor:middle">N</text>
+      </g>
+
+      <!-- Scale -->
+      <g transform="translate(16,395)">
+        <line x1="0" y1="0" x2="40" y2="0" stroke="#888" stroke-width="1.5"/>
+        <line x1="0" y1="-3" x2="0" y2="3" stroke="#888" stroke-width="1.5"/>
+        <line x1="40" y1="-3" x2="40" y2="3" stroke="#888" stroke-width="1.5"/>
+        <text x="20" y="-5" class="d-sub" style="text-anchor:middle;font-size:8px">ca. 3 km</text>
+      </g>
+
+      <!-- Legend -->
+      <g transform="translate(16,338)">
+        <rect x="0" y="0" width="110" height="52" rx="6" fill="white" opacity="0.85" stroke="#c0b8a8" stroke-width="0.5"/>
+        <circle cx="12" cy="12" r="4" style="fill:#1D9E75"/>
+        <text x="22" y="16" class="legend-text">Hotel / gebuchte Attraction</text>
+        <circle cx="12" cy="26" r="4" class="pin"/>
+        <text x="22" y="30" class="legend-text">Sehenswürdigkeit</text>
+        <rect x="6" y="34" width="12" height="8" rx="2" style="fill:rgba(192,117,10,0.12);stroke:#C0750A;stroke-width:1"/>
+        <text x="22" y="43" class="legend-text">Empfohlenes Viertel</text>
+      </g>
+    </svg>
+
+    <div class="sec-head">Viertel & Apple Maps</div>
+    <div class="card" style="padding:4px 14px">
+      ${[
+        ['Shinjuku',       '35.6896,139.6917', 'Golden Gai · Ni-chome · Omoide Yokocho · Stoke Villa'],
+        ['Shibuya',        '35.6595,139.7004', 'Scramble Crossing · Shibuya Sky · Cerulean Tower'],
+        ['Harajuku',       '35.6702,139.7027', 'Takeshita Street · Meiji-Schrein · Omotesandō'],
+        ['Asakusa',        '35.7148,139.7967', 'Senso-ji Tempel · Nakamise-dori'],
+        ['Akihabara',      '35.6984,139.7731', 'Elektronik · Anime · Game-Shops'],
+        ['Ginza',          '35.6717,139.7651', 'Luxus-Shopping · Kabukiza Theatre'],
+        ['Roppongi',       '35.6601,139.7292', 'Roppongi Hills · Azabudai Hills · teamLab Borderless'],
+        ['Nakameguro',     '35.6448,139.6989', 'Kanal · Concept Stores · Daikanyama · Tsutaya Books'],
+        ['Shimokitazawa',  '35.6615,139.6686', 'Vintage-Shops · Indie-Musik · Cafés'],
+        ['Ueno',           '35.7155,139.7734', 'Ueno Park · Tokyo National Museum · Yanaka Ginza'],
+        ['Toyosu',         '35.6452,139.7963', 'teamLab Planets ✓ · Toyosu-Markt (Sushi-Frühstück)'],
+        ['Odaiba',         '35.6256,139.7750', 'Gundam-Statue · Miraikan · Rainbow Bridge'],
+      ].map(([name,ll,desc]) => `
+        <div class="place-item">
+          <div class="place-name">${name}</div>
+          <div class="place-desc">${desc}</div>
+          <a class="maps-btn" onclick="window.location.href=this.href;return false;" href="maps://?q=${encodeURIComponent(name + ' Tokyo')}&ll=${ll}">📍 Apple Maps</a>
+        </div>`).join('')}
+    </div>
+  `;
+})();
+
+</script>
+</body>
+</html>
