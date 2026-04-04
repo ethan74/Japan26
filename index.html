@@ -168,6 +168,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <button class="nav-btn" onclick="show('manami',this)">Manamis Tipps</button>
     <button class="nav-btn" onclick="show('bars',this)">Bars</button>
     <button class="nav-btn" onclick="show('karte',this)">Karte</button>
+    <button class="nav-btn" onclick="show('packliste',this)">Packliste</button>
     <button class="nav-btn" onclick="show('infos',this)">Infos</button>
   </div>
   <div class="content">
@@ -179,6 +180,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <div class="section" id="sec-manami"></div>
     <div class="section" id="sec-bars"></div>
     <div class="section" id="sec-karte"></div>
+    <div class="section" id="sec-packliste"></div>
     <div class="section" id="sec-infos"></div>
   </div>
 </div>
@@ -895,6 +897,180 @@ const MANAMI_ERL = [
     </div>
   `;
 })();
+
+
+// ── PACKLISTE ─────────────────────────────────────────────────────────────
+const PACK_CATS = [
+  {
+    cat: '👕 Kleidung',
+    items: [
+      'T-Shirts / leichte Oberhemden (mix casual & stylisch) — 6 Stück',
+      'Hemden / schicke Tops für Bars & Restaurants — 2 Stück',
+      'Lange Hosen (eine wasserresistent) — 2 Stück',
+      'Shorts oder leichte Sommerhose — 1 Stück',
+      'Leichte Fleecejacke oder Cardigan — 1 Stück',
+      'Kompakte Regenjacke, faltbar — 1 Stück',
+      'Unterwäsche — 7 Stück',
+      'Socken ohne Löcher! — 7 Paar',
+      'Schlafkleidung — 1 Stück',
+      '⚠️ Dunkles, waschbares Outfit für teamLab Planets (13.04. — Wasser!)',
+    ]
+  },
+  {
+    cat: '👟 Schuhe',
+    items: [
+      'Bequeme Laufschuhe — leicht ausziehbar, möglichst ohne Schnürsenkel',
+      'Schicke Schuhe/Sneakers für Abend (Bars, Restaurants)',
+      '⚠️ Hallenschuhe — Pflicht für Fitnessstudio Stoke Villa!',
+      'Flip-Flops — für Onsen, Ryokan, Strand Enoshima',
+    ]
+  },
+  {
+    cat: '🧴 Hygiene',
+    items: [
+      '⚠️ Sonnencreme — in Japan teuer & oft sehr hell, mitbringen!',
+      '⚠️ Deodorant — westliche Stärke in Japan kaum erhältlich',
+      'Zahnbürste & Zahnpasta',
+      'Rasierer',
+      'Hautcreme (trockene Luft im Flugzeug)',
+      'Schmerzmittel (Ibuprofen/Paracetamol)',
+      'Magentabletten',
+      '⚠️ Blasenpflaster — ihr lauft täglich 15.000–25.000 Schritte!',
+      'Schlafmaske + Ohrstöpsel — für den 14-stündigen Nachtflug JL48',
+      'Waschmitteltabs — 3–4 Stück für Coin Laundry unterwegs',
+    ]
+  },
+  {
+    cat: '📱 Technik',
+    items: [
+      'iPhone + Lightning/USB-C Ladekabel',
+      'Apple Watch + Magnetic Ladekabel',
+      'Powerbank — lange Tage, viel Navigation',
+      'Kopfhörer — Nachtflug & Shinkansen',
+      '⚠️ Steckeradapter Typ A (US-Stecker, flach) — 2 Stück',
+    ]
+  },
+  {
+    cat: '📄 Dokumente & Finanzen',
+    items: [
+      '⚠️ Reisepass — gültig bis mindestens 04.11.2026!',
+      'Kreditkarte (Visa/Mastercard, gebührenfrei im Ausland)',
+      'Bargeld Yen — 50.000–70.000 Yen Startbetrag (ca. 320–450 €)',
+      'Buchungsbestätigungen offline gespeichert (Apple Wallet / Dateien)',
+      'Reisekrankenversicherung — Nachweis dabei haben',
+    ]
+  },
+  {
+    cat: '🎒 Logistik',
+    items: [
+      'Kleiner Daypack/Rucksack — für Takkyubin-Tage (18.04. & 26.04.)',
+      'Wiederverwendbare Einkaufstasche — Japan hat Plastiktüten-Pflicht',
+      'Kleiner Regenschirm oder Poncho — als Backup zur Regenjacke',
+      'Notizbuch & Stift — für Genkan-Zettel, Tempel-Wünsche etc.',
+    ]
+  },
+  {
+    cat: '♨️ Ryokan (Kinnotake 24–26.04.)',
+    items: [
+      'Flip-Flops für privaten Open-Air-Onsen (Ryokan stellt Yukata)',
+      'Socken ohne Löcher — Schuhe werden im Genkan ausgezogen',
+      'Optional: kleiner Umschlag für Kokorozuke (Trinkgeld-Geste)',
+      'Keine sichtbaren Tattoos nötig — private Suite, kein Problem',
+    ]
+  },
+  {
+    cat: '📱 Vor Abflug erledigen',
+    items: [
+      'eSIM kaufen — Ubigi, 10GB/16,50€, Code TOKYOCHEAPO',
+      'Suica in Apple Wallet laden — mind. 2.000 Yen aufladen',
+      'Suica auch auf Apple Watch einrichten',
+      'Google Maps Japan offline: Tokio, Kyoto, Osaka, Hiroshima, Hakone',
+      'Google Translate Japanisch offline herunterladen',
+      'Japan 2026 App auf Home-Bildschirm installieren ✓',
+      'Spieleapps: Spaceteam, Exploding Kittens, Ticket to Ride, Codenames',
+      'Online Check-in AY1412 (öffnet 36 Std. vor 11.04.)',
+    ]
+  },
+];
+
+const PACK_STATE = {};
+
+(function buildPackliste() {
+  // Load saved state
+  try {
+    const saved = JSON.parse(localStorage.getItem('pack_state') || '{}');
+    Object.assign(PACK_STATE, saved);
+  } catch(e) {}
+
+  renderPackliste();
+})();
+
+function renderPackliste() {
+  const total = PACK_CATS.reduce((s, c) => s + c.items.length, 0);
+  const done = Object.values(PACK_STATE).filter(Boolean).length;
+  const pct = Math.round(done / total * 100);
+
+  let html = `<div class="progress-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="progress-label">Packliste</div>
+      <div style="font-size:12px;color:var(--text2)">${done} / ${total}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="pack-fill" style="width:${pct}%"></div></div>
+    <div class="progress-info" id="pack-info">${pct}% gepackt</div>
+  </div>`;
+
+  PACK_CATS.forEach((cat, ci) => {
+    html += `<div class="sec-head">${cat.cat}</div><div class="card" style="padding:4px 14px">`;
+    cat.items.forEach((item, ii) => {
+      const key = `p_${ci}_${ii}`;
+      const checked = PACK_STATE[key] || false;
+      const isWarning = item.startsWith('⚠️');
+      html += `<div class="check-item">
+        <div class="check-box ${checked ? 'done' : ''}" id="pb-${key}" onclick="togglePack('${key}')">
+          ${checked ? '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>' : ''}
+        </div>
+        <div class="check-text ${checked ? 'done' : ''}" id="pt-${key}" style="${isWarning && !checked ? 'color:var(--accent);font-weight:500' : ''}">${item}</div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('sec-packliste').innerHTML = html;
+}
+
+function togglePack(key) {
+  PACK_STATE[key] = !PACK_STATE[key];
+
+  const box = document.getElementById('pb-' + key);
+  const txt = document.getElementById('pt-' + key);
+  const chk = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>';
+
+  if (PACK_STATE[key]) {
+    box.classList.add('done');
+    box.innerHTML = chk;
+    txt.classList.add('done');
+    txt.style.color = '';
+    txt.style.fontWeight = '';
+  } else {
+    box.classList.remove('done');
+    box.innerHTML = '';
+    txt.classList.remove('done');
+    const isWarning = txt.textContent.startsWith('⚠️');
+    if (isWarning) { txt.style.color = 'var(--accent)'; txt.style.fontWeight = '500'; }
+  }
+
+  // Save state
+  try { localStorage.setItem('pack_state', JSON.stringify(PACK_STATE)); } catch(e) {}
+
+  // Update progress
+  const total = PACK_CATS.reduce((s, c) => s + c.items.length, 0);
+  const done = Object.values(PACK_STATE).filter(Boolean).length;
+  const pct = Math.round(done / total * 100);
+  const fill = document.getElementById('pack-fill');
+  const info = document.getElementById('pack-info');
+  if (fill) fill.style.width = pct + '%';
+  if (info) info.textContent = pct + '% gepackt';
+}
 
 </script>
 </body>
