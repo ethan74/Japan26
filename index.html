@@ -168,6 +168,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <button class="nav-btn" onclick="show('manami',this)">Manamis Tipps</button>
     <button class="nav-btn" onclick="show('bars',this)">Bars</button>
     <button class="nav-btn" onclick="show('karte',this)">Karte</button>
+    <button class="nav-btn" onclick="show('yen',this)">Yen</button>
+    <button class="nav-btn" onclick="show('wetter',this)">Wetter</button>
     <button class="nav-btn" onclick="show('packliste',this)">Packliste</button>
     <button class="nav-btn" onclick="show('infos',this)">Infos</button>
   </div>
@@ -180,6 +182,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <div class="section" id="sec-manami"></div>
     <div class="section" id="sec-bars"></div>
     <div class="section" id="sec-karte"></div>
+    <div class="section" id="sec-yen"></div>
+    <div class="section" id="sec-wetter"></div>
     <div class="section" id="sec-packliste"></div>
     <div class="section" id="sec-infos"></div>
   </div>
@@ -225,6 +229,8 @@ function show(id, btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-' + id).classList.add('active');
   btn.classList.add('active');
+  if (id === 'wetter') loadWetter();
+  if (id === 'yen') loadYen();
 }
 
 function maps(name, ll) {
@@ -1071,6 +1077,277 @@ function togglePack(key) {
   if (fill) fill.style.width = pct + '%';
   if (info) info.textContent = pct + '% gepackt';
 }
+
+
+// ── WETTER ────────────────────────────────────────────────────────────────
+
+// City per travel date
+const REISE_CITIES = [
+  {von:'2026-04-10', bis:'2026-04-11', city:'Frankfurt',  lat:50.11,  lon:8.68},
+  {von:'2026-04-12', bis:'2026-04-15', city:'Tokio',      lat:35.68,  lon:139.69},
+  {von:'2026-04-15', bis:'2026-04-18', city:'Hiroshima',  lat:34.40,  lon:132.46},
+  {von:'2026-04-18', bis:'2026-04-21', city:'Kyoto',      lat:35.01,  lon:135.76},
+  {von:'2026-04-21', bis:'2026-04-24', city:'Osaka',      lat:34.69,  lon:135.50},
+  {von:'2026-04-24', bis:'2026-04-26', city:'Hakone',     lat:35.23,  lon:139.05},
+  {von:'2026-04-26', bis:'2026-05-05', city:'Tokio',      lat:35.68,  lon:139.69},
+];
+
+const WI = {
+  0:'☀️',1:'☀️',2:'⛅',3:'☁️',
+  45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌦️',55:'🌧️',
+  61:'🌧️',63:'🌧️',65:'🌧️',
+  71:'🌨️',73:'🌨️',75:'🌨️',
+  80:'🌦️',81:'🌧️',82:'⛈️',
+  95:'⛈️',96:'⛈️',99:'⛈️',
+};
+
+const WD = {
+  0:'Klar',1:'Überwiegend klar',2:'Teilweise bewölkt',3:'Bewölkt',
+  45:'Neblig',48:'Neblig',
+  51:'Leichter Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',
+  61:'Leichter Regen',63:'Regen',65:'Starker Regen',
+  71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',
+  80:'Regenschauer',81:'Regenschauer',82:'Starke Regenschauer',
+  95:'Gewitter',96:'Gewitter',99:'Starkes Gewitter',
+};
+
+function getCurrentCity() {
+  const today = new Date().toISOString().slice(0,10);
+  for (const r of REISE_CITIES) {
+    if (today >= r.von && today < r.bis) return r;
+  }
+  return null;
+}
+
+async function loadWetter() {
+  const el = document.getElementById('sec-wetter');
+  const city = getCurrentCity();
+
+  if (!city) {
+    el.innerHTML = `<div class="info-block" style="text-align:center;padding:2rem">
+      <div style="font-size:40px;margin-bottom:1rem">🏠</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text)">Nicht auf Reisen</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:0.5rem">Die Reise geht vom 10. April bis 5. Mai 2026.</div>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--text2);font-size:14px">Wetter wird geladen...</div>`;
+
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&hourly=temperature_2m,weathercode,precipitation_probability&timezone=auto&forecast_days=7`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    const daily = data.daily;
+    const hourly = data.hourly;
+
+    // Find today's index
+    const todayStr = new Date().toISOString().slice(0,10);
+    const todayIdx = daily.time.indexOf(todayStr);
+
+    const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+    let html = `
+      <div class="card" style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:13px;color:var(--accent);font-weight:600;margin-bottom:2px">${city.city}</div>
+            <div style="font-size:40px;line-height:1">${WI[daily.weathercode[todayIdx]] || '🌡️'}</div>
+            <div style="font-size:13px;color:var(--text2);margin-top:4px">${WD[daily.weathercode[todayIdx]] || ''}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:36px;font-weight:300;color:var(--text)">${Math.round(daily.temperature_2m_max[todayIdx])}°</div>
+            <div style="font-size:14px;color:var(--text2)">min ${Math.round(daily.temperature_2m_min[todayIdx])}°</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:0.5px solid var(--border)">
+          <div style="font-size:12px;color:var(--text2)">💧 ${Math.round(daily.precipitation_sum[todayIdx] * 10) / 10} mm</div>
+          <div style="font-size:12px;color:var(--text2)">💨 ${Math.round(daily.windspeed_10m_max[todayIdx])} km/h</div>
+        </div>
+      </div>`;
+
+    // Hourly forecast for today (next 12 hours)
+    const nowHour = new Date().getHours();
+    const todayHourStart = daily.time.indexOf(todayStr) * 24;
+    html += `<div class="sec-head">Stündlich — heute</div>
+      <div class="card" style="padding:10px 14px">
+        <div style="display:flex;gap:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">`;
+
+    for (let h = nowHour; h < Math.min(nowHour + 12, 24); h++) {
+      const hi = todayHourStart + h;
+      if (hi >= hourly.time.length) break;
+      const timeStr = hourly.time[hi].slice(11,16);
+      html += `<div style="flex-shrink:0;text-align:center;padding:4px 10px;min-width:52px">
+        <div style="font-size:11px;color:var(--text2)">${timeStr}</div>
+        <div style="font-size:18px;margin:3px 0">${WI[hourly.weathercode[hi]] || '🌡️'}</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text)">${Math.round(hourly.temperature_2m[hi])}°</div>
+        <div style="font-size:10px;color:var(--text2)">${hourly.precipitation_probability ? Math.round(hourly.precipitation_probability[hi]) + '%' : ''}</div>
+      </div>`;
+    }
+    html += `</div></div>`;
+
+    // 7-day forecast
+    html += `<div class="sec-head">7-Tage-Vorschau</div><div class="card" style="padding:4px 14px">`;
+    for (let i = 0; i < daily.time.length; i++) {
+      const d = new Date(daily.time[i]);
+      const isToday = i === todayIdx;
+      html += `<div class="row" style="${isToday ? 'font-weight:600' : ''}">
+        <span class="row-label" style="min-width:32px">${isToday ? 'Heute' : days[d.getDay()]}</span>
+        <span style="font-size:16px">${WI[daily.weathercode[i]] || '🌡️'}</span>
+        <span class="row-label" style="flex:1;padding-left:6px;font-size:11px">${WD[daily.weathercode[i]] || ''}</span>
+        <span class="row-val">${Math.round(daily.temperature_2m_min[i])}° – ${Math.round(daily.temperature_2m_max[i])}°</span>
+      </div>`;
+    }
+    html += `</div>`;
+
+    // All cities quick links
+    html += `<div class="sec-head">Andere Reisestädte</div><div class="card" style="padding:4px 14px">`;
+    REISE_CITIES.forEach(c => {
+      if (c.city !== city.city || c.von !== city.von) {
+        html += `<div class="place-item">
+          <div class="place-name">${c.city}</div>
+          <div class="place-desc">${c.von} – ${c.bis}</div>
+        </div>`;
+      }
+    });
+    html += `</div>`;
+
+    el.innerHTML = html;
+
+  } catch(e) {
+    el.innerHTML = `<div class="info-block" style="text-align:center;padding:2rem">
+      <div style="font-size:40px;margin-bottom:1rem">📡</div>
+      <div style="font-size:14px;color:var(--text)">Keine Internetverbindung</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:0.5rem">Wetterdaten benötigen Internet.</div>
+    </div>`;
+  }
+}
+
+// Wetter wird via zentraler show() geladen
+
+
+// ── YEN UMRECHNER ─────────────────────────────────────────────────────────
+let YEN_RATE = null;
+
+async function loadYen() {
+  const el = document.getElementById('sec-yen');
+  el.innerHTML = `
+    <div class="card" style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <div style="font-size:13px;color:var(--text2);margin-bottom:2px">Aktueller Kurs</div>
+          <div style="font-size:28px;font-weight:300;color:var(--text)" id="rate-display">Lädt...</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px" id="rate-time"></div>
+        </div>
+        <div style="font-size:40px">¥</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-title">Umrechner</div>
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Euro → Yen</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:16px;color:var(--text2)">€</span>
+          <input type="number" id="eur-input" placeholder="0" inputmode="decimal"
+            style="flex:1;padding:10px;font-size:20px;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);outline:none;-webkit-appearance:none"
+            oninput="calcEurToYen()"/>
+          <span style="font-size:16px;color:var(--text2)">→</span>
+          <div style="flex:1;padding:10px;font-size:20px;font-weight:600;color:var(--accent);background:var(--bg2);border-radius:var(--radius-sm);border:1.5px solid var(--border);text-align:right" id="yen-result">¥ —</div>
+        </div>
+      </div>
+      <div style="border-top:0.5px solid var(--border);padding-top:12px">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Yen → Euro</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:16px;color:var(--text2)">¥</span>
+          <input type="number" id="yen-input" placeholder="0" inputmode="decimal"
+            style="flex:1;padding:10px;font-size:20px;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);outline:none;-webkit-appearance:none"
+            oninput="calcYenToEur()"/>
+          <span style="font-size:16px;color:var(--text2)">→</span>
+          <div style="flex:1;padding:10px;font-size:20px;font-weight:600;color:var(--accent);background:var(--bg2);border-radius:var(--radius-sm);border:1.5px solid var(--border);text-align:right" id="eur-result">€ —</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head">Schnellreferenz</div>
+    <div class="card" style="padding:4px 14px" id="quick-ref">
+      <div style="text-align:center;padding:1rem;color:var(--text2);font-size:13px">Kurs wird geladen...</div>
+    </div>
+
+    <div class="sec-head">Typische Preise in Japan</div>
+    <div class="card" style="padding:4px 14px">
+      <div class="row"><span class="row-label">Konbini Onigiri</span><span class="row-val">¥ 120–180</span></div>
+      <div class="row"><span class="row-label">Ramen</span><span class="row-val">¥ 800–1.200</span></div>
+      <div class="row"><span class="row-label">Bento Shinkansen</span><span class="row-val">¥ 800–1.500</span></div>
+      <div class="row"><span class="row-label">Izakaya Abend/Person</span><span class="row-val">¥ 2.000–4.000</span></div>
+      <div class="row"><span class="row-label">Cocktailbar/Drink</span><span class="row-val">¥ 1.500–2.800</span></div>
+      <div class="row"><span class="row-label">Kaffee</span><span class="row-val">¥ 400–600</span></div>
+      <div class="row"><span class="row-label">U-Bahn Fahrt</span><span class="row-val">¥ 170–320</span></div>
+      <div class="row"><span class="row-label">Taxi Grundpreis</span><span class="row-val">¥ 500–730</span></div>
+      <div class="row"><span class="row-label">Coin Laundry</span><span class="row-val">¥ 200–400</span></div>
+      <div class="row"><span class="row-label">Museumseinritt</span><span class="row-val">¥ 500–2.000</span></div>
+      <div class="row"><span class="row-label">Schwarze Eier Owakudani</span><span class="row-val">¥ 500 (5 Stück)</span></div>
+      <div class="row"><span class="row-label">7-Eleven ATM Gebühr</span><span class="row-val">¥ 110–220</span></div>
+    </div>
+  `;
+
+  // Load rate
+  try {
+    const resp = await fetch('https://api.frankfurter.app/latest?from=EUR&to=JPY');
+    const data = await resp.json();
+    YEN_RATE = data.rates.JPY;
+    const date = new Date(data.date);
+    const formatted = date.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
+
+    document.getElementById('rate-display').textContent = `1 € = ¥ ${Math.round(YEN_RATE)}`;
+    document.getElementById('rate-time').textContent = `Stand: ${formatted}`;
+
+    // Quick reference
+    const amounts = [1, 5, 10, 20, 50, 100, 200, 500];
+    let qhtml = '';
+    amounts.forEach(eur => {
+      qhtml += `<div class="row">
+        <span class="row-label">€ ${eur}</span>
+        <span class="row-val">¥ ${Math.round(eur * YEN_RATE).toLocaleString('de-DE')}</span>
+      </div>`;
+    });
+    document.getElementById('quick-ref').innerHTML = qhtml;
+
+  } catch(e) {
+    YEN_RATE = 160; // fallback
+    document.getElementById('rate-display').textContent = '1 € ≈ ¥ 160';
+    document.getElementById('rate-time').textContent = 'Kein Internet — Näherungswert';
+    const amounts = [1, 5, 10, 20, 50, 100, 200, 500];
+    let qhtml = '';
+    amounts.forEach(eur => {
+      qhtml += `<div class="row">
+        <span class="row-label">€ ${eur}</span>
+        <span class="row-val">¥ ${Math.round(eur * YEN_RATE).toLocaleString('de-DE')}</span>
+      </div>`;
+    });
+    document.getElementById('quick-ref').innerHTML = qhtml;
+  }
+}
+
+function calcEurToYen() {
+  if (!YEN_RATE) return;
+  const eur = parseFloat(document.getElementById('eur-input').value);
+  const res = document.getElementById('yen-result');
+  if (isNaN(eur) || eur === 0) { res.textContent = '¥ —'; return; }
+  res.textContent = '¥ ' + Math.round(eur * YEN_RATE).toLocaleString('de-DE');
+}
+
+function calcYenToEur() {
+  if (!YEN_RATE) return;
+  const yen = parseFloat(document.getElementById('yen-input').value);
+  const res = document.getElementById('eur-result');
+  if (isNaN(yen) || yen === 0) { res.textContent = '€ —'; return; }
+  res.textContent = '€ ' + (yen / YEN_RATE).toFixed(2).replace('.', ',');
+}
+
+// Yen wird via zentraler show() geladen
 
 </script>
 </body>
