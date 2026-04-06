@@ -247,25 +247,46 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 const PW_KEY = 'japan2026_auth';
 const CORRECT_PW = 'Japan2026';
 
+// Safe storage wrapper - falls back to memory if localStorage unavailable
+const AUTH = {
+  _mem: false,
+  set: function(v) {
+    this._mem = v;
+    try { localStorage.setItem(PW_KEY, v ? '1' : '0'); } catch(e) {}
+    try { sessionStorage.setItem(PW_KEY, v ? '1' : '0'); } catch(e) {}
+  },
+  get: function() {
+    if (this._mem) return true;
+    try { if (localStorage.getItem(PW_KEY) === '1') return true; } catch(e) {}
+    try { if (sessionStorage.getItem(PW_KEY) === '1') return true; } catch(e) {}
+    return false;
+  }
+};
+
 function checkPw() {
-  const input = document.getElementById('pw-input').value;
-  if (input === CORRECT_PW) {
-    localStorage.setItem(PW_KEY, '1');
+  const input = document.getElementById('pw-input');
+  if (!input) return;
+  const val = input.value.trim();
+  if (val === CORRECT_PW) {
+    AUTH.set(true);
     unlockApp();
   } else {
-    document.getElementById('pw-error').textContent = 'Falsches Passwort';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
+    const err = document.getElementById('pw-error');
+    if (err) err.textContent = 'Falsches Passwort';
+    input.value = '';
+    input.focus();
   }
 }
 
 function unlockApp() {
-  document.getElementById('lock-screen').style.display = 'none';
-  document.getElementById('main-app').style.display = 'flex';
+  const lock = document.getElementById('lock-screen');
+  const app  = document.getElementById('main-app');
+  if (lock) lock.style.display = 'none';
+  if (app)  app.style.display  = 'flex';
 }
 
-// Check if already authenticated
-if (localStorage.getItem(PW_KEY) === '1') {
+// Auto-unlock if already authenticated
+if (AUTH.get()) {
   unlockApp();
 }
 
