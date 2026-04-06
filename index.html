@@ -144,6 +144,45 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 .lock-input:focus{border-color:var(--accent)}
 .lock-btn{width:100%;max-width:280px;padding:14px;font-size:16px;font-weight:600;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);cursor:pointer}
 .lock-error{font-size:13px;color:#A32D2D;margin-top:0.5rem;min-height:20px}
+
+.countdown-box{background:linear-gradient(135deg,#C0392B,#8B1A1A);border-radius:var(--radius);padding:16px;margin-bottom:10px;color:white;text-align:center}
+.countdown-num{font-size:48px;font-weight:300;line-height:1}
+.countdown-label{font-size:12px;opacity:0.8;margin-top:4px}
+.quick-card{background:var(--bg2);border-radius:var(--radius-sm);padding:12px;flex:1;min-width:0}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.zug-card{background:var(--bg2);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;border-left:3px solid var(--accent)}
+.zug-route{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.zug-city{font-size:15px;font-weight:600;color:var(--text)}
+.zug-arr{flex:1;height:1px;background:var(--border2);position:relative;margin:0 4px}
+.zug-arr::after{content:"▶";position:absolute;right:-6px;top:-7px;font-size:10px;color:var(--text2)}
+.zug-info{font-size:11px;color:var(--text2);line-height:1.7}
+.zug-info strong{color:var(--accent)}
+.note-area{width:100%;min-height:80px;padding:10px;font-size:13px;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);resize:vertical;font-family:-apple-system,sans-serif;line-height:1.5}
+.note-area:focus{outline:none;border-color:var(--accent)}
+.note-saved{font-size:11px;color:var(--green);margin-top:4px;min-height:16px}
+.quiz-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;text-align:center}
+.quiz-q{font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px;line-height:1.5}
+.quiz-btn{display:inline-block;padding:10px 24px;background:var(--accent);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;margin:4px}
+.quiz-btn-ghost{background:var(--bg2);color:var(--text);border:0.5px solid var(--border2)}
+.quiz-answer{font-size:13px;color:var(--text2);background:var(--bg2);border-radius:var(--radius-sm);padding:12px;margin-top:10px;line-height:1.6;display:none}
+.flash-front{font-size:22px;font-weight:600;color:var(--accent);margin:16px 0 8px}
+.flash-back{font-size:14px;color:var(--text2);display:none;margin-top:8px;line-height:1.6}
+.score-badge{display:inline-block;background:var(--green);color:white;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;margin-bottom:10px}
+.contact-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
+.contact-item:last-child{border-bottom:none}
+.contact-name{font-size:13px;font-weight:600;color:var(--text)}
+.contact-detail{font-size:12px;color:var(--text2);margin-top:2px}
+.contact-tel{font-size:13px;color:var(--accent);font-weight:500;margin-top:3px}
+
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:4px 0}
+.home-tile{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 8px;text-align:center;cursor:pointer;transition:transform 0.1s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:6px}
+.home-tile:active{transform:scale(0.95)}
+.home-icon{font-size:28px;line-height:1}
+.home-label{font-size:11px;font-weight:600;color:var(--text);line-height:1.2}
+.home-sub{font-size:9px;color:var(--text3);line-height:1.2}
+.home-section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 6px;padding:0 2px}
+.home-tile.accent{background:var(--accent-light);border-color:rgba(192,117,10,0.25)}
+.home-tile.green{background:var(--green-light);border-color:rgba(29,158,117,0.25)}
 </style>
 </head>
 <body>
@@ -161,26 +200,36 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <h1>Japan 2026</h1>
     <div class="header-date" id="hdate">Apr 2026</div>
   </div>
-  <div class="nav">
-    <button class="nav-btn active" onclick="show('tage',this)">Tage</button>
-    <button class="nav-btn" onclick="show('check',this)">Checkliste</button>
+  <div class="nav" id="nav">
+    <button class="nav-btn active" id="nav-home" onclick="show('home',this)">Start</button>
+    <button class="nav-btn" onclick="show('tage',this)">Tage</button>
+    <button class="nav-btn" onclick="show('transport',this)">Transport</button>
     <button class="nav-btn" onclick="show('hotels',this)">Hotels</button>
-    <button class="nav-btn" onclick="show('fluege',this)">Flüge</button>
     <button class="nav-btn" onclick="show('essen',this)">Essen</button>
-    <button class="nav-btn" onclick="show('manami',this)">Manamis Tipps</button>
     <button class="nav-btn" onclick="show('bars',this)">Bars</button>
-    <button class="nav-btn" onclick="show('karte',this)">Karte</button>
-    <button class="nav-btn" onclick="show('yen',this)">Yen</button>
+    <button class="nav-btn" onclick="show('manami',this)">Manamis</button>
     <button class="nav-btn" onclick="show('wetter',this)">Wetter</button>
-    <button class="nav-btn" onclick="show('packliste',this)">Packliste</button>
+    <button class="nav-btn" onclick="show('yen',this)">Yen</button>
+    <button class="nav-btn" onclick="show('karte',this)">Karte</button>
     <button class="nav-btn" onclick="show('phrasen',this)">Phrasen</button>
+    <button class="nav-btn" onclick="show('check',this)">Checkliste</button>
+    <button class="nav-btn" onclick="show('packliste',this)">Packliste</button>
+    <button class="nav-btn" onclick="show('kontakte',this)">Kontakte</button>
+    <button class="nav-btn" onclick="show('notizen',this)">Notizen</button>
+    <button class="nav-btn" onclick="show('quiz',this)">Quiz</button>
+    <button class="nav-btn" onclick="show('lernkarten',this)">Lernen</button>
     <button class="nav-btn" onclick="show('infos',this)">Infos</button>
   </div>
   <div class="content">
-    <div class="section active" id="sec-tage"></div>
+    <div class="section active" id="sec-home"></div>
+    <div class="section" id="sec-tage"></div>
+    <div class="section" id="sec-transport"></div>
+    <div class="section" id="sec-kontakte"></div>
+    <div class="section" id="sec-notizen"></div>
+    <div class="section" id="sec-quiz"></div>
+    <div class="section" id="sec-lernkarten"></div>
     <div class="section" id="sec-check"></div>
     <div class="section" id="sec-hotels"></div>
-    <div class="section" id="sec-fluege"></div>
     <div class="section" id="sec-essen"></div>
     <div class="section" id="sec-manami"></div>
     <div class="section" id="sec-bars"></div>
@@ -228,13 +277,18 @@ document.addEventListener('click', function(e) {
   }
 });
 // ── HELPERS ────────────────────────────────────────────────────────────────
+buildTransport();
+
 function show(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-' + id).classList.add('active');
   btn.classList.add('active');
   if (id === 'wetter') loadWetter();
+  if (id === 'transport') buildTransport();
   if (id === 'yen') loadYen();
+  if (id === 'quiz' && quizOrder.length === 0) initQuiz();
+  if (id === 'lernkarten' && flashOrder.length === 0) initFlash();
 }
 
 function maps(name, ll) {
@@ -295,6 +349,37 @@ const TAGE = [
   {d:'04.05.',city:'Abreise',e:'🛬',text:'Checkout Stoke Villa 10:00 Uhr (Airbnb-Key zurückgeben). Haneda: AY5209 HND→KIX 12:35 (Economy, Pl. 16H/16J/16K). KIX: 8 Std. Aufenthalt — letztes Mittagessen Dotonbori! AY068 KIX→HEL 22:15 Business.',sub:'Koffer bereits am Vortag per Takkyubin aufgegeben ✓'},
   {d:'05.05.',city:'Zuhause',e:'🏠',text:'Ankunft Helsinki 05:20 (AY068). Layover ca. 2 Std. 20 Min. — Iittala, Marimekko, Fazer-Schokolade shoppen! AY1411 HEL→FRA 07:40 → Frankfurt 09:20. Und dann: Stall.',sub:'Business Class · Welcome back!'},
 ];
+
+(function buildCountdown() {
+  const ABFLUG = new Date('2026-04-11T09:30:00');
+  const now = new Date();
+  const diff = ABFLUG - now;
+  return; // countdown now in buildHome
+  let countHTML = '';
+  if (diff > 0) {
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    countHTML = `<div class="countdown-box">
+      <div style="font-size:11px;opacity:0.8;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.1em">Abflug nach Japan</div>
+      <div class="countdown-num">${days}</div>
+      <div class="countdown-label">Tage noch · ${hours} Stunden</div>
+      <div style="font-size:11px;opacity:0.7;margin-top:6px">11. April 2026 · AY1412 FRA→HEL 11:30</div>
+    </div>`;
+  } else if (diff > -23*24*60*60*1000) {
+    countHTML = `<div class="countdown-box" style="background:linear-gradient(135deg,#1D9E75,#085041)">
+      <div style="font-size:22px;margin-bottom:4px">🇯🇵</div>
+      <div style="font-size:16px;font-weight:600">Ihr seid in Japan!</div>
+      <div style="font-size:12px;opacity:0.8;margin-top:4px">Genießt jeden Moment</div>
+    </div>`;
+  } else {
+    countHTML = `<div class="countdown-box" style="background:linear-gradient(135deg,#444,#222)">
+      <div style="font-size:22px;margin-bottom:4px">🏠</div>
+      <div style="font-size:14px;font-weight:600">Zurück in Deutschland</div>
+      <div style="font-size:12px;opacity:0.8;margin-top:4px">Was für eine Reise!</div>
+    </div>`;
+  }
+  el.innerHTML = countHTML;
+})();
 
 (function buildTage() {
   const el = document.getElementById('sec-tage');
@@ -430,53 +515,7 @@ const HOTELS = [
 })();
 
 // ── FLÜGE ─────────────────────────────────────────────────────────────────
-(function buildFluege() {
-  document.getElementById('sec-fluege').innerHTML = `
-    <div class="sec-head">Hinflug — 11. April 2026</div>
-    <div class="card">
-      <div class="card-title">Frankfurt → Helsinki → Tokio</div>
-      <div class="card-sub">Business Class · Buchungsref. 8IXEO4</div>
-      <div class="flight-leg">
-        <div class="leg-route"><span class="leg-ap">FRA</span><div class="leg-line"></div><span class="leg-ap">HEL</span></div>
-        <div class="leg-info"><strong>AY1412</strong> · 11:30 – 13:55 · 2 Std. 25 Min.<br>Finnair · Business Class · Terminal 1 Frankfurt</div>
-      </div>
-      <div style="text-align:center;font-size:11px;color:var(--text2);padding:6px 0">Layover Helsinki: 3 Stunden · Abendessen möglich</div>
-      <div class="flight-leg">
-        <div class="leg-route"><span class="leg-ap">HEL</span><div class="leg-line"></div><span class="leg-ap">HND</span></div>
-        <div class="leg-info"><strong>JL48</strong> / AY5073 · 17:55 – 13:55+1 · 14 Stunden<br>JAL (Finnair Codeshare) · Business Class<br>JAL SKY SUITE · Sitze <strong>10A · 10C · 11A</strong></div>
-      </div>
-      <div class="flight-note">Ankunft Tokio Haneda 12.04. um 13:55 Uhr<br>Transfer: Chinichi (Ref. 931593331) · JL48 wird getrackt<br>Fahrt ca. 28 Min. → Cerulean Tower Shibuya</div>
-    </div>
 
-    <div class="sec-head">Rückflug — 4./5. Mai 2026</div>
-    <div class="card">
-      <div class="card-title">Tokio → Osaka → Helsinki → Frankfurt</div>
-      <div class="card-sub">Business Class (außer Inlandsflug Economy)</div>
-      <div class="flight-leg">
-        <div class="leg-route"><span class="leg-ap">HND</span><div class="leg-line"></div><span class="leg-ap">KIX</span></div>
-        <div class="leg-info"><strong>AY5209</strong> op. by JAL · 12:35 – 14:00 · Economy<br>Sitze 16H · 16J · 16K</div>
-      </div>
-      <div style="text-align:center;font-size:11px;color:var(--text2);padding:6px 0">Osaka: ca. 8 Std. Aufenthalt · Letztes Mittagessen Dotonbori</div>
-      <div class="flight-leg">
-        <div class="leg-route"><span class="leg-ap">KIX</span><div class="leg-line"></div><span class="leg-ap">HEL</span></div>
-        <div class="leg-info"><strong>AY068</strong> · 22:15 – 05:20+1 · 13 Std. 5 Min.<br>Finnair A350-900 · Business Class · Nachtflug → schlafen!</div>
-      </div>
-      <div style="text-align:center;font-size:11px;color:var(--text2);padding:6px 0">Helsinki: ca. 2 Std. 20 Min. · Iittala & Fazer shoppen</div>
-      <div class="flight-leg">
-        <div class="leg-route"><span class="leg-ap">HEL</span><div class="leg-line"></div><span class="leg-ap">FRA</span></div>
-        <div class="leg-info"><strong>AY1411</strong> · 07:40 – 09:20 · 2 Std. 40 Min.<br>Finnair (op. by Jettime) · Business Class</div>
-      </div>
-    </div>
-
-    <div class="sec-head">Buchungsnummern & Sitze</div>
-    <div class="card">
-      <div class="row"><span class="row-label">Flug Buchungsref.</span><span class="booking-code">8IXEO4</span></div>
-      <div class="row"><span class="row-label">Sitze JL48</span><span class="row-val">10A · 10C · 11A</span></div>
-      <div class="row"><span class="row-label">Sitze AY5209</span><span class="row-val">16H · 16J · 16K</span></div>
-      <div class="row"><span class="row-label">Transfer Chinichi</span><span class="row-val">Ref. 931593331</span></div>
-    </div>
-  `;
-})();
 
 // ── ESSEN ─────────────────────────────────────────────────────────────────
 const ESSEN = {
@@ -1615,6 +1654,619 @@ const USELESS = [
 
   el.innerHTML += html;
 })();
+
+
+// ── TRANSPORT (Flüge + Züge) ─────────────────────────────────────────────
+function buildTransport() {
+  const ZUEGE = [
+    {
+      von:'Frankfurt', nach:'Helsinki', datum:'11.04.2026',
+      ab:'11:30', an:'13:55', flug:'AY1412', klasse:'Business',
+      info:'Terminal 1 Frankfurt · Finnair · ca. 2 Std. 25 Min.',
+      sitze:'', typ:'✈️'
+    },
+    {
+      von:'Helsinki', nach:'Tokio Haneda', datum:'11.04.2026',
+      ab:'17:55', an:'13:55+1', flug:'JL48 / AY5073', klasse:'Business',
+      info:'JAL SKY SUITE · 14 Std. · Layover 3 Std.',
+      sitze:'10A · 10C · 11A', typ:'✈️'
+    },
+    {
+      von:'Tokio', nach:'Hiroshima', datum:'15.04.2026',
+      ab:'13:30', an:'17:27', flug:'Nozomi 37', klasse:'Ordinary',
+      info:'Wagen 14 · ¥58.080 · Res. 2000',
+      sitze:'2A · 2B · 2C', typ:'🚄'
+    },
+    {
+      von:'Hiroshima', nach:'Kyoto', datum:'18.04.2026',
+      ab:'16:22', an:'17:59', flug:'Nozomi 42', klasse:'Ordinary',
+      info:'Wagen 5 · ¥35.220 · Res. 2002',
+      sitze:'18A · 18B · 18C', typ:'🚄'
+    },
+    {
+      von:'Shin-Osaka', nach:'Odawara', datum:'24.04.2026',
+      ab:'10:54', an:'14:09', flug:'Kodama 820', klasse:'Ordinary',
+      info:'Wagen 11 · ¥37.950 · Res. 2002',
+      sitze:'1A · 1B · 1C', typ:'🚄'
+    },
+    {
+      von:'Hakone-Yumoto', nach:'Shinjuku', datum:'26.04.2026',
+      ab:'11:38', an:'13:05', flug:'Romancecar GSE Hakone 6', klasse:'Reserved',
+      info:'Wagen 7 · Front Observation Deck · ¥3.450 ges.',
+      sitze:'12B · 12C · 12D', typ:'🚃'
+    },
+    {
+      von:'Tokio Haneda', nach:'Osaka Kansai', datum:'04.05.2026',
+      ab:'12:35', an:'14:00', flug:'AY5209 op. by JAL', klasse:'Economy',
+      info:'Inlandsflug · ca. 1 Std. 25 Min.',
+      sitze:'16H · 16J · 16K', typ:'✈️'
+    },
+    {
+      von:'Osaka Kansai', nach:'Helsinki', datum:'04.05.2026',
+      ab:'22:15', an:'05:20+1', flug:'AY068', klasse:'Business',
+      info:'Finnair A350-900 · 13 Std. 5 Min. · Nachtflug',
+      sitze:'', typ:'✈️'
+    },
+    {
+      von:'Helsinki', nach:'Frankfurt', datum:'05.05.2026',
+      ab:'07:40', an:'09:20', flug:'AY1411', klasse:'Business',
+      info:'Finnair op. by Jettime · ca. 2 Std. 40 Min.',
+      sitze:'', typ:'✈️'
+    },
+  ];
+
+  // Split into flights and trains
+  const flights = ZUEGE.filter(z => z.typ === '✈️');
+  const trains  = ZUEGE.filter(z => z.typ !== '✈️');
+
+  let html = `<div class="info-block" style="margin-bottom:10px">
+    <div class="info-title">Flug Buchungsreferenz</div>
+    <div style="font-size:20px;font-weight:700;letter-spacing:3px;color:var(--accent);font-family:ui-monospace,monospace">8IXEO4</div>
+  </div>
+  <div class="sec-head">✈️ Flüge</div>`;
+
+  flights.forEach(z => {
+    const today = new Date().toISOString().slice(0,10);
+    const zDate = z.datum.split('.').reverse().join('-');
+    const isToday = zDate === today;
+    html += \`<div class="zug-card" \${isToday ? 'style="border-left-color:var(--green);background:var(--green-light)"' : ''}>
+      <div class="zug-route">
+        <span class="zug-city">\${z.typ} \${z.von}</span>
+        <div class="zug-arr"></div>
+        <span class="zug-city">\${z.nach}</span>
+      </div>
+      <div class="zug-info">
+        <strong>\${z.datum}</strong> · \${z.ab} → \${z.an}<br>
+        \${z.flug} · \${z.klasse}<br>
+        \${z.info}
+        \${z.sitze ? \`<br>Sitze: <strong>\${z.sitze}</strong>\` : ''}
+      </div>
+    </div>\`;
+  });
+
+  html += '<div class="sec-head">🚄 Züge & Romancecar</div>';
+
+  trains.forEach(z => {
+    const today = new Date().toISOString().slice(0,10);
+    const zDate = z.datum.split('.').reverse().join('-');
+    const isToday = zDate === today;
+    html += \`<div class="zug-card" \${isToday ? 'style="border-left-color:var(--green);background:var(--green-light)"' : ''}>
+      <div class="zug-route">
+        <span class="zug-city">\${z.typ} \${z.von}</span>
+        <div class="zug-arr"></div>
+        <span class="zug-city">\${z.nach}</span>
+      </div>
+      <div class="zug-info">
+        <strong>\${z.datum}</strong> · \${z.ab} → \${z.an}<br>
+        \${z.flug} · \${z.klasse}<br>
+        \${z.info}
+        \${z.sitze ? \`<br>Sitze: <strong>\${z.sitze}</strong>\` : ''}
+      </div>
+    </div>\`;
+  });
+
+  // dummy forEach to satisfy original structure
+  if (false) ZUEGE.forEach(z => {
+    const today = new Date().toISOString().slice(0,10);
+    const isToday = z.datum.split('.').reverse().join('-').replace(/^(\d+)-(\d+)-(\d+)$/, '$1-$2-$3') === today;
+    html += `<div class="zug-card" ${isToday ? 'style="border-left-color:var(--green);background:var(--green-light)"' : ''}>
+      <div class="zug-route">
+        <span class="zug-city">${z.typ} ${z.von}</span>
+        <div class="zug-arr"></div>
+        <span class="zug-city">${z.nach}</span>
+      </div>
+      <div class="zug-info">
+        <strong>${z.datum}</strong> · ${z.ab} → ${z.an}<br>
+        ${z.flug} · ${z.klasse}<br>
+        ${z.info}
+        ${z.sitze ? `<br>Sitze: <strong>${z.sitze}</strong>` : ''}
+      </div>
+    </div>`;
+  });
+
+  } // end dummy
+  document.getElementById('sec-transport').innerHTML = html;
+}
+
+// ── KONTAKTE ───────────────────────────────────────────────────────────────
+(function buildKontakte() {
+  const KONTAKTE = [
+    {cat:'🏨 Unterkünfte', items:[
+      {name:'Cerulean Tower Tokyu Hotel', detail:'Shibuya · 12.–15.04.', tel:'+81-3-3476-3000'},
+      {name:'Randor Hotel Hiroshima', detail:'Minami-ku · 15.–18.04.', tel:'+81-82-264-1500'},
+      {name:'Kyoto Tokyu Hotel', detail:'Shimogyo-ku · 18.–21.04.', tel:'+81-75-341-2411'},
+      {name:'Hotel Elcient Osaka', detail:'Kita-ku · 21.–24.04.', tel:'+81-6-6360-2200'},
+      {name:'Kinnotake Tonosawa', detail:'Hakone · 24.–26.04. · Kitamura-san', tel:'0460-85-9800'},
+      {name:'MK Tokyo Stay (Oki)', detail:'Stoke Villa · Airbnb · 26.04.–04.05.', tel:'via Airbnb App'},
+    ]},
+    {cat:'🚗 Transfer & Transport', items:[
+      {name:'Chinichi Transfer (Haneda→Cerulean)', detail:'Ref. 931593331 · Booking ID 842002902', tel:'via Buchungsbestätigung'},
+      {name:'Kinnotake Limousine Hin', detail:'24.04. 14:15 ab Odawara Shinkansen-Gate · ¥6.500', tel:'0460-85-9800'},
+      {name:'Kinnotake Limousine Zurück', detail:'26.04. 10:45 ab Kinnotake → Hakone-Yumoto · ¥3.300', tel:'0460-85-9800'},
+    ]},
+    {cat:'🏥 Notfall Deutschland', items:[
+      {name:'Deutsche Botschaft Tokio', detail:'4-5-10 Minami-Azabu, Minato-ku · Mo–Fr 8–11:30', tel:'+81-3-5791-7700'},
+      {name:'Botschaft Notruf', detail:'Außerhalb der Bürozeiten', tel:'+81-3-5791-7711'},
+      {name:'Japan Helpline (24/7 DE)', detail:'Mehrsprachig, nicht-akute Probleme', tel:'0570-000-911'},
+    ]},
+    {cat:'🚨 Japan Notruf', items:[
+      {name:'Polizei', detail:'', tel:'110'},
+      {name:'Feuerwehr / Rettungsdienst', detail:'', tel:'119'},
+    ]},
+    {cat:'✈️ Airlines', items:[
+      {name:'Finnair', detail:'Buchungsref. 8IXEO4', tel:'+358-9-818-0800'},
+      {name:'JAL', detail:'Flug JL48 HEL→HND', tel:'+81-3-5460-0511'},
+    ]},
+  ];
+
+  let html = '';
+  KONTAKTE.forEach(cat => {
+    html += `<div class="sec-head">${cat.cat}</div><div class="card" style="padding:4px 14px">`;
+    cat.items.forEach(c => {
+      html += `<div class="contact-item">
+        <div class="contact-name">${c.name}</div>
+        ${c.detail ? `<div class="contact-detail">${c.detail}</div>` : ''}
+        <div class="contact-tel">${c.tel}</div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('sec-kontakte').innerHTML = html;
+})();
+
+// ── NOTIZEN ────────────────────────────────────────────────────────────────
+(function buildNotizen() {
+  const TAGE_NOTIZ = [
+    {d:'10.04.', label:'Frankfurt · Anreise'},
+    {d:'11.04.', label:'Abflug'},
+    {d:'12.04.', label:'Tokio · Ankunft'},
+    {d:'13.04.', label:'Tokio · teamLab Planets'},
+    {d:'14.04.', label:'Tokio · Asakusa & Akihabara'},
+    {d:'15.04.', label:'→ Hiroshima'},
+    {d:'16.04.', label:'Hiroshima · Peace Memorial'},
+    {d:'17.04.', label:'Hiroshima · Rabbit Island'},
+    {d:'18.04.', label:'Miyajima → Kyoto'},
+    {d:'19.04.', label:'Kyoto · Higashiyama'},
+    {d:'20.04.', label:'Kyoto · Fushimi Inari'},
+    {d:'21.04.', label:'Arashiyama → Osaka'},
+    {d:'22.04.', label:'Osaka · Nara'},
+    {d:'23.04.', label:'Osaka · Dotonbori'},
+    {d:'24.04.', label:'→ Hakone'},
+    {d:'25.04.', label:'Hakone · Rundkurs'},
+    {d:'26.04.', label:'→ Tokio Phase 2'},
+    {d:'27.04.', label:'Tokio · teamLab Borderless'},
+    {d:'28.04.', label:'Tokio · Ueno & Akihabara'},
+    {d:'29.04.', label:'Tokio · Shimokitazawa'},
+    {d:'30.04.', label:'Tokio · Kawaguchiko'},
+    {d:'01.05.', label:'Tokio · Kamakura'},
+    {d:'02.05.', label:'Tokio · Odaiba'},
+    {d:'03.05.', label:'Tokio · Freier Tag'},
+    {d:'04.05.', label:'Abreise'},
+  ];
+
+  let html = `<div style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.5">Notizen werden auf diesem Gerät gespeichert. Jeder kann seine eigenen Einträge machen.</div>`;
+
+  TAGE_NOTIZ.forEach(t => {
+    const key = 'note_' + t.d;
+    let saved = '';
+    try { saved = localStorage.getItem(key) || ''; } catch(e) {}
+    html += `<div class="card" style="margin-bottom:8px">
+      <div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:6px">${t.d} — ${t.label}</div>
+      <textarea class="note-area" id="${key}" placeholder="Notiz für diesen Tag..." onchange="saveNote('${key}')">${saved}</textarea>
+      <div class="note-saved" id="saved-${key}"></div>
+    </div>`;
+  });
+
+  document.getElementById('sec-notizen').innerHTML = html;
+})();
+
+function saveNote(key) {
+  const val = document.getElementById(key).value;
+  try {
+    localStorage.setItem(key, val);
+    const s = document.getElementById('saved-' + key);
+    if(s) { s.textContent = '✓ Gespeichert'; setTimeout(() => s.textContent = '', 2000); }
+  } catch(e) {}
+}
+
+// ── QUIZ ───────────────────────────────────────────────────────────────────
+const QUIZ_FRAGEN = [
+  // ── KULTUR & ALLTAG ────────────────────────────────────────────────────
+  {f:'Was bedeutet "Inemuri" auf Japanisch?', a:'Das Einschlafen in der Öffentlichkeit – gilt als Zeichen von Fleiß. Wer im Meeting schläft, hat offensichtlich so hart gearbeitet, dass er erschöpft ist.'},
+  {f:'Wie viele Knöpfe hat eine typische japanische Toilette durchschnittlich?', a:'7 Knöpfe – manche bis zu 17. Einer spielt Meeresrauschen ab, damit niemand hört was man macht.'},
+  {f:'Was bedeutet "Kawaii" wörtlich?', a:'"Liebenswürdig" oder "süß". Japan hat sogar offizielle "Kawaii-Botschafterinnen" im Außenministerium – Kawaii ist offizielle Außenpolitik.'},
+  {f:'Was ist ein "Konbini" und was kann man dort alles machen?', a:'Convenience Store (7-Eleven, FamilyMart, Lawson). Man kann dort Steuern zahlen, Konzerttickets kaufen, Pakete verschicken, drucken, faxen und frisch kochen lassen – alles 24/7.'},
+  {f:'Warum hat Japan mehr Haustierkatzen als Kinder unter 15?', a:'Ca. 9,5 Mio. Hauskatzen vs. ca. 15 Mio. Kinder – die Katzen holen auf. Es gibt Katzen-Cafés, Katzen-Züge und eine Katzeninsel (Aoshima) mit 120 Katzen und 6 Menschen.'},
+  {f:'Was ist "Hanami" und wann findet es statt?', a:'Hanami (花見) = "Blüten schauen". Japaner picknicken unter blühenden Kirschbäumen. Stattfindet im Frühling (März-April). Die ganze Nation plant Urlaub nach der offiziellen Sakura-Vorhersage.'},
+  {f:'Was ist der Unterschied zwischen Sushi und Sashimi?', a:'Sushi = immer mit gewürztem Reis (nicht zwingend Fisch). Sashimi = nur rohes Fleisch/Fisch, kein Reis. Ein vegetarisches Sushi ist genauso echter Sushi wie eines mit Thunfisch.'},
+  {f:'Was bedeutet "Otaku" in Japan?', a:'Ursprünglich abwertend für Menschen mit extremen Hobbys (Anime, Manga, Spiele). Heute eher neutral oder sogar stolz verwendet. Akihabara ist das weltweite Zentrum der Otaku-Kultur.'},
+  {f:'Was ist "Wabi-Sabi"?', a:'Japanische Ästhetik der Unvollkommenheit und Vergänglichkeit. Schönheit im Unvollständigen, Asymmetrischen, Vergänglichen. Erklärt warum gesprungenes Geschirr mit Goldlack repariert wird (Kintsugi).'},
+  {f:'Was ist Kintsugi?', a:'Die Kunst, zerbrochenes Keramik mit Goldlack zu reparieren. Die Bruchstellen werden sichtbar gemacht – die Geschichte des Objekts wird Teil seiner Schönheit. Metapher für Heilung durch Akzeptanz.'},
+
+  // ── ESSEN & TRINKEN ────────────────────────────────────────────────────
+  {f:'Welche Erfindung wurde in Japan zur wichtigsten des 20. Jahrhunderts gewählt?', a:'Instant-Ramen! Schlug in einer Umfrage Karaoke, den Walkman und das Faxgerät. Erfinder Momofuku Ando aß täglich Chicken Ramen bis zu seinem Tod mit 96 Jahren.'},
+  {f:'Was ist der Unterschied zwischen Ramen und Udon?', a:'Ramen = dünne Weizennudeln in Brühe (Shoyu, Miso, Tonkotsu oder Shio). Udon = dicke, weiche Weizennudeln, milder Geschmack. Soba = Buchweizennudeln, eigene Kategorie.'},
+  {f:'Was ist Kaiseki?', a:'Die höchste Form japanischer Kochkunst – 8-12 Gänge, saisonal, lokal. Nicht Opulenz sondern Reduktion. Jeder Gang im handgefertigten Geschirr zur Jahreszeit. Ihr habt es im Kinnotake Ryokan!'},
+  {f:'Warum ist Kit Kat in Japan so beliebt?', a:'"Kit Kat" klingt wie "Kitto Katsu" – "Du wirst sicher gewinnen". Studenten essen sie vor Prüfungen. Über 300 Sorten: Matcha, Sake, Wasabi, Apfelkuchen, Käsekuchen...'},
+  {f:'Was ist Takoyaki?', a:'Teigkugeln mit Oktopusstücken, Ingwer und Lauch – klassisches Osaka-Streetfood. Werden auf einer speziellen Gusseisenplatte mit halbkugelförmigen Mulden gebacken und gewendet.'},
+  {f:'Was ist Umami?', a:'Der fünfte Grundgeschmack – herzhaft-würzig, jenseits von süß/sauer/salzig/bitter. Entdeckt 1908 von Prof. Kikunae Ikeda. Dashi, Miso und Sojasauce sind reich daran.'},
+  {f:'Was bedeutet "Itadakimasu" und wann sagt man es?', a:'Vor dem Essen – bedeutet "Ich empfange demütig". Dankbarkeit für Essen, Tiere und Menschen die es zubereitet haben. Pflicht in Japan, auch beim Alleinessen.'},
+  {f:'Was ist Wagyu und warum ist es so teuer?', a:'Japanisches Rind (wa=Japan, gyu=Rind) mit extremer Fettmarmorierung. Rinder hören Musik, trinken Bier, bekommen Massagen. Ein Kobe-Steak kann 500€+ kosten.'},
+  {f:'Was ist der Unterschied zwischen Sake und Shochu?', a:'Sake = Reiswein (15-20% Alk.), aus fermentiertem Reis. Shochu = Destillat (25-35% Alk.), aus Süßkartoffeln, Gerste oder Reis. Beide sind typisch japanisch, aber sehr verschieden.'},
+  {f:'Was ist Matcha und warum ist er so grün?', a:'Fein gemahlener Grüntee. Teepflanzen werden vor der Ernte 3-4 Wochen beschattet – das erhöht Chlorophyll und Aminosäuren (L-Theanin). Daher der intensive Grünton.'},
+  {f:'Was ist ein "Izakaya"?', a:'Japanische Kneipe/Gasthaus – zwischen Restaurant und Bar. Man sitzt, trinkt und isst kleine Gerichte (Yakitori, Edamame, Karaage). Der ideale Ort für einen entspannten Abend.'},
+  {f:'Was ist Yudofu?', a:'Zart gekochter Tofu in klarer Brühe mit Beilagen – Kyoto-Spezialität. Okutan Nanzen-ji (seit 1635) ist das berühmteste Restaurant dafür. Ihr habt eine Tischreservierung geplant!'},
+  {f:'Darf man in Japan beim Gehen essen?', a:'Grundsätzlich gilt es als unhöflich – außer bei Straßenfesten (Matsuri) und Märkten. Takoyaki und Eis sind Ausnahmen. In Shinkansen darf man essen, aber Bento-Duft ist akzeptiert.'},
+  {f:'Was ist Natto und warum mögen es viele Ausländer nicht?', a:'Fermentierte Sojabohnen – klebrig, fadenziehend, stark riechendes Frühstücksgericht. Reich an Vitaminen und Proteinen. Die Textur und der Geruch sind für viele Nicht-Japaner gewöhnungsbedürftig.'},
+
+  // ── TRANSPORT & SHINKANSEN ─────────────────────────────────────────────
+  {f:'Welche durchschnittliche Verspätung hat der Shinkansen pro Jahr?', a:'54 Sekunden pro Jahr! Die Deutsche Bahn gilt ab unter 6 Minuten als pünktlich. 2017 entschuldigte sich ein Zugbetreiber offiziell für eine 20-Sekunden-Frühfahrt.'},
+  {f:'Was bedeutet "Shinkansen" wörtlich?', a:'"Neue Stammstrecke" (Shin=neu, kan=Stamm/Hauptlinie, sen=Strecke/Linie). Nicht "Bullet Train" – das ist der englische Spitzname wegen der Wagenform.'},
+  {f:'Wann wurde der erste Shinkansen eröffnet?', a:'1964 – pünktlich zu den Olympischen Spielen in Tokio. Strecke Tokio-Osaka, 515 km in 4 Stunden. Heute schafft der Nozomi dieselbe Strecke in 2 Std. 22 Min.'},
+  {f:'Was ist der Unterschied zwischen Nozomi, Hikari und Kodama?', a:'Nozomi = schnellster, wenige Halte (kein JR Pass!). Hikari = mittelschnell, mehr Halte. Kodama = langsamster, alle Halte. Ihr fahrt Nozomi und Kodama!'},
+  {f:'Was ist eine Suica-Karte und wofür kann man sie nutzen?', a:'Aufladbare IC-Card für alle U-Bahnen, Busse und Züge (außer Shinkansen-Reservierungen). Auch zum Bezahlen in Konbinis und Automaten. Funktioniert in Apple Wallet!'},
+  {f:'Was ist der Romancecar?', a:'Luxuszug der Odakyu-Linie von Shinjuku nach Hakone. Panoramafenster, Frontbeobachtungsdeck, Reservierungspflicht. Ihr fahrt den GSE (70000er) – der neueste und schönste.'},
+  {f:'Was ist Takkyubin?', a:'Japanischer Haushalts-Gepäckversand (Yamato Transport). Koffer abends abgeben, am nächsten Tag im Zielhotel. Ihr nutzt ihn am 18.04. und 26.04. – ca. 1.500-2.000 Yen/Koffer.'},
+  {f:'Welche drei Zuglinien fahren am Bahnhof Takadanobaba?', a:'JR Yamanote Line (grün, Ringbahn), Tozai U-Bahn (blau, West-Ost) und Seibu Shinjuku Line (gelb). Euer Airbnb liegt 6 Gehminuten davon entfernt.'},
+
+  // ── GESCHICHTE & GEOGRAFIE ─────────────────────────────────────────────
+  {f:'Wie viele Inseln hat Japan?', a:'Über 6.800 Inseln – aber nur 421 davon sind bewohnt. Die vier Hauptinseln sind Honshu, Hokkaido, Kyushu und Shikoku.'},
+  {f:'Auf wie vielen tektonischen Platten liegt Japan?', a:'Drei Platten gleichzeitig: Eurasische, Pazifische und Philippinische Platte. Deshalb: 111 aktive Vulkane (10% aller weltweit) und täglich kleine Erdbeben.'},
+  {f:'Was war Edo und was ist es heute?', a:'Edo war die Hauptstadt der Tokugawa-Shogune (1603-1868). 1868 umbenannt in Tokio ("Östliche Hauptstadt") als Kaiser Meiji die Macht übernahm.'},
+  {f:'Was ist die Goldene Woche?', a:'Japans längster Feiertag – Ende April bis Anfang Mai, 7-10 Tage. Mehrere nationale Feiertage hintereinander. Züge und Hotels sind Monate im Voraus ausgebucht – ihr seid mittendrin!'},
+  {f:'Wann wurde Hiroshima durch die Atombombe zerstört?', a:'6. August 1945 – "Little Boy" explodierte 580 Meter über der Stadt. Über 80.000 Menschen starben sofort. Nagasaki folgte 3 Tage später. Japan kapitulierte am 15. August.'},
+  {f:'Was war das Tokugawa-Shogunat?', a:'Militärregierung (1603-1868) unter Ieyasu Tokugawa. Japan war 250 Jahre lang praktisch vom Ausland abgeschlossen (Sakoku). Friedliche, stabile Epoche – Basis der japanischen Kultur.'},
+  {f:'Was ist die Meiji-Restauration?', a:'1868: Kaiser Meiji übernahm Macht vom Shogunat zurück. Japan öffnete sich dem Westen, industrialisierte rasant. In 50 Jahren von Feudalstaat zur Weltmacht.'},
+  {f:'Warum heißt Japan auf Japanisch "Nihon"?', a:'"Nihon" (日本) = "Ursprung der Sonne" – Japan liegt östlich von China, wo die Sonne aufgeht. Der englische Name "Japan" kommt vom chinesischen "Cipangu" über Marco Polo.'},
+  {f:'Was ist die Bedeutung des Fuji für die Japaner?', a:'Nationalsymbol, heiliger Berg (Shinto), seit 2013 UNESCO-Welterbe als "Kulturlandschaft". Letzter Ausbruch 1707. Ca. 300.000 Menschen besteigen ihn jährlich.'},
+  {f:'Welche Städte auf eurer Route sind UNESCO-Welterbe?', a:'Hiroshima Peace Memorial (Genbaku Dome), Miyajima (Itsukushima-Schrein) und Kyoto (17 Tempel und Schreine). Nara (Todai-ji) auch!'},
+
+  // ── SEHENSWÜRDIGKEITEN & AKTIVITÄTEN ──────────────────────────────────
+  {f:'Was ist Owakudani und warum sind die Eier dort schwarz?', a:'Aktives Vulkangebiet in Hakone. Schwefelmineralien im kochenden Wasser färben die Eierschale schwarz (Kuro-Tamago). Legende: jedes Ei verlängert das Leben um 7 Jahre.'},
+  {f:'Warum scheint das Torii auf Miyajima im Wasser zu schweben?', a:'Steht auf Pfählen im Wattenmeer. Bei Flut schwimmt es, bei Ebbe kann man hingehen. Morgens und bei Sonnenuntergang fotografisch am stärksten.'},
+  {f:'Was ist teamLab?', a:'Japanisches Kunstkollektiv das immersive digitale Installationen schafft. Borderless (Azabudai) = trocken, riesige Räume ohne Grenzen. Planets (Toyosu) = barfuß durch Wasser, 4 intensive Räume.'},
+  {f:'Was ist der Unterschied zwischen teamLab Planets und Borderless?', a:'Planets (Toyosu, 13.04.) = barfuß durch Wasser, Hose hochkrempeln! 4 intensive Räume, ca. 60 Min. Borderless (Azabudai, 27.04.) = trocken, weitläufig, viele Räume ohne Ende.'},
+  {f:'Was ist Fushimi Inari berühmt für?', a:'Über 10.000 orangerote Torii-Tore, die von Firmen und Privatpersonen gespendet wurden. Auf jedem Tor steht der Name des Spenders. Je früher man geht, desto leerer ist es.'},
+  {f:'Was ist der Philosophenweg in Kyoto?', a:'Spazierweg entlang eines Kanals von Nanzen-ji bis Ginkaku-ji, ca. 2 km. Benannt nach Philosoph Nishida Kitaro der ihn täglich entlangging. Ende April noch mit letzten Kirschblüten möglich.'},
+  {f:'Was ist das Ghibli Museum und wie kauft man Tickets?', a:'Museum für Studio Ghibli (Miyazaki) in Mitaka, bei Tokio. Tickets NUR online über Lawson Ticket (lawson.co.jp), am 1. des Vormonats ab 10 Uhr JST. Oft Monate im Voraus ausverkauft!'},
+  {f:'Was ist Arashiyama bekannt für?', a:'Bambushain (vor 8 Uhr = fast leer!), Togetsukyo-Brücke, Tenryu-ji Tempel. Ruhige, zen-hafte Atmosphäre. Kombination mit Affenpark oder Bootsfahrt auf dem Fluss möglich.'},
+  {f:'Was ist die Hondori Street in Hiroshima?', a:'Überdachte Einkaufsstraße im Zentrum Hiroshimas – kleine Restaurants, Bars, von casual bis modern. Gute Alternative nach dem Peace Memorial Park zum Runterkommen.'},
+  {f:'Was ist Dotonbori in Osaka?', a:'Kanal mit ikonischen Leuchtreklamen – Glico-Mann und Kani-Doraku-Krabbe. Osaka-Nachtleben-Zentrum, Streetfood, Bars. Perfekt für den ersten Abend nach dem Checkin.'},
+
+  // ── ONSEN & RYOKAN ─────────────────────────────────────────────────────
+  {f:'Was sind die wichtigsten Onsen-Regeln?', a:'Körper vorher gründlich waschen. Keine Badekleidung. Kein Handy. Leise sein. Handtuch nicht ins Wasser. Tattoos in vielen Onsens verboten (Kinnotake: private Suite, kein Problem).'},
+  {f:'Was ist ein "Kashikiri-Buro"?', a:'Privat buchbares Onsen – nur für eine Gruppe/Person. Kinnotake hat solche auf den Zimmern. Seltener Luxus – die meisten Onsens sind öffentlich geteilt.'},
+  {f:'Was ist ein Ryokan?', a:'Traditionelles japanisches Gasthaus. Tatami-Boden, Futon auf dem Boden, Yukata als Hauskleidung, Kaiseki-Dinner. Das Kinnotake Tonosawa ist eines der exklusivsten Ryokans Japans.'},
+  {f:'Was ist ein Yukata?', a:'Leichter Baumwoll-Kimono als Hauskleidung im Ryokan. Wird für Mahlzeiten, Onsen-Gang und abends getragen. Das Kinnotake stellt ihn bereit – links über rechts schließen (rechts über links = Leichensymbol!).'},
+  {f:'Was ist Hakone Yuryo und warum ist es besonders?', a:'Moderner Tagesonsen direkt am Bahnhof Hakone-Yumoto. Einer der wenigen Onsens der Tattoos erlaubt. Kein Shuttle nötig, buchbar online. Alternative zum Kinnotake-Onsen.'},
+  {f:'Was ist der Unterschied zwischen einem Rotenburo und einem Sentō?', a:'Rotenburo = Außenonsen (im Freien, natürliches heißes Wasser). Sentō = städtisches Badehaus (erhitztes Leitungswasser). Kinnotake hat Rotenburo – Onsen unter freiem Himmel!'},
+
+  // ── NATUR & TIERE ──────────────────────────────────────────────────────
+  {f:'Warum heißt Ōkunoshima "Rabbit Island"?', a:'Ehemalige geheime Giftgasfabrik im WWII – so geheim dass die Insel aus Karten gelöscht wurde. Nach Kriegsende wurden Labortiere freigelassen. Heute: hunderte zahme Kaninchen.'},
+  {f:'Welches Tier läuft frei auf Miyajima herum und klaut Essen?', a:'Sika-Hirsche – besonders die Jungen greifen nach Snacks und Plastiktüten. Gelten als heilige Boten der Götter. Aufpassen mit Einkaufstüten!'},
+  {f:'Welche Tiere sind heilig im Shintō?', a:'Füchse (Kitsune) bei Inari-Schreinen – als Botschafter des Gottes. Hirsche bei Kasuga-Taisha in Nara. Raben (Karasu Tengu) an vielen Schreinen. Auch Schlangen und Tiger.'},
+  {f:'Was ist Tanuki?', a:'Marderhund – in der japanischen Folklore ein Verwandlungskünstler (Shapeshifter). Die dicken Keramikfiguren vor Restaurants und Läden sind Tanuki – sie bringen Glück und gute Geschäfte.'},
+  {f:'Was ist der Kitsune in der japanischen Mythologie?', a:'Fuchs-Geist mit magischen Kräften. Je älter, desto mehr Schwänze (bis 9). Botschafter des Inari-Gottes (Ernte, Fuchs, Industrie). Fushimi Inari Schrein ist ihm gewidmet.'},
+
+  // ── ZAHLEN & FAKTEN ────────────────────────────────────────────────────
+  {f:'Wie viele Michelin-Stern-Restaurants hat Japan?', a:'Ca. 4.000 – mehr als Frankreich und Italien zusammen! Tokyo hat mehr Michelin-Sterne als jede andere Stadt der Welt. Ihr esst also statistisch gesehen überdurchschnittlich gut.'},
+  {f:'Wie viele Menschen leben im Großraum Tokio?', a:'Ca. 37-38 Millionen – die größte Metropolregion der Welt. Tokio (Stadtgebiet) allein hat 14 Millionen. Zum Vergleich: ganz Australien hat 26 Millionen.'},
+  {f:'Wie alt ist Japans ältestes Unternehmen?', a:'Kongō Gumi, eine Tempel-Baufirma, wurde 578 n.Chr. gegründet. 1.400 Jahre überlebt – bis 2006 von einem Konzern aufgekauft. Ironie der Geschichte.'},
+  {f:'Wie hoch ist der Fuji?', a:'3.776 Meter. Letzter Ausbruch 1707 (Hōei-Eruption). Ca. 300.000 Menschen besteigen ihn jährlich (Juli-August). Alte Weisheit: "Einmal auf den Fuji steigen ist weise, zweimal ist töricht."'},
+  {f:'Wie viele UNESCO-Welterbestätten hat Japan?', a:'25 Stätten (Stand 2023) – Platz 12 weltweit. Ihr besucht mehrere davon: Hiroshima Peace Memorial, Miyajima, und Kyoto (gleich 17 Tempel und Schreine auf einmal).'},
+  {f:'Wie viele aktive Vulkane hat Japan?', a:'Ca. 111 aktive Vulkane – 10% aller aktiven Vulkane weltweit. Als Ausgleich: Sie erzeugen die heißen Quellen für die Onsens. Japan macht Onsen aus seiner geologischen Katastrophenlage.'},
+  {f:'Was ist die Bevölkerungsdichte von Japan im Vergleich zu Deutschland?', a:'Japan: ca. 334 Einw./km². Deutschland: ca. 234 Einw./km². Aber: 73% Japans sind Gebirge – die Bevölkerung lebt auf 27% der Fläche, also effektiv über 1.200 Einw./km².'},
+
+  // ── SPRACHE & SCHRIFT ──────────────────────────────────────────────────
+  {f:'Welche drei Schriftsysteme nutzt Japanisch gleichzeitig?', a:'Hiragana (einheimische Silben, 46 Zeichen), Katakana (Fremdwörter, 46 Zeichen), Kanji (chinesischstämmige Zeichen, 2.136 Standard). Plus Romaji (lateinisch) für Touristen.'},
+  {f:'Wie viele Kanji muss ein japanisches Kind für den Schulabschluss lernen?', a:'2.136 Jōyō-Kanji (Alltagskanji). Ein durchschnittlicher Japaner kennt ca. 3.000-4.000. Zeitungen verwenden ca. 2.000 verschiedene Kanji. Ein Leben lang lernen.'},
+  {f:'Was bedeutet "Sumimasen" und wann ist es besonders nützlich?', a:'"Entschuldigung/Verzeihung" – aber auch der beste Weg, einen Kellner zu rufen! Einfach "Sumimasen!" rufen statt zu winken. Höflicher als Schnipsen oder Klatschen.'},
+  {f:'Was bedeutet "Ikura desu ka?"', a:'"Wie viel kostet das?" – die wichtigste Einkaufs-Phrase. Einfach auf ein Objekt zeigen und fragen. Fast jeder Verkäufer versteht diese Phrase.'},
+  {f:'Warum vermeiden Japaner das direkte "Nein"?', a:'Direkte Ablehnung gilt als unhöflich und gesichtswahrend (Mentsu). Stattdessen: "Es ist etwas schwierig...", "Ich werde nachdenken..." oder einfaches Schweigen. Kontext lesen ist Kunst.'},
+  {f:'Was bedeutet "Kawaii", "Sugoi" und "Yabai"?', a:'Kawaii = süß/niedlich. Sugoi = großartig/wow/unglaublich. Yabai = ursprünglich "gefährlich/schlimm", heute von Jüngeren für "krass/geil/unglaublich" verwendet (positiv wie negativ).'},
+
+  // ── SPORT & UNTERHALTUNG ──────────────────────────────────────────────
+  {f:'Was ist Sumo und welche Regeln gibt es?', a:'Nationalsport Japans. Ringer (Rikishi) versuchen, den Gegner aus dem Ring (Dohyo) zu werfen oder zu boden zu bringen. Strenge Regeln und Rituale, Shinto-Wurzeln. 6 Turniere pro Jahr.'},
+  {f:'Was ist Pachinko und warum ist es legal obwohl es Glücksspiel ist?', a:'Flipper-ähnliche Automaten. Man gewinnt Murmeln (kein Geld direkt). Die Murmeln tauscht man im Nachbargeschäft gegen Bargeld. Das Nachbargeschäft hat "nichts" mit dem Pachinko-Laden zu tun.'},
+  {f:'Was ist Karaoke und wo wurde es erfunden?', a:'In Japan! 1971 von Daisuke Inoue in Kobe erfunden – er baute eine Maschine die zu aufgenommener Musik spielte. Inoue ließ das Konzept nie patentieren. Karaoke bedeutet "leeres Orchester".'},
+  {f:'Was ist der Unterschied zwischen Manga und Anime?', a:'Manga = japanische Comics (schwarz-weiß, von rechts nach links lesen). Anime = japanische Animationsserien/-filme. Viele Anime basieren auf Manga. Akihabara ist das weltweite Zentrum beider.'},
+  {f:'Was ist ein "Maid Café"?', a:'Café in dem Kellnerinnen als niedliche Zofen (Maids) verkleidet sind und Gäste als "Master" oder "Princess" ansprechen. Phänomen aus Akihabara. Eher Rollenspiel-Entertainment als Gastronomie.'},
+  {f:'Was sind "Purikura"?', a:'Fotoautomaten die Bilder stark bearbeiten und verschönern – größere Augen, kleineres Gesicht, glattere Haut. Massenhaft in Spielhallen. Gruppen-Selfie-Kulisse. Sehr japanisch.'},
+
+  // ── TOKIO SPEZIFISCH ───────────────────────────────────────────────────
+  {f:'Was ist das Shibuya Scramble Crossing?', a:'Belebteste Fußgängerkreuzung der Welt – bei jeder Grünphase überqueren ca. 3.000 Menschen gleichzeitig in alle Richtungen. Bester Ausblick: Starbucks oder Shibuya Sky darüber.'},
+  {f:'Was ist Golden Gai in Shinjuku?', a:'Labyrinth von ca. 200 winzigen Bars in 6 engen Gassen – jede hat Platz für 5-8 Gäste. Jede Bar hat ihr eigenes Thema (Jazz, Anime, Filmregisseure...). Seit den 60ern unverändert.'},
+  {f:'Was ist Omoide Yokocho?', a:'"Gasse der Erinnerungen" in Shinjuku – enge Gasse mit winzigen Yakitori-Grillständen. Rauchig, authentisch, preiswert. Abends erinnert es an das Japan der 50er Jahre.'},
+  {f:'Was ist Harajuku bekannt für?', a:'Takeshita Street = Zentrum japanischer Streetfashion und Jugendkultur. Crepes, bonbonfarbene Mode, Cosplayer. Ruhiger: Omotesando = Japans Champs-Élysées mit Designerläden.'},
+  {f:'Was ist Shimokitazawa?', a:'Tokios "Hipster-Viertel" – Vintage-Shops, Indie-Plattenläden, kleine Theater, Cafés. Kein Tourismus, viele Studenten und Künstler. Entspannte Alternative zu Shibuya.'},
+  {f:'Was ist Yanaka?', a:'Am besten erhaltenes altes Tokio (Shitamachi). Enge Gassen, kleine Tempel, Handwerksläden. Yanaka Ginza = kurze Einkaufsstraße mit Snacks und Souvenirs. Kaum Touristen.'},
+
+  // ── HAKONE SPEZIFISCH ──────────────────────────────────────────────────
+  {f:'Warum ist der Hakone-Rundkurs im Uhrzeigersinn empfohlen?', a:'Die meisten Touristen fahren gegen den Uhrzeigersinn (Tozan Bahn zuerst). Im Uhrzeigersinn startet man früh mit dem Bus zum Ashi-See – deutlich weniger Menschen morgens.'},
+  {f:'Was ist der Hakone Freepass?', a:'2-Tages-Pass (¥6.000/Person) der alle Transportmittel im Rundkurs abdeckt: Tozan Bahn, Ropeway, Piratenschiff, Busse. Ihr habt ihn bereits gebucht (EMot)! Aktivierung beim ersten Einsteigen.'},
+  {f:'Was ist das Pola Museum of Art in Hakone?', a:'Fantastische Impressionisten-Sammlung (Monet, Renoir, Cézanne) in modernem Gebäude mitten im Wald. Idealer Plan B bei schlechtem Wetter statt Rundkurs.'},
+  {f:'Wie weit ist das Kinnotake Ryokan vom Bahnhof Hakone-Yumoto?', a:'1,3 km – ca. 15-20 Minuten zu Fuß. Oder ¥100 Bus ab Haltestelle Deyama (ca. 5 Minuten). Ihr habt einen Limousinen-Service gebucht für An- und Abreise.'},
+
+  // ── KYOTO SPEZIFISCH ───────────────────────────────────────────────────
+  {f:'Warum wurde Kyoto im WWII nicht bombardiert?', a:'US-Kriegsminister Henry Stimson hatte Kyoto als Kulturstätte von unschätzbarem Wert von der Atombomben-Zielliste gestrichen. Er kannte die Stadt aus seiner Hochzeitsreise 1926.'},
+  {f:'Was ist der Unterschied zwischen einem Tempel und einem Schrein?', a:'Tempel (tera/ji) = buddhistische Anlage, oft mit Pagode. Schrein (jinja) = shintōistisches Heiligtum, immer mit Torii-Tor am Eingang. Japan hat beides – oft nebeneinander.'},
+  {f:'Was ist Pontocho?', a:'Schmale Gasse in Kyoto parallel zum Kamo-Fluss – eines der Hauptgebiete für traditionelle Restaurants und Bars. Abends besonders atmosphärisch mit Laternen und Holzhäusern.'},
+  {f:'Was ist ein "Maiko" und wo sieht man sie?', a:'Lehrlings-Geisha in Kyoto (5-6 Jahre Ausbildung zur Geiko/Geisha). In Gion häufiger zu sehen, besonders frühabends. Echte Maiko tragen aufwendige Kimonos und weiße Schminke.'},
+
+  // ── OSAKA SPEZIFISCH ───────────────────────────────────────────────────
+  {f:'Was bedeutet "Kuidaore" und warum ist es typisch für Osaka?', a:'"Sich zu Tode essen" – Osaka ist Japans Gastronomiehauptstadt. Takoyaki, Okonomiyaki, Kushikatsu stammen aus Osaka. Die Stadt hat mehr Restaurants pro Kopf als fast jede andere Stadt.'},
+  {f:'Was ist Doyamachō?', a:'Japans entspanntestes LGBTQ+-Viertel in Osaka – 5 Min. von Umeda. Casually, offen, sehr touristenfreundlich. Bars und Clubs über viele Gebäude verteilt, meist ab 20 Uhr.'},
+  {f:'Was ist das Glico-Mann Schild?', a:'Leuchtschild in Dotonbori seit 1935 – läufer mit erhobenen Armen als Siegerpose. Globales Symbol für Osaka. Glico ist ein japanischer Süßwarenhersteller (Pocky!). Schild wurde 6x erneuert.'},
+  {f:'Was ist Kuromon Ichiba?', a:'Überdachte Markthalle nahe Namba – das kulinarische Herz Osakas. Frische Austern direkt am Stand, Wagyu-Spieße, Krabben. Bis 17 Uhr geöffnet. Als Mittagsprogramm ideal.'},
+
+  // ── SONSTIGES ─────────────────────────────────────────────────────────
+  {f:'Was ist Duty Free in Japan und wie funktioniert es ab 2026?', a:'Kauft man über ¥5.000 mit Reisepass, sind viele Waren steuerfrei. Ab Juli 2026 neue Regelung: Rückerstattung zentral am Flughafen statt im Laden. Plant das ein!'},
+  {f:'Warum gibt es in Japan kaum öffentliche Mülleimer?', a:'Anti-Terror-Maßnahmen seit dem Sarin-Anschlag der Aum-Sekte in der Tokioter U-Bahn 1995. Lösung: Müll in Konbinis entsorgen – dort gibt es immer Mülleimer beim Eingang.'},
+  {f:'Was ist Kōdō?', a:'Die japanische Kunst des Räucherns – "Weg des Dufts". Wie eine Teezeremonie, aber mit Räucherwerk. Gäste "hören" den Duft (kikō) anstatt ihn zu riechen. Eines der drei klassischen japanischen Künste.'},
+  {f:'Was ist Ikebana?', a:'Japanische Kunst des Blumenarrangierens – nicht dekorativ sondern meditativ. Weniger ist mehr: Leere ist genauso wichtig wie das Arrangement. Über 1.000 Jahre alte Tradition.'},
+  {f:'Was ist der Unterschied zwischen Shintō und Buddhismus in Japan?', a:'Viele Japaner praktizieren beide! Shintō = einheimische Naturreligion (Kami-Götter in allem). Buddhismus = aus China/Indien importiert. Hochzeit oft shintōistisch, Beerdigung buddhistisch.'},
+  {f:'Was ist "Omotenashi"?', a:'Japanische Gastfreundschaft – bedingungslose, aufrichtige Fürsorge für den Gast ohne Erwartung einer Gegenleistung. Anders als westlicher Service – keine Aufführung, sondern echte Hingabe. Ihr erlebt es im Kinnotake.'},
+  {f:'Was ist Ikigai?', a:'"Grund zum Aufstehen" – der Schnittpunkt aus dem was man liebt, was man gut kann, was die Welt braucht und womit man Geld verdienen kann. Japanisches Konzept für Lebenssinn. Okinawa hat die ältesten Menschen der Welt – teilweise dank Ikigai.'},
+  {f:'Was ist "Ma" in der japanischen Ästhetik?', a:'"Zwischenraum" oder "Pause" – die bedeutungsvolle Leere zwischen Dingen. In Musik, Architektur, Poesie und Kampfkunst gleich wichtig wie das was vorhanden ist. Das Nichts als aktives Element.'},
+  {f:'Warum tragen viele Japaner Mundmasken?', a:'Mehrere Gründe: Krankheitsschutz und -verhinderung (Höflichkeit bei Erkältung), Pollenallergie (Sugi-Zeder blüht massiv), Privatsphäre/Anonymität in der Öffentlichkeit, und mittlerweile auch Mode.'},
+  {f:'Was ist das japanische Konzept "Shokunin"?', a:'"Handwerker/Meister" – jemand der sein ganzes Leben einem Handwerk widmet und ständig nach Perfektion strebt. Ein Ramen-Koch der 30 Jahre dieselbe Brühe perfektioniert ist ein Shokunin. Tiefe Bewunderung in Japan.'},
+];
+
+let quizIdx = 0;
+let quizScore = 0;
+let quizAnswered = false;
+let quizOrder = [];
+
+function initQuiz() {
+  quizOrder = [...Array(QUIZ_FRAGEN.length).keys()].sort(() => Math.random()-0.5);
+  quizIdx = 0;
+  quizScore = 0;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const el = document.getElementById('sec-quiz');
+  if (quizIdx >= quizOrder.length) {
+    el.innerHTML = `<div class="quiz-card">
+      <div style="font-size:48px;margin-bottom:16px">🎉</div>
+      <div style="font-size:18px;font-weight:600;margin-bottom:8px">Quiz beendet!</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:20px">${quizScore} von ${QUIZ_FRAGEN.length} richtig</div>
+      <button class="quiz-btn" onclick="initQuiz()">Nochmal spielen</button>
+    </div>`;
+    return;
+  }
+  const q = QUIZ_FRAGEN[quizOrder[quizIdx]];
+  quizAnswered = false;
+  el.innerHTML = `
+    <div class="score-badge">Frage ${quizIdx+1} / ${QUIZ_FRAGEN.length} · ${quizScore} Punkte</div>
+    <div class="quiz-card">
+      <div class="quiz-q">${q.f}</div>
+      <div class="quiz-answer" id="quiz-ans">${q.a}</div>
+      <button class="quiz-btn" onclick="showQuizAnswer()">Antwort zeigen</button>
+    </div>`;
+}
+
+function showQuizAnswer() {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  document.getElementById('quiz-ans').style.display = 'block';
+  const el = document.getElementById('sec-quiz');
+  el.innerHTML += `<div style="display:flex;gap:8px;margin-top:10px">
+    <button class="quiz-btn quiz-btn-ghost" style="flex:1" onclick="quizNext(false)">😅 Nein</button>
+    <button class="quiz-btn" style="flex:1;background:var(--green)" onclick="quizNext(true)">✓ Ja, wusste ich!</button>
+  </div>`;
+}
+
+function quizNext(correct) {
+  if (correct) quizScore++;
+  quizIdx++;
+  renderQuiz();
+}
+
+// ── LERNKARTEN ─────────────────────────────────────────────────────────────
+const LERNKARTEN = [
+  {de:'Guten Tag', ro:'Konnichiwa', jp:'こんにちは'},
+  {de:'Danke sehr', ro:'Arigatō gozaimasu', jp:'ありがとうございます'},
+  {de:'Entschuldigung', ro:'Sumimasen', jp:'すみません'},
+  {de:'Wo ist…?', ro:'… wa doko desu ka?', jp:'…はどこですか？'},
+  {de:'Wie viel kostet das?', ro:'Ikura desu ka?', jp:'いくらですか？'},
+  {de:'Vor dem Essen', ro:'Itadakimasu', jp:'いただきます'},
+  {de:'Nach dem Essen', ro:'Gochisōsama deshita', jp:'ごちそうさまでした'},
+  {de:'Die Rechnung bitte', ro:'Okaikei wo kudasai', jp:'お会計をください'},
+  {de:'Ich verstehe nicht', ro:'Wakarimasen', jp:'わかりません'},
+  {de:'Prost!', ro:'Kanpai!', jp:'乾杯！'},
+  {de:'Sehr lecker!', ro:'Oishii!', jp:'おいしい！'},
+  {de:'Hilfe!', ro:'Tasukete kudasai!', jp:'助けてください！'},
+  {de:'Bahnhof', ro:'Eki', jp:'駅'},
+  {de:'Toilette', ro:'Toire', jp:'トイレ'},
+  {de:'Links', ro:'Hidari', jp:'左'},
+  {de:'Rechts', ro:'Migi', jp:'右'},
+  {de:'Das hier bitte', ro:'Kore wo kudasai', jp:'これをください'},
+  {de:'Ich schaue nur', ro:'Mite iru dake desu', jp:'見ているだけです'},
+  {de:'Ja', ro:'Hai', jp:'はい'},
+  {de:'Auf Wiedersehen', ro:'Sayōnara', jp:'さようなら'},
+];
+
+let flashIdx = 0;
+let flashFlipped = false;
+let flashOrder = [];
+let flashCorrect = 0;
+let flashTotal = 0;
+
+function initFlash() {
+  flashOrder = [...Array(LERNKARTEN.length).keys()].sort(() => Math.random()-0.5);
+  flashIdx = 0;
+  flashFlipped = false;
+  flashCorrect = 0;
+  flashTotal = 0;
+  renderFlash();
+}
+
+function renderFlash() {
+  const el = document.getElementById('sec-lernkarten');
+  if (flashIdx >= flashOrder.length) {
+    el.innerHTML = `<div class="quiz-card">
+      <div style="font-size:48px;margin-bottom:16px">🎓</div>
+      <div style="font-size:18px;font-weight:600;margin-bottom:8px">Runde beendet!</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:20px">${flashCorrect} von ${LERNKARTEN.length} auf Anhieb gewusst</div>
+      <button class="quiz-btn" onclick="initFlash()">Nochmal üben</button>
+    </div>`;
+    return;
+  }
+  const k = LERNKARTEN[flashOrder[flashIdx]];
+  flashFlipped = false;
+  el.innerHTML = `
+    <div class="score-badge">Karte ${flashIdx+1} / ${LERNKARTEN.length}</div>
+    <div class="quiz-card" onclick="flipFlash()" style="cursor:pointer;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:8px">🇩🇪 Deutsch — tippe zum Umdrehen</div>
+      <div class="flash-front">${k.de}</div>
+      <div class="flash-back" id="flash-back">
+        <div style="font-size:22px;font-weight:600;color:var(--accent);margin-bottom:4px">${k.ro}</div>
+        <div style="font-size:16px;color:var(--text3)">${k.jp}</div>
+      </div>
+    </div>
+    <div id="flash-btns" style="display:none;display:flex;gap:8px;margin-top:10px">
+      <button class="quiz-btn quiz-btn-ghost" style="flex:1" onclick="flashNext(false)">😅 Nochmal</button>
+      <button class="quiz-btn" style="flex:1;background:var(--green)" onclick="flashNext(true)">✓ Gewusst!</button>
+    </div>`;
+}
+
+function flipFlash() {
+  if (flashFlipped) return;
+  flashFlipped = true;
+  document.getElementById('flash-back').style.display = 'block';
+  document.getElementById('flash-btns').style.display = 'flex';
+}
+
+function flashNext(correct) {
+  if (correct) flashCorrect++;
+  flashIdx++;
+  renderFlash();
+}
+
+// Quiz + Lernkarten werden via zentraler show() initialisiert
+
+
+// ── HOME SCREEN ───────────────────────────────────────────────────────────
+(function buildHome() {
+  const DAILY = [
+    {id:'tage',    icon:'📅', label:'Tage',       sub:'Tagesplan'},
+    {id:'transport',icon:'🚄',label:'Transport',  sub:'Flüge & Züge'},
+    {id:'hotels',  icon:'🏨', label:'Hotels',      sub:'Unterkünfte'},
+    {id:'essen',   icon:'🍜', label:'Essen',        sub:'Restaurants'},
+    {id:'bars',    icon:'🍸', label:'Bars',         sub:'& Cocktailbars'},
+    {id:'manami',  icon:'⭐', label:'Manamis',      sub:'Insider-Tipps'},
+    {id:'wetter',  icon:'🌤️', label:'Wetter',       sub:'Live-Vorhersage'},
+    {id:'yen',     icon:'💴', label:'Yen',          sub:'Umrechner'},
+    {id:'karte',   icon:'🗺️', label:'Karte',        sub:'Tokio-Viertel'},
+  ];
+
+  const SOMETIMES = [
+    {id:'phrasen',  icon:'🗣️', label:'Phrasen',    sub:'Japanisch'},
+    {id:'check',    icon:'✅', label:'Checkliste', sub:'Vorbereitung'},
+    {id:'packliste',icon:'🎒', label:'Packliste',  sub:'Koffer packen'},
+    {id:'kontakte', icon:'📞', label:'Kontakte',   sub:'Nummern'},
+    {id:'notizen',  icon:'📝', label:'Notizen',    sub:'Tagebuch'},
+  ];
+
+  const FUN = [
+    {id:'quiz',      icon:'🧠', label:'Quiz',      sub:'15 Fragen'},
+    {id:'lernkarten',icon:'🎴', label:'Lernen',    sub:'Japanisch üben'},
+    {id:'infos',     icon:'🤓', label:'Infos',     sub:'& Useless Facts'},
+  ];
+
+  function tileHTML(t, cls='') {
+    return `<div class="home-tile ${cls}" onclick="goTo('${t.id}')">
+      <div class="home-icon">${t.icon}</div>
+      <div class="home-label">${t.label}</div>
+      <div class="home-sub">${t.sub}</div>
+    </div>`;
+  }
+
+  // Countdown mini
+  const ABFLUG = new Date('2026-04-11T09:30:00');
+  const now = new Date();
+  const diff = ABFLUG - now;
+  let countHtml = '';
+  if (diff > 0) {
+    const days = Math.floor(diff / (1000*60*60*24));
+    countHtml = `<div style="background:linear-gradient(135deg,#C0392B,#8B1A1A);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:36px;font-weight:300;color:white;line-height:1">${days}</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:white">Tage bis Japan</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.75)">11. April · AY1412 FRA→HEL</div>
+      </div>
+      <div style="margin-left:auto;font-size:28px">🛫</div>
+    </div>`;
+  } else if (diff > -23*24*60*60*1000) {
+    countHtml = `<div style="background:linear-gradient(135deg,#1D9E75,#085041);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:28px">🇯🇵</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:white">Ihr seid in Japan!</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.75)">Genießt jeden Moment</div>
+      </div>
+    </div>`;
+  } else {
+    countHtml = `<div style="background:var(--bg2);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:28px">🏠</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Zurück in Deutschland</div>
+        <div style="font-size:11px;color:var(--text2)">Was für eine Reise!</div>
+      </div>
+    </div>`;
+  }
+
+  let html = countHtml;
+  html += '<div class="home-section-label">Täglich</div>';
+  html += '<div class="home-grid">';
+  DAILY.forEach(t => { html += tileHTML(t, 'accent'); });
+  html += '</div>';
+
+  html += '<div class="home-section-label">Gelegentlich</div>';
+  html += '<div class="home-grid">';
+  SOMETIMES.forEach(t => { html += tileHTML(t); });
+  html += '</div>';
+
+  html += '<div class="home-section-label">Unterhaltung</div>';
+  html += '<div class="home-grid">';
+  FUN.forEach(t => { html += tileHTML(t, 'green'); });
+  html += '</div>';
+
+  document.getElementById('sec-home').innerHTML = html;
+})();
+
+function goTo(id) {
+  // Find the nav button for this id and click it
+  const btns = document.querySelectorAll('.nav-btn');
+  btns.forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) {
+      show(id, b);
+      // Scroll nav to show active button
+      b.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+    }
+  });
+}
 
 </script>
 </body>
