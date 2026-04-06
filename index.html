@@ -237,7 +237,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 <script>
 
 
-window.addEventListener("DOMContentLoaded", startApp);
 
 function startApp() {
   try { document.getElementById('hdate').textContent = fmtDate(TODAY); } catch(e) {}
@@ -2258,6 +2257,9 @@ function goTo(id) {
   });
 }
 
+
+// Start app
+startApp();
 </script>
 </body>
 </html>
