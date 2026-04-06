@@ -236,46 +236,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 <script>
 
-// ── SIMPLE PASSWORD PROTECTION ─────────────────────────────────────────────
-(function() {
-  var PASS = 'Japan2026';
-  var ok = false;
-  try { ok = sessionStorage.getItem('j26') === '1'; } catch(e) {}
 
-  if (!ok) {
-    // Build overlay
-    var overlay = document.createElement('div');
-    overlay.id = 'pw-overlay';
-    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;font-family:-apple-system,sans-serif';
-    overlay.innerHTML = '<div style="font-size:60px;margin-bottom:1rem">🇯🇵</div>'
-      + '<div style="font-size:22px;font-weight:600;margin-bottom:0.5rem;color:#1a1a1a">Japan 2026</div>'
-      + '<div style="font-size:14px;color:#888;margin-bottom:2rem">Reiseführer · Uwe, Sven & Chris</div>'
-      + '<input id="pw-field" type="password" placeholder="Passwort" style="width:100%;max-width:280px;padding:14px;font-size:18px;text-align:center;border:1.5px solid #ddd;border-radius:12px;margin-bottom:1rem;outline:none;letter-spacing:3px" />'
-      + '<button id="pw-btn" style="width:100%;max-width:280px;padding:14px;font-size:16px;font-weight:600;background:#C0750A;color:#fff;border:none;border-radius:12px;cursor:pointer">Öffnen</button>'
-      + '<div id="pw-err" style="color:#A32D2D;font-size:13px;margin-top:0.75rem;min-height:20px"></div>';
-    document.body.appendChild(overlay);
-
-    function tryOpen() {
-      var val = document.getElementById('pw-field').value;
-      if (val === PASS) {
-        try { sessionStorage.setItem('j26','1'); } catch(e) {}
-        document.body.removeChild(overlay);
-        startApp();
-      } else {
-        document.getElementById('pw-err').textContent = 'Falsches Passwort';
-        document.getElementById('pw-field').value = '';
-        document.getElementById('pw-field').focus();
-      }
-    }
-
-    document.getElementById('pw-btn').addEventListener('click', tryOpen);
-    document.getElementById('pw-field').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') tryOpen();
-    });
-  } else {
-    startApp();
-  }
-})();
+window.addEventListener("DOMContentLoaded", startApp);
 
 function startApp() {
   try { document.getElementById('hdate').textContent = fmtDate(TODAY); } catch(e) {}
