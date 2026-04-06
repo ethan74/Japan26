@@ -136,14 +136,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 .e-label{font-size:10px;color:var(--text2);margin-top:1px}
 .booking-code{font-family:ui-monospace,monospace;font-size:15px;font-weight:700;letter-spacing:3px;color:var(--accent)}
 
-.lock-screen{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:2rem}
-.lock-flag{font-size:60px;margin-bottom:1rem}
-.lock-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:0.5rem}
-.lock-sub{font-size:14px;color:var(--text2);margin-bottom:2rem;text-align:center}
-.lock-input{width:100%;max-width:280px;padding:14px 16px;font-size:18px;border:1.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);text-align:center;letter-spacing:3px;margin-bottom:1rem;outline:none}
+
+
+
+
+
 .lock-input:focus{border-color:var(--accent)}
-.lock-btn{width:100%;max-width:280px;padding:14px;font-size:16px;font-weight:600;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);cursor:pointer}
-.lock-error{font-size:13px;color:#A32D2D;margin-top:0.5rem;min-height:20px}
+
+
 
 .countdown-box{background:linear-gradient(135deg,#C0392B,#8B1A1A);border-radius:var(--radius);padding:16px;margin-bottom:10px;color:white;text-align:center}
 .countdown-num{font-size:48px;font-weight:300;line-height:1}
@@ -186,15 +186,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 </style>
 </head>
 <body>
-<div id="lock-screen" class="lock-screen">
-  <div class="lock-flag">🇯🇵</div>
-  <div class="lock-title">Japan 2026</div>
-  <div class="lock-sub">Reiseführer · Uwe, Sven & Chris</div>
-  <input class="lock-input" type="password" id="pw-input" placeholder="Passwort" onkeydown="if(event.key==='Enter')checkPw()"/>
-  <button class="lock-btn" onclick="checkPw()">Öffnen</button>
-  <div class="lock-error" id="pw-error"></div>
-</div>
-<div class="app" id="main-app" style="display:none">
+<div class="app" id="main-app">
   <div class="header">
     <div class="header-flag">🇯🇵</div>
     <h1>Japan 2026</h1>
@@ -244,76 +236,67 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 <script>
 
-const PW_KEY = 'japan2026_auth';
-const CORRECT_PW = 'Japan2026';
+// ── SIMPLE PASSWORD PROTECTION ─────────────────────────────────────────────
+(function() {
+  var PASS = 'Japan2026';
+  var ok = false;
+  try { ok = sessionStorage.getItem('j26') === '1'; } catch(e) {}
 
-// Safe storage wrapper - falls back to memory if localStorage unavailable
-const AUTH = {
-  _mem: false,
-  set: function(v) {
-    this._mem = v;
-    try { localStorage.setItem(PW_KEY, v ? '1' : '0'); } catch(e) {}
-    try { sessionStorage.setItem(PW_KEY, v ? '1' : '0'); } catch(e) {}
-  },
-  get: function() {
-    if (this._mem) return true;
-    try { if (localStorage.getItem(PW_KEY) === '1') return true; } catch(e) {}
-    try { if (sessionStorage.getItem(PW_KEY) === '1') return true; } catch(e) {}
-    return false;
-  }
-};
+  if (!ok) {
+    // Build overlay
+    var overlay = document.createElement('div');
+    overlay.id = 'pw-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;font-family:-apple-system,sans-serif';
+    overlay.innerHTML = '<div style="font-size:60px;margin-bottom:1rem">🇯🇵</div>'
+      + '<div style="font-size:22px;font-weight:600;margin-bottom:0.5rem;color:#1a1a1a">Japan 2026</div>'
+      + '<div style="font-size:14px;color:#888;margin-bottom:2rem">Reiseführer · Uwe, Sven & Chris</div>'
+      + '<input id="pw-field" type="password" placeholder="Passwort" style="width:100%;max-width:280px;padding:14px;font-size:18px;text-align:center;border:1.5px solid #ddd;border-radius:12px;margin-bottom:1rem;outline:none;letter-spacing:3px" />'
+      + '<button id="pw-btn" style="width:100%;max-width:280px;padding:14px;font-size:16px;font-weight:600;background:#C0750A;color:#fff;border:none;border-radius:12px;cursor:pointer">Öffnen</button>'
+      + '<div id="pw-err" style="color:#A32D2D;font-size:13px;margin-top:0.75rem;min-height:20px"></div>';
+    document.body.appendChild(overlay);
 
-function checkPw() {
-  const input = document.getElementById('pw-input');
-  if (!input) return;
-  const val = input.value.trim();
-  if (val === CORRECT_PW) {
-    AUTH.set(true);
-    unlockApp();
+    function tryOpen() {
+      var val = document.getElementById('pw-field').value;
+      if (val === PASS) {
+        try { sessionStorage.setItem('j26','1'); } catch(e) {}
+        document.body.removeChild(overlay);
+        startApp();
+      } else {
+        document.getElementById('pw-err').textContent = 'Falsches Passwort';
+        document.getElementById('pw-field').value = '';
+        document.getElementById('pw-field').focus();
+      }
+    }
+
+    document.getElementById('pw-btn').addEventListener('click', tryOpen);
+    document.getElementById('pw-field').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') tryOpen();
+    });
   } else {
-    const err = document.getElementById('pw-error');
-    if (err) err.textContent = 'Falsches Passwort';
-    input.value = '';
-    input.focus();
+    startApp();
   }
-}
+})();
 
-let _appInitialized = false;
-
-function unlockApp() {
-  const lock = document.getElementById('lock-screen');
-  const app  = document.getElementById('main-app');
-  if (lock) lock.style.display = 'none';
-  if (app)  app.style.display  = 'flex';
-  if (!_appInitialized) {
-    _appInitialized = true;
-    initApp();
-  }
-}
-
-function initApp() {
+function startApp() {
   try { document.getElementById('hdate').textContent = fmtDate(TODAY); } catch(e) {}
-  try { buildHome(); } catch(e) { console.error('buildHome', e); }
-  try { buildTage(); } catch(e) { console.error('buildTage', e); }
-  try { buildChecklist(); } catch(e) { console.error('buildChecklist', e); }
-  try { buildHotels(); } catch(e) { console.error('buildHotels', e); }
-  try { buildTransport(); } catch(e) { console.error('buildTransport', e); }
-  try { buildEssen(); } catch(e) { console.error('buildEssen', e); }
-  try { buildBars(); } catch(e) { console.error('buildBars', e); }
-  try { buildManami(); } catch(e) { console.error('buildManami', e); }
-  try { buildKarte(); } catch(e) { console.error('buildKarte', e); }
-  try { buildKontakte(); } catch(e) { console.error('buildKontakte', e); }
-  try { buildPackliste(); } catch(e) { console.error('buildPackliste', e); }
-  try { buildPhrasen(); } catch(e) { console.error('buildPhrasen', e); }
-  try { buildInfos(); } catch(e) { console.error('buildInfos', e); }
-  try { buildNotizen(); } catch(e) { console.error('buildNotizen', e); }
-  try { buildUseless(); } catch(e) { console.error('buildUseless', e); }
+  try { buildHome(); } catch(e) { console.error('buildHome',e); }
+  try { buildTage(); } catch(e) { console.error('buildTage',e); }
+  try { buildChecklist(); } catch(e) { console.error('buildChecklist',e); }
+  try { buildHotels(); } catch(e) { console.error('buildHotels',e); }
+  try { buildTransport(); } catch(e) { console.error('buildTransport',e); }
+  try { buildEssen(); } catch(e) { console.error('buildEssen',e); }
+  try { buildBars(); } catch(e) { console.error('buildBars',e); }
+  try { buildManami(); } catch(e) { console.error('buildManami',e); }
+  try { buildKarte(); } catch(e) { console.error('buildKarte',e); }
+  try { buildKontakte(); } catch(e) { console.error('buildKontakte',e); }
+  try { buildPackliste(); } catch(e) { console.error('buildPackliste',e); }
+  try { buildPhrasen(); } catch(e) { console.error('buildPhrasen',e); }
+  try { buildInfos(); } catch(e) { console.error('buildInfos',e); }
+  try { buildNotizen(); } catch(e) { console.error('buildNotizen',e); }
+  try { buildUseless(); } catch(e) { console.error('buildUseless',e); }
 }
 
-// Auto-unlock if already authenticated
-if (AUTH.get()) {
-  unlockApp();
-}
+
 
 document.addEventListener('click', function(e) {
   var a = e.target.closest('a');
