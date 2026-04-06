@@ -278,11 +278,36 @@ function checkPw() {
   }
 }
 
+let _appInitialized = false;
+
 function unlockApp() {
   const lock = document.getElementById('lock-screen');
   const app  = document.getElementById('main-app');
   if (lock) lock.style.display = 'none';
   if (app)  app.style.display  = 'flex';
+  if (!_appInitialized) {
+    _appInitialized = true;
+    initApp();
+  }
+}
+
+function initApp() {
+  try { document.getElementById('hdate').textContent = fmtDate(TODAY); } catch(e) {}
+  try { buildHome(); } catch(e) { console.error('buildHome', e); }
+  try { buildTage(); } catch(e) { console.error('buildTage', e); }
+  try { buildChecklist(); } catch(e) { console.error('buildChecklist', e); }
+  try { buildHotels(); } catch(e) { console.error('buildHotels', e); }
+  try { buildTransport(); } catch(e) { console.error('buildTransport', e); }
+  try { buildEssen(); } catch(e) { console.error('buildEssen', e); }
+  try { buildBars(); } catch(e) { console.error('buildBars', e); }
+  try { buildManami(); } catch(e) { console.error('buildManami', e); }
+  try { buildKarte(); } catch(e) { console.error('buildKarte', e); }
+  try { buildKontakte(); } catch(e) { console.error('buildKontakte', e); }
+  try { buildPackliste(); } catch(e) { console.error('buildPackliste', e); }
+  try { buildPhrasen(); } catch(e) { console.error('buildPhrasen', e); }
+  try { buildInfos(); } catch(e) { console.error('buildInfos', e); }
+  try { buildNotizen(); } catch(e) { console.error('buildNotizen', e); }
+  try { buildUseless(); } catch(e) { console.error('buildUseless', e); }
 }
 
 // Auto-unlock if already authenticated
@@ -298,7 +323,6 @@ document.addEventListener('click', function(e) {
   }
 });
 // ── HELPERS ────────────────────────────────────────────────────────────────
-buildTransport();
 
 function show(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -339,7 +363,7 @@ function todayKey() {
   return new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate()).getTime();
 }
 
-document.getElementById('hdate').textContent = fmtDate(TODAY);
+// hdate set in initApp
 
 // ── TAGE ──────────────────────────────────────────────────────────────────
 const TAGE = [
@@ -371,7 +395,7 @@ const TAGE = [
   {d:'05.05.',city:'Zuhause',e:'🏠',text:'Ankunft Helsinki 05:20 (AY068). Layover ca. 2 Std. 20 Min. — Iittala, Marimekko, Fazer-Schokolade shoppen! AY1411 HEL→FRA 07:40 → Frankfurt 09:20. Und dann: Stall.',sub:'Business Class · Welcome back!'},
 ];
 
-(function buildCountdown() {
+function buildCountdown() {
   const ABFLUG = new Date('2026-04-11T09:30:00');
   const now = new Date();
   const diff = ABFLUG - now;
@@ -400,9 +424,9 @@ const TAGE = [
     </div>`;
   }
   el.innerHTML = countHTML;
-})();
+}
 
-(function buildTage() {
+function buildTage() {
   const el = document.getElementById('sec-tage');
   const tk = todayKey();
   let html = '';
@@ -421,7 +445,7 @@ const TAGE = [
     </div>`;
   });
   el.innerHTML = html;
-})();
+}
 
 // ── CHECKLISTE ─────────────────────────────────────────────────────────────
 const CHECKS = [
@@ -500,7 +524,7 @@ function toggle(id) {
   document.getElementById('pi').textContent = `${done} von ${total} erledigt (${pct}%)`;
 }
 
-buildChecklist();
+// buildChecklist called via initApp
 
 // ── HOTELS ────────────────────────────────────────────────────────────────
 const HOTELS = [
@@ -513,7 +537,7 @@ const HOTELS = [
   {dates:'26.04.–04.05.',nights:'8 Nächte',name:'MK Tokyo Stay (Stoke Villa)',type:'Airbnb Duplex · Shinjuku/Takadanobaba',ci:'16:00',co:'10:00',price:'2.963,52 €',addr:'1-chōme-6-8 Shimoochiai, Shinjuku, Tokio 161-0033',ll:'35.6896,139.6917',note:'Gastgeber Oki (Superhost, 5★, 57 Bewertungen) · 88m² Duplex, 4./5. OG, kein Aufzug (Oki hilft!) · Waschmaschine/Trockner inklusive · Fitnessstudio 7-22 Uhr · 6 Min. zu Fuß Bahnhof Takadanobaba (Yamanote + U-Bahn) · 7-Eleven 1 Min.'},
 ];
 
-(function buildHotels() {
+function buildHotels() {
   let html = `<div style="background:var(--green-light);border-radius:var(--radius-sm);padding:10px 13px;margin-bottom:10px;font-size:13px;color:var(--green);font-weight:500">Gesamtkosten Unterkunft: 8.552 € (ca. 2.851 €/Person) · Alle bezahlt & bestätigt ✓</div>`;
   HOTELS.forEach(h => {
     html += `<div class="card">
@@ -533,7 +557,7 @@ const HOTELS = [
     </div>`;
   });
   document.getElementById('sec-hotels').innerHTML = html;
-})();
+}
 
 // ── FLÜGE ─────────────────────────────────────────────────────────────────
 
@@ -571,7 +595,7 @@ const ESSEN = {
   ],
 };
 
-(function buildEssen() {
+function buildEssen() {
   let html = '';
   Object.entries(ESSEN).forEach(([city, items]) => {
     html += `<div class="sec-head">${city}</div><div class="card" style="padding:4px 14px">`;
@@ -581,7 +605,7 @@ const ESSEN = {
     html += '</div>';
   });
   document.getElementById('sec-essen').innerHTML = html;
-})();
+}
 
 // ── BARS ──────────────────────────────────────────────────────────────────
 const BARS = {
@@ -625,7 +649,7 @@ const BARS = {
   ],
 };
 
-(function buildBars() {
+function buildBars() {
   let html = '';
   Object.entries(BARS).forEach(([city, items]) => {
     html += `<div class="sec-head">${city}</div><div class="card" style="padding:4px 14px">`;
@@ -635,10 +659,10 @@ const BARS = {
     html += '</div>';
   });
   document.getElementById('sec-bars').innerHTML = html;
-})();
+}
 
 // ── INFOS ─────────────────────────────────────────────────────────────────
-(function buildInfos() {
+function buildInfos() {
   document.getElementById('sec-infos').innerHTML = `
     <div class="sec-head">Notfallnummern</div>
     <div class="emergency">
@@ -708,7 +732,7 @@ const BARS = {
       <div class="info-text">Planets (13.04.): barfuß durch Wasser — Hose hochkrempeln, waschbare Kleidung! Keine hellen Farben (leuchten). Dry: Borderless (27.04.) — normale Kleidung ok.</div>
     </div>
   `;
-})();
+}
 
 // ── MANAMIS TIPPS ──────────────────────────────────────────────────────────
 const MANAMI_REST = [
@@ -746,7 +770,7 @@ const MANAMI_ERL = [
   {name:'Meiji-Schrein',desc:'Shintō-Schrein ★4,6 — Bereits im Tagesplan 13.04. Manamis Bestätigung: Pflichtbesuch!',ll:'35.6764,139.6993'},
 ];
 
-(function buildManami() {
+function buildManami() {
   let html = `<div style="background:rgba(192,117,10,0.08);border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:10px;font-size:13px;color:var(--accent);line-height:1.5">
     <strong>Manamis 26 Insider-Tipps</strong> — Kollegin Manami Hiyama aus Japan hat diese Orte in Shibuya, Harajuku & Shinjuku markiert. Alle im Einzugsgebiet des Cerulean Tower (Phase 1) und der Stoke Villa (Phase 2).
   </div>`;
@@ -767,11 +791,11 @@ const MANAMI_ERL = [
   });
 
   document.getElementById('sec-manami').innerHTML = html;
-})();
+}
 
 
 // ── KARTE TOKIO ───────────────────────────────────────────────────────────
-(function buildKarte() {
+function buildKarte() {
   const el = document.getElementById('sec-karte');
   el.innerHTML = `
     <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">Tokio-Viertel im Überblick — tippe auf einen Viertel-Namen für Apple Maps.</div>
@@ -966,7 +990,7 @@ const MANAMI_ERL = [
         </div>`).join('')}
     </div>
   `;
-})();
+}
 
 
 // ── PACKLISTE ─────────────────────────────────────────────────────────────
@@ -1065,7 +1089,7 @@ const PACK_CATS = [
 
 const PACK_STATE = {};
 
-(function buildPackliste() {
+function buildPackliste() {
   // Load saved state
   try {
     const saved = JSON.parse(localStorage.getItem('pack_state') || '{}');
@@ -1073,7 +1097,7 @@ const PACK_STATE = {};
   } catch(e) {}
 
   renderPackliste();
-})();
+}
 
 function renderPackliste() {
   const total = PACK_CATS.reduce((s, c) => s + c.items.length, 0);
@@ -1519,7 +1543,7 @@ const PHRASEN = [
   },
 ];
 
-(function buildPhrasen() {
+function buildPhrasen() {
   let html = `<div class="info-block" style="margin-bottom:10px">
     <div class="info-title">Aussprache-Tipps</div>
     <div class="info-text">
@@ -1547,7 +1571,7 @@ const PHRASEN = [
   });
 
   document.getElementById('sec-phrasen').innerHTML = html;
-})();
+}
 
 
 // ── USELESS KNOWLEDGE ─────────────────────────────────────────────────────
@@ -1654,7 +1678,7 @@ const USELESS = [
   },
 ];
 
-(function buildUseless() {
+function buildUseless() {
   // Find the infos section and append useless knowledge
   const el = document.getElementById('sec-infos');
   if (!el) return;
@@ -1674,7 +1698,7 @@ const USELESS = [
   });
 
   el.innerHTML += html;
-})();
+}
 
 
 // ── TRANSPORT (Flüge + Züge) ─────────────────────────────────────────────
@@ -1810,7 +1834,7 @@ function buildTransport() {
 }
 
 // ── KONTAKTE ───────────────────────────────────────────────────────────────
-(function buildKontakte() {
+function buildKontakte() {
   const KONTAKTE = [
     {cat:'🏨 Unterkünfte', items:[
       {name:'Cerulean Tower Tokyu Hotel', detail:'Shibuya · 12.–15.04.', tel:'+81-3-3476-3000'},
@@ -1854,10 +1878,10 @@ function buildTransport() {
   });
 
   document.getElementById('sec-kontakte').innerHTML = html;
-})();
+}
 
 // ── NOTIZEN ────────────────────────────────────────────────────────────────
-(function buildNotizen() {
+function buildNotizen() {
   const TAGE_NOTIZ = [
     {d:'10.04.', label:'Frankfurt · Anreise'},
     {d:'11.04.', label:'Abflug'},
@@ -1900,7 +1924,7 @@ function buildTransport() {
   });
 
   document.getElementById('sec-notizen').innerHTML = html;
-})();
+}
 
 function saveNote(key) {
   const val = document.getElementById(key).value;
@@ -2190,7 +2214,7 @@ function flashNext(correct) {
 
 
 // ── HOME SCREEN ───────────────────────────────────────────────────────────
-(function buildHome() {
+function buildHome() {
   const DAILY = [
     {id:'tage',    icon:'📅', label:'Tage',       sub:'Tagesplan'},
     {id:'transport',icon:'🚄',label:'Transport',  sub:'Flüge & Züge'},
@@ -2275,7 +2299,7 @@ function flashNext(correct) {
   html += '</div>';
 
   document.getElementById('sec-home').innerHTML = html;
-})();
+}
 
 function goTo(id) {
   // Find the nav button for this id and click it
