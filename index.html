@@ -39,7 +39,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 /* NAV */
 .nav{display:flex;overflow-x:auto;border-bottom:0.5px solid rgba(0,0,0,0.12);background:#fff;flex-shrink:0;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
-.nb{flex-shrink:0;padding:10px 14px;font-size:12px;font-weight:500;border:none;background:none;color:#333;cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap}
+.nb{flex-shrink:0;padding:10px 14px;font-size:12px;font-weight:500;border:none;background:none;color:#222;cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap}
 .nb.on{color:#C0392B;border-bottom-color:#C0392B}
 
 /* CONTENT */
@@ -50,14 +50,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 /* CARDS */
 .card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:14px;margin-bottom:10px}
 .card-t{font-size:14px;font-weight:600;margin-bottom:4px;color:#1c1c1e}
-.card-s{font-size:12px;color:#3a3a3a;margin-bottom:10px}
+.card-s{font-size:12px;color:#666;margin-bottom:10px}
 .sec-h{font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.07em;margin:14px 0 6px}
 .sec-bg{background:#f2f2f7;border-radius:8px;padding:12px;margin-bottom:10px}
 
 /* ROWS */
 .row{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid rgba(0,0,0,0.08);gap:8px}
 .row:last-child{border-bottom:none}
-.rl{font-size:12px;color:#3a3a3a;flex-shrink:0}
+.rl{font-size:12px;color:#666;flex-shrink:0}
 .rv{font-size:12px;font-weight:500;text-align:right;color:#1c1c1e}
 
 /* MAPS */
@@ -81,7 +81,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .day.today .day-d{color:#1D9E75}
 .today-pill{font-size:10px;background:#1D9E75;color:#fff;padding:1px 7px;border-radius:10px}
 .day-t{font-size:13px;line-height:1.5;color:#1c1c1e}
-.day-s{font-size:12px;color:#3a3a3a;margin-top:3px}
+.day-s{font-size:12px;color:#333;margin-top:3px}
 
 /* CHECKLIST */
 .ci{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:0.5px solid rgba(0,0,0,0.08)}
@@ -92,14 +92,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .ct.done{text-decoration:line-through;color:#999}
 .pb{height:5px;background:rgba(0,0,0,0.08);border-radius:3px;margin:8px 0 4px}
 .pf{height:100%;background:#1D9E75;border-radius:3px;transition:width 0.3s}
-.pi{font-size:11px;color:#3a3a3a}
+.pi{font-size:11px;color:#666}
 
 /* HOTELS */
 .h-head{display:flex;justify-content:space-between;margin-bottom:4px}
 .h-name{font-size:14px;font-weight:600;color:#1c1c1e}
 .h-price{font-size:12px;color:#1D9E75;font-weight:600}
 .h-type{font-size:11px;color:#C0392B;font-weight:500;margin-bottom:8px}
-.h-note{font-size:11px;color:#1c1c1e;line-height:1.5;margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08)}
+.h-note{font-size:12px;color:#333;line-height:1.5;margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08)}
 
 /* TRANSPORT */
 .zug{background:#f2f2f7;border-radius:10px;padding:12px;margin-bottom:8px;border-left:3px solid #C0392B}
@@ -108,7 +108,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .zug-c{font-size:15px;font-weight:700;color:#1c1c1e}
 .zug-l{flex:1;height:1px;background:rgba(0,0,0,0.2);position:relative}
 .zug-l::after{content:"▶";position:absolute;right:-6px;top:-7px;font-size:10px;color:#666}
-.zug-i{font-size:12px;color:#1c1c1e;line-height:1.7}
+.zug-i{font-size:12px;color:#333;line-height:1.7}
 .zug-i strong{color:#C0392B}
 .flight-note{background:rgba(192,117,10,0.08);border-radius:8px;padding:9px 11px;font-size:11px;color:#8B4513;margin-top:6px;line-height:1.5;font-weight:500}
 .bcode{font-family:ui-monospace,monospace;font-size:18px;font-weight:700;letter-spacing:3px;color:#C0392B}
@@ -117,14 +117,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .pi-item{padding:9px 0;border-bottom:0.5px solid rgba(0,0,0,0.08)}
 .pi-item:last-child{border-bottom:none}
 .pi-name{font-size:13px;font-weight:600;margin-bottom:2px;color:#1c1c1e}
-.pi-desc{font-size:12px;color:#1c1c1e;line-height:1.5}
+.pi-desc{font-size:12px;color:#333;line-height:1.5}
 
 /* PHRASES */
 .ph-item{padding:10px 14px;border-bottom:0.5px solid rgba(0,0,0,0.08)}
 .ph-item:last-child{border-bottom:none}
-.ph-de{font-size:12px;color:#3a3a3a;margin-bottom:1px}
+.ph-de{font-size:12px;color:#666;margin-bottom:1px}
 .ph-ro{font-size:17px;font-weight:600;color:#C0392B;letter-spacing:0.3px}
-.ph-jp{font-size:13px;color:#444;margin-top:1px}
+.ph-jp{font-size:13px;color:#999;margin-top:1px}
 .ph-tip{font-size:10px;color:#1D9E75;margin-top:2px}
 
 /* NOTIZEN */
@@ -135,7 +135,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 /* QUIZ */
 .quiz-card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:20px;margin-bottom:10px;text-align:center}
 .quiz-q{font-size:15px;font-weight:600;margin-bottom:16px;line-height:1.5;color:#1c1c1e}
-.quiz-ans{font-size:13px;color:#1c1c1e;background:#f2f2f7;border-radius:8px;padding:12px;margin-top:10px;line-height:1.6;display:none;text-align:left}
+.quiz-ans{font-size:13px;color:#333;background:#f2f2f7;border-radius:8px;padding:12px;margin-top:10px;line-height:1.6;display:none;text-align:left}
 .qbtn{display:inline-block;padding:10px 20px;background:#C0392B;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin:4px}
 .qbtn.ghost{background:#f2f2f7;color:#1c1c1e}
 .qbtn.g{background:#1D9E75}
@@ -146,16 +146,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .flash-front{font-size:24px;font-weight:600;color:#C0392B;margin:12px 0 6px}
 .flash-back{display:none;margin-top:10px}
 .flash-ro{font-size:22px;font-weight:600;color:#C0392B;margin-bottom:4px}
-.flash-jp{font-size:16px;color:#444}
+.flash-jp{font-size:16px;color:#999}
 
 /* WETTER */
 .w-big{font-size:48px;font-weight:200;color:#1c1c1e}
 .w-icon{font-size:40px;line-height:1}
-.w-desc{font-size:13px;color:#3a3a3a;margin-top:4px}
+.w-desc{font-size:13px;color:#666;margin-top:4px}
 .w-hr{display:flex;overflow-x:auto;scrollbar-width:none;gap:0;-webkit-overflow-scrolling:touch}
 .w-hr::-webkit-scrollbar{display:none}
 .w-h{flex-shrink:0;text-align:center;padding:4px 10px;min-width:52px}
-.w-ht{font-size:11px;color:#3a3a3a}
+.w-ht{font-size:11px;color:#666}
 .w-hi{font-size:18px;margin:3px 0}
 .w-hd{font-size:12px;font-weight:500}
 
@@ -167,20 +167,20 @@ input[type=number]:focus{border-color:#C0392B}
 
 /* CONTACTS */
 .con-name{font-size:13px;font-weight:600;color:#1c1c1e}
-.con-det{font-size:12px;color:#3a3a3a;margin-top:1px}
+.con-det{font-size:12px;color:#333;margin-top:1px}
 .con-tel{font-size:14px;color:#C0392B;font-weight:500;margin-top:3px}
 
 /* EMERGENCY */
 .emerg{background:rgba(163,45,45,0.06);border:0.5px solid rgba(163,45,45,0.2);border-radius:10px;padding:14px;margin-bottom:10px}
 .emerg-t{font-size:11px;font-weight:600;color:#A32D2D;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
 .emerg-n{font-size:22px;font-weight:700;color:#A32D2D}
-.emerg-l{font-size:11px;color:#3a3a3a;margin-top:1px}
+.emerg-l{font-size:10px;color:#666;margin-top:1px}
 
 /* USELESS */
 .uk{background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:14px;margin-bottom:8px}
 .uk-icon{font-size:28px;flex-shrink:0;line-height:1.2}
 .uk-title{font-size:13px;font-weight:600;margin-bottom:4px;color:#1c1c1e}
-.uk-text{font-size:12px;color:#1c1c1e;line-height:1.6}
+.uk-text{font-size:12px;color:#333;line-height:1.6}
 
 /* COUNTDOWN */
 .cd-box{border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
@@ -195,15 +195,7 @@ input[type=number]:focus{border-color:#C0392B}
 #pw button{width:100%;max-width:280px;padding:14px;font-size:16px;font-weight:600;background:#C0392B;color:#fff;border:none;border-radius:12px;cursor:pointer}
 #pw-err{color:#A32D2D;font-size:13px;margin-top:10px;min-height:20px}
 
-/* DARK MODE: ensure white cards keep explicit dark text */
-@media(prefers-color-scheme:dark){
-  .card{color:#1c1c1e}
-  .h-name,.pi-name,.card-t,.con-name,.uk-title,.quiz-q{color:#1c1c1e}
-  .zug-c,.zug{color:#1c1c1e}
-  .zug-i{color:#333}
-  .rv,.ct{color:#1c1c1e}
-  .day,.day-t,.day-s{color:#1c1c1e}
-}
+@media(prefers-color-scheme:dark){.card,.day{color:#1c1c1e}.h-name,.pi-name,.card-t,.con-name,.uk-title,.quiz-q,.zug-c,.rv,.day-t{color:#1c1c1e}.h-note,.pi-desc,.zug-i,.day-s,.con-det,.uk-text,.quiz-ans{color:#333}}
 </style>
 </head>
 <body>
@@ -548,32 +540,32 @@ buildCheck();
   var HOTELS = [
     {dates:'10.04.',n:'1 Nacht',name:'Staycity Frankfurt Airport',type:'Aparthotel am Flughafen',ci:'–',co:'–',price:'68,64 €',ll:'50.0503,8.5697',
      note:'Shuttle vom Terminal. Vorabend vor Abflug.',
-     run:'🏃 Laufstrecke: Ab Hotel → Kelsterbacher Rheinufer (1,5 km südlich). Flacher Uferweg entlang des Mains Richtung Kelsterbach und zurück — ca. 5 km, beleuchtet, keine Ampeln.'},
+     run:'🏃 Laufen: Ab Hotel → Kelsterbacher Rheinufer (1,5 km südlich). Uferweg entlang des Mains hin und zurück — ca. 5 km, flach, beleuchtet.'},
     {dates:'12.–15.04.',n:'3 Nächte',name:'Cerulean Tower Tokyu Hotel',type:'Luxushotel · Shibuya',ci:'15:00',co:'12:00',price:'1.632,34 €',ll:'35.6563,139.6979',
      note:'Transfer Chinichi Ref. 931593331 · JL48 wird getrackt · 40 Stockwerke, Fuji-Blick · Jazzbar JZ Brat',
-     run:'🏃 Laufstrecke: Hotel → Yoyogi-Park (1,5 km nördlich via Dōgenzaka). Im Park: Außenring ~2,3 km oder innere Wiese ~1,2 km. Weiter: Meiji-Jingū-Waldweg (+1,5 km). Früh morgens fast menschenleer. Gesamt: 5–7 km.'},
+     run:'🏃 Laufen: Hotel → Yoyogi-Park (1,5 km nördlich via Dōgenzaka). Außenring ~2,3 km, Innenrunde ~1,2 km. Weiter: Meiji-Jingū-Waldweg (+1,5 km). Früh morgens fast leer. Gesamt: 5–7 km.'},
     {dates:'15.–18.04.',n:'3 Nächte',name:'Randor Hotel Hiroshima Prestige',type:'Business Hotel Prestige',ci:'15:00',co:'11:00',price:'531,51 €',ll:'34.3975,132.4757',
      note:'15 Gehmin. zum Peace Park · Frühstücksbuffet empfohlen',
-     run:'🏃 Laufstrecke: Hotel → Ōta-Fluss (200m östlich) → Nord-Uferweg bis Aioi-Brücke (A-Bomb Dome, 1,5 km) → weiter bis Peace Park (2,5 km) → zurück südliches Ufer. Runde: ~5 km, komplett flach, beeindruckend bei Sonnenaufgang.'},
+     run:'🏃 Laufen: Hotel → Ōta-Fluss (200m) → Nord-Uferweg bis Aioi-Brücke/A-Bomb Dome (1,5 km) → Peace Park (2,5 km) → zurück Südufer. ~5 km, komplett flach.'},
     {dates:'18.–21.04.',n:'3 Nächte',name:'Kyoto Tokyu Hotel',type:'Stadthotel · Shimogyo-ku',ci:'14:00',co:'11:00',price:'423,48 €',ll:'35.0037,135.7588',
      note:'Bus 15 Min.→Nishiki-Markt · JR 20 Min.→Fushimi Inari',
-     run:'🏃 Route A (direkt): Hotel → Kamo-Fluss (500m östlich) → Uferweg bis Sanjo-Brücke und zurück. ~5 km flach, viele Jogger. | Route B (Bahn): JR nach Inari → durch Torii-Tore bis Yotsutsuji-Aussichtspunkt und zurück ~4 km, 180 Hm — vor 7 Uhr kaum Touristen.'},
+     run:'🏃 Route A: Hotel → Kamo-Fluss (500m) → Uferweg bis Sanjo-Brücke und zurück, ~5 km flach. | Route B: JR nach Inari → Torii-Tore bis Yotsutsuji ~4 km/180 Hm — vor 7 Uhr kaum Touristen.'},
     {dates:'21.–24.04.',n:'3 Nächte',name:'Hotel Elcient Osaka Umeda',type:'Designhotel · Kita-ku',ci:'15:00',co:'11:00',price:'614,28 €',ll:'34.6952,135.5001',
      note:'10 Min. Metro→Namba/Dotonbori · Doyamachō 5 Gehmin.',
-     run:'🏃 Laufstrecke: Hotel → Nakanoshima-Park (1 km südlich) → Runde um die Flussinsel entlang Dōjima- & Tosabori-Fluss: ~3,5 km flach. Verlängerung: Osaka Castle Park (+2 km). Gesamt 5–7 km, früh morgens wenig Verkehr.'},
+     run:'🏃 Laufen: Hotel → Nakanoshima-Park (1 km südlich) → Runde um Flussinsel entlang Dōjima- & Tosabori-Fluss: ~3,5 km flach. Verlängerung: Osaka Castle Park (+2 km).'},
     {dates:'24.–26.04.',n:'2 Nächte',name:'Kinnotake Tonosawa',type:'Exklusives Ryokan (5★)',ci:'15–16 Uhr',co:'11:00',price:'2.318,15 €',ll:'35.2481,139.0643',
-     note:'Suite „Sora" · Open-Air-Onsen · Kaiseki & Frühstück inkl. · Res. C260118000022354 · Kitamura-san: 0460-85-9800 · Limo hin 24.04. 14:15 (¥6.500) · Limo zurück 26.04. 10:45 (¥3.300)',
-     run:'🏃 Laufstrecke: Ryokan-Eingang → westlich auf der alten Tokaido-Straße (gepflastert) → 1,3 km bis Hakone-Yumoto Bhf → zurück über Hayakawa-Flussufer. ~3 km, bergig +80 Hm. Alternativ: Flussterrasse des Ryokans für Stretching.'},
+     note:'Suite „Sora\" · Open-Air-Onsen · Kaiseki & Frühstück inkl. · Res. C260118000022354 · Kitamura-san: 0460-85-9800 · Limo hin 24.04. 14:15 (¥6.500) · Limo zurück 26.04. 10:45 (¥3.300)',
+     run:'🏃 Laufen: Ryokan → alte Tokaido-Straße (gepflastert) → 1,3 km bis Hakone-Yumoto Bhf → zurück über Hayakawa-Flussufer. ~3 km, bergig +80 Hm.'},
     {dates:'26.04.–04.05.',n:'8 Nächte',name:'MK Tokyo Stay (Stoke Villa)',type:'Airbnb Duplex · Shinjuku',ci:'16:00',co:'10:00',price:'2.963,52 €',ll:'35.6896,139.6917',
      note:'Oki (Superhost 5★) · 88m² Duplex 4./5. OG · kein Aufzug · Waschmaschine/Trockner · Fitnessstudio 7-22 Uhr · 6 Min. Bahnhof Takadanobaba',
-     run:'🏃 Route A: Villa → Shinjuku Gyoen (15 Min. Fuß südlich) → Rundweg Japangarten & engl. Rasen: 3,5 km (¥500, ab 9 Uhr). | Route B: Villa → Zenpukuji-Fluss-Grünzug (10 Min. westlich): ampelfreier Uferweg 5 km hin/zurück. | Route C: Mejiro → Ikebukuro-Uferroute ~4 km.'},
+     run:'🏃 Route A: Villa → Shinjuku Gyoen (15 Min. Fuß) → Rundweg ~3,5 km (¥500, ab 9 Uhr). | Route B: Villa → Zenpukuji-Fluss-Grünzug (10 Min.) → ampelfreier Uferweg 5 km hin/zurück.'},
   ];
   var h = '<div style="background:rgba(29,158,117,0.08);border-radius:8px;padding:10px 13px;margin-bottom:10px;font-size:13px;color:#085041;font-weight:500">Gesamtkosten: 8.552 € · Alle bezahlt ✓</div>';
   HOTELS.forEach(function(h2){
     h += '<div class="card">'
       +'<div class="h-head"><div><div class="h-name">'+h2.name+'</div><div class="h-type">'+h2.dates+' · '+h2.n+'</div></div>'
       +'<div class="h-price">'+h2.price+'</div></div>'
-      +'<div style="font-size:12px;color:#3a3a3a;margin-bottom:8px">'+h2.type+'</div>'
+      +'<div style="font-size:12px;color:#333;margin-bottom:8px">'+h2.type+'</div>'
       +'<div class="row"><span class="rl">Check-in</span><span class="rv">'+h2.ci+'</span></div>'
       +'<div class="row"><span class="rl">Check-out</span><span class="rv">'+h2.co+'</span></div>'
       +'<div class="h-note">'+h2.note+'</div>'
@@ -631,71 +623,91 @@ buildCheck();
 (function(){
   var R = {
     'Tokio': [
-      {n:'⭐ MO-MO-PARADISE Shibuya',d:'Shabu-Shabu All-you-can-eat ★4,9 — Manamis Top-Pick! Häuchdünn geschnittenes Wagyu & Schwein in Dashi-Brühe. Unbegrenzte Beilagen, 2 Soßen. Früh in Warteschlange stellen. 90 Min. Zeitlimit, ca. 2.500–3.500¥/P.',ll:'35.6610,139.6990'},
-      {n:'Ichiran Ramen',d:'Tonkotsu-Ramen in Einzelkabinen — jeder bestellt per Zettel: Brühestärke, Schärfe, Fleischmenge. Das Original-Konzept. Intensiv, ikonisch, günstig ~1.000¥. Rund um die Uhr geöffnet.',ll:'35.6612,139.6999'},
-      {n:'Afuri Shibuya Dōgenzaka',d:'Leichtes Yuzu-Ramen ★4,8 · 1.000–2.000¥. Zitrusbrühe statt schwerem Tonkotsu — aromatisch, klar, erfrischend. Perfekt nach langen Lauftagen. Mittags kürzere Schlange als abends.',ll:'35.6601,139.6985'},
-      {n:'Zauo Shibuya',d:'Angel-Restaurant ★4,5 — den eigenen Fisch fangen, er wird sofort zubereitet. Große Becken mit Tai, Aal & Seezunge. Angelruten inklusive. Szenenapplaus für jeden Fang. Reservierung dringend empfohlen! Ca. 3.000–5.000¥/P.',ll:'35.6606,139.6977'},
-      {n:'⭐ Nihonshu Biyori',d:'Sake-fokussiertes Sushi ★4,9 — nur 8 Plätze, persönlich, außerordentlich. Chef wählt Sake passend zum Sushi. Nur mit Reservierung. Ca. 5.000¥/P. Übersetzungs-App bereithalten.',ll:'35.6587,139.7006'},
-      {n:'Gyukatsu Motomura Shibuya',d:'Frittiertes Rindfleisch-Schnitzel, medium rare serviert — auf heißem Stein selbst nachgaren. Saftig, kross, unkompliziert. Warteschlange ist normal, geht schnell. ~1.500¥.',ll:'35.6587,139.7001'},
-      {n:'Omoide Yokocho (Shinjuku)',d:'„Erinnerungs-Gässchen“ — Dutzende winzige Yakitori-Lokale seit den 1950ern. Rauch, Bier, Spieße, Authentizität. Cash only, kein Englisch — einfach reinsetzen und auf den Teller des Nachbarn zeigen. Ab 18 Uhr.',ll:'35.6929,139.7003'},
+      {n:'⭐ MO-MO-PARADISE Shibuya',d:'Shabu-Shabu All-you-can-eat ★4,9 — Manamis Top-Pick!',ll:'35.6610,139.6990'},
+      {n:'Ichiran Ramen',d:'Solo-Ramen in Kabinen. Intensiv, ikonisch, günstig.',ll:'35.6612,139.6999'},
+      {n:'Afuri Shibuya Dōgenzaka',d:'Leichtes Yuzu-Ramen ★4,8 · 1.000-2.000¥',ll:'35.6601,139.6985'},
+      {n:'Zauo Shibuya',d:'Angel-Restaurant ★4,5 — fang wird sofort zubereitet!',ll:'35.6606,139.6977'},
+      {n:'⭐ Nihonshu Biyori',d:'Sake-fokussiertes Sushi ★4,9. Winzig, persönlich, hervorragend.',ll:'35.6587,139.7006'},
+      {n:'Gyukatsu Motomura Shibuya',d:'Frittiertes Rindfleisch-Schnitzel zum Nachgaren.',ll:'35.6587,139.7001'},
+      {n:'Omoide Yokocho (Shinjuku)',d:'Enge Gassen mit winzigen Yakitori-Lokalen. Authentisch!',ll:'35.6929,139.7003'},
     ],
     'Hiroshima': [
-      {n:'Okonomimura',d:'Mehrstöckiges Gebäude mit ~25 Ständen — jeder kocht Hiroshima-Style Okonomiyaki (Schichten aus Teig, Nudeln, Kohl, Ei). Kein Touristenspot, echte Stammgäste. In den 2. oder 3. Stock! ~1.000–1.500¥. Abends ab 17 Uhr.',ll:'34.3966,132.4569'},
-      {n:'Hondori Shopping Street',d:'Hiroshimas Einkaufsmeile wird abends zur Izakaya-Meile. Austern direkt aus der Hiroshima Bay, Grillrestaurants, Cocktailbars. Ideal zur Erholung nach dem Peace Museum. Alles zu Fuß erreichbar.',ll:'34.3965,132.4569'},
+      {n:'Okonomimura',d:'Gebäude mit mehreren Ständen für Hiroshima-Style Okonomiyaki.',ll:'34.3966,132.4569'},
+      {n:'Hondori Shopping Street',d:'Abends: Seafood, Izakayas, casual bis modern.',ll:'34.3965,132.4569'},
     ],
     'Kyoto': [
-      {n:'Okutan Nanzen-ji',d:'Tofu-Kaiseki seit 1635 — eines der ältesten Restaurants Japans. Yudofu (Tofu in Dashi-Brühe) im historischen Gartenhaus direkt am Nanzen-ji. 3.500–4.500¥/P, mehrgängig. Vorab reservieren: +81-75-771-8709.',ll:'35.0110,135.7948'},
-      {n:'Pontocho Alley',d:'Kyotos berühmteste Gasse parallel zum Kamo-Fluss. Gyukatsu Katsugyu, Tempura Tententen, Teppanyaki auf engstem Raum. Abends romantisch beleuchtet, aber voll — frühzeitig kommen oder reservieren.',ll:'35.0055,135.7693'},
-      {n:'Nishiki-Markt',d:'„Kyotos Küche“ — 400m überdachte Gasse, 100+ Stände. Tamagoyaki frisch gebraten, Matcha-Eis, Wagyu am Spieß, eingelegtes Gemüse. Schließt 17–18 Uhr, am lebhaftesten mittags. Hunger mitbringen!',ll:'35.0050,135.7657'},
+      {n:'Okutan Nanzen-ji',d:'Tofu-Kaiseki seit 1635. 3.500-4.500¥. Vorab reservieren!',ll:'35.0110,135.7948'},
+      {n:'Pontocho Alley',d:'GYUKATSU, Tempura Tententen, Teppanyaki — alles in einer Gasse.',ll:'35.0055,135.7693'},
+      {n:'Nishiki-Markt',d:'Tamagoyaki, Matcha, Seafood. Schließt 17-18 Uhr!',ll:'35.0050,135.7657'},
     ],
     'Osaka': [
-      {n:'Kuromon Ichiba Markt',d:'„Osakas Küche“ — 580m Marktgasse, 150+ Stände. Austern aufmachen & direkt essen, Wagyu-Spieß, lebende Krabben, Eel-Kabayaki. Bis 17 Uhr, bester Besuch 10–14 Uhr. Cash bevorzugt.',ll:'34.6672,135.5068'},
-      {n:'Mizuno (Dotonbori)',d:'Beste Osaka-Style Okonomiyaki seit 1945. Warteschlange 30–60 Min. lohnt sich. An die Theke setzen und dem Koch zuschauen. ~1.000–1.500¥.',ll:'34.6687,135.5013'},
-      {n:'Kinryu Ramen',d:'Dotonbori-Kult mit goldenem Drachen auf dem Dach. Mitternachtsramen nach dem Barbesuch — günstig ~700¥, 24/7 geöffnet. Stehend oder winzige Plätze.',ll:'34.6687,135.5015'},
+      {n:'Kuromon Ichiba Markt',d:'Austern, Wagyu, Krabben direkt am Stand. Bis 17 Uhr!',ll:'34.6672,135.5068'},
+      {n:'Mizuno (Dotonbori)',d:'Beste Osaka-Style Okonomiyaki. Schlange 30-60 Min.',ll:'34.6687,135.5013'},
+      {n:'Kinryu Ramen',d:'Dotonbori-Klassiker. Günstig & lecker.',ll:'34.6687,135.5015'},
     ],
     'Hakone': [
-      {n:'Hatago Zenbe',d:'Handgemachte Soba mit Buchweizenmehl aus der Region, direkt bei Hakone-Yumoto. Schlicht, sehr lecker, günstig ~1.000–1.500¥. Ideales Mittagessen vor/nach dem Rundkurs. Cash only, mittags geöffnet.',ll:'35.2329,139.0545'},
-      {n:'Amazake Chaya',d:'Teehaus seit 1648 auf der alten Tokaido-Straße — einer der ältesten Rastorte Japans. Amazake (süßer Reiswein, alkoholfrei) und Kusamochi. Auf dem Weg zwischen Ropeway und Gora. Draußen sitzen!',ll:'35.2201,139.0472'},
+      {n:'Hatago Zenbe',d:'Soba mit hausgemachten Nudeln bei Hakone-Yumoto.',ll:'35.2329,139.0545'},
+      {n:'Amazake Chaya',d:'Teehaus seit 1648 auf alter Tokaido-Straße. Amazake + Mochi.',ll:'35.2201,139.0472'},
     ],
-  };  document.getElementById('sec-essen').innerHTML = h;
+  };
+  var h = '';
+  Object.keys(R).forEach(function(city){
+    h += '<div class="sec-h">'+city+'</div><div class="card" style="padding:4px 14px">';
+    R[city].forEach(function(r){
+      h += '<div class="pi-item"><div class="pi-name">'+r.n+'</div>'
+        +'<div class="pi-desc">'+r.d+'</div>'+mp(r.n,r.ll)+'</div>';
+    });
+    h += '</div>';
+  });
+  document.getElementById('sec-essen').innerHTML = h;
 })();
 
 // ── BARS ──────────────────────────────────────────────────────────────────
 (function(){
   var B = {
     'Tokio — LGBTQ+': [
-      {n:'Shinjuku Ni-chome',d:'200–300 Bars auf wenigen Straßenblöcken — eines der größten LGBTQ+-Viertel Asiens. Jede Bar hat eigenen Charakter: winzige Männerbars, Lesben-Bars, Mischbars, Dance-Clubs. Ab 20 Uhr, Hochbetrieb ab 22 Uhr. Eintritt meist 500–1.000¥ inkl. erstem Drink.',ll:'35.6898,139.7044'},
-      {n:'Aiiro Café',d:'Entspanntester Einstieg ins Ni-chome — hell, freundlich, welcome für alle. Ideal um das Viertel kennenzulernen ohne Schwellenangst. Kein Mindestverzehr, keine Garderobe.',ll:'35.6905,139.7040'},
-      {n:'Arty Farty / Eagle Tokyo Blue',d:'Zwei Bars Tür an Tür: Arty Farty (Mischpublikum, Dancefloor, Chart-Musik) und Eagle Blue (maskuliner, Cruising). Beide ab 21 Uhr, Wochenende voll. ~500¥ Eintritt inkl. Getränk.',ll:'35.6930,139.7046'},
+      {n:'Shinjuku Ni-chome',d:'~200-300 Bars — eines der größten LGBTQ+-Viertel Asiens. Ab 20 Uhr.',ll:'35.6898,139.7044'},
+      {n:'Aiiro Café',d:'Guter Einstieg ins Ni-chome. Sehr welcome.',ll:'35.6905,139.7040'},
+      {n:'Arty Farty / Eagle Tokyo Blue',d:'Beliebte Bars mit unterschiedlichem Publikum.',ll:'35.6930,139.7046'},
     ],
     'Tokio — Cocktailbars': [
-      {n:'The SG Club (Shibuya)',d:"World's 50 Best Bars 2025 (Platz 65) — Shingo Gokans Flaggschiff. Zwei Etagen: Gyard (lässig, Highballs) und Sglow (Haute Cocktails). Saisonale Eigenkreationen mit japanischen Zutaten. Reservierung empfohlen. 1.500–2.200¥/Cocktail.",ll:'35.6612,139.7001'},
-      {n:'Bar High Five (Ginza)',d:"14 Jahre in den World's 50 Best. Hidetsugu Ueno ist Legende. Hard Shake, selbst geschnittene Eisskulpturen, klassische Cocktails auf Höchstniveau. Vorab reservieren! Dresscode (kein Sportkleidung). 2.000–2.800¥/Cocktail.",ll:'35.6703,139.7634'},
-      {n:'Zoetrope (Shinjuku)',d:'Über 300 japanische Whisky-Flaschen hinter der Bar — darunter seltene Raritäten. Kein Touristenbetrieb, der Barkeeper kennt jeden Tropfen. Gemütlich, dunkel. Einzelne Shots ab ~800¥.',ll:'35.6938,139.7002'},
+      {n:'The SG Club (Shibuya)',d:"World's 50 Best 2025 (Platz 65). Shingo Gokan. 1.500-2.200¥.",ll:'35.6612,139.7001'},
+      {n:'Bar High Five (Ginza)',d:"14 Jahre World's 50 Best. Hard Shake, Eisskulpturen. Reservieren! 2.000-2.800¥.",ll:'35.6703,139.7634'},
+      {n:'Zoetrope (Shinjuku)',d:'Whisky-Spezialist, riesige japanische Auswahl. Gemütlich.',ll:'35.6938,139.7002'},
     ],
     'Tokio — Skyline Bars': [
-      {n:'New York Bar (Park Hyatt)',d:'„Lost in Translation“ — das Original! 52. OG, Live-Jazz Di–Sa, Panoramablick über Shinjuku. Dez. 2025 wiedereröffnet. Cover Charge ~2.200¥ ab 20 Uhr. Reservierung für Jazz-Abende empfohlen. Business Casual.',ll:'35.6865,139.6915'},
-      {n:'The Roof — Shibuya Sky',d:'Offene Dachterrasse 230m Höhe, 360°-Panorama mit Fuji-Blick. Shibuya Sky Ticket (~2.500¥) separat buchen. Drinks oben 1.500–2.000¥. Sonnenuntergang = perfektes Timing. Vorab per App reservieren!',ll:'35.6580,139.7023'},
-      {n:'Andaz Tokyo Rooftop',d:'52. OG Toranomon Hills — Open-Air mit Tokyo Bay-Blick. Ab 20 Uhr Aufschlag ¥2.200. Reservierung empfohlen. Japanisch inspirierte Cocktails, Meeresfrüchte-Häppchen.',ll:'35.6674,139.7490'},
-      {n:'Mandarin Bar',d:'38. OG Mandarin Oriental, Panoramablick über Tokio. Dim Lighting, Live-Musik, elegante Atmosphäre. Business-Publikum. 2.200–2.800¥/Cocktail. Dresscode beachten.',ll:'35.6880,139.7735'},
+      {n:'New York Bar (Park Hyatt)',d:"Lost in Translation! 52. OG, Live-Jazz. Dezember 2025 wiedereröffnet!",ll:'35.6865,139.6915'},
+      {n:'The Roof — Shibuya Sky',d:'230m, 360° Panorama, Fuji-Blick. 2.500¥ Eintritt.',ll:'35.6580,139.7023'},
+      {n:'Andaz Tokyo Rooftop',d:'52. OG Toranomon Hills. Open-Air, Tokyo Bay. Ab 20h Aufschlag ¥2.200.',ll:'35.6674,139.7490'},
+      {n:'Mandarin Bar',d:'38. OG, dim lighting, Live-Musik, Panorama. 2.200-2.800¥.',ll:'35.6880,139.7735'},
     ],
     'Kyoto': [
-      {n:"Bee's Knees (Kiyamachi)",d:"Speakeasy, Asia's 50 Best Bars. 1920er Art-Déco, versteckt ohne Schild. Signature: Yuzu-Honig-Gin-Sour mit Kyoto-Zutaten. Reservierung dringend empfohlen. 1.500–2.000¥/Cocktail.",ll:'35.0041,135.7693'},
-      {n:'Bar Rocking Chair',d:'Gemütlichste Bar Kyotos — Schaukelstühle, Kaminfeuer im Winter. Haussp.: Sansho-Pfeffer-Cocktails & Yuzu-Sours. Nur 10 Plätze, Reservierung Pflicht. Gespräche im Vordergrund. ~1.800¥/Cocktail.',ll:'35.0017,135.7598'},
-      {n:"L'Escamoteur (Pontocho)",d:'Barkeeper ist Zauberkünstler — jeder Cocktail mit einem neuen Trick serviert! Frische Magie, nie wiederholt. Kleine Bar in Pontocho. Das witzigste Trinkerlebnis der Reise. ~1.500¥/Cocktail.',ll:'35.0052,135.7691'},
-      {n:'Apple, Bell, AZURE (Kiyamachi)',d:'Men-Only Gay-Bars in Kyotos kleinem LGBTQ+-Cluster. Apple: entspannt; Bell: laut, Karaoke; AZURE: moderner, international. Alle ~1.500–2.000¥ inkl. erstem Drink. Ab 20 Uhr.',ll:'35.0040,135.7693'},
+      {n:"Bee's Knees (Kiyamachi)",d:"Speakeasy, Asia's Best. 1920s Déco, Yuzu-Honig. 1.500-2.000¥.",ll:'35.0041,135.7693'},
+      {n:'Bar Rocking Chair',d:'Schaukelstühle, Kamin, Sansho-Pfeffer-Cocktails. Reservierung!',ll:'35.0017,135.7598'},
+      {n:"L'Escamoteur (Pontocho)",d:'Barkeeper als Zauberkünstler! Jeder Cocktail mit Trick.',ll:'35.0052,135.7691'},
+      {n:'Apple, Bell, AZURE (Kiyamachi)',d:"Men-Only Gay-Bars. 1.500-2.000¥ inkl. erstem Drink.",ll:'35.0040,135.7693'},
     ],
     'Osaka': [
-      {n:'Doyamachō (Gay-Viertel)',d:'Japans entspanntestes LGBTQ+-Viertel — kein Rotlicht, einfach Bars nebeneinander. 5 Gehmin. vom Umeda Bhf. Shot-Bars, Karaoke, Restaurants. Sehr freundlich, viele sprechen Englisch. Ab 20 Uhr.',ll:'34.7002,135.5022'},
-      {n:'EXPLOSION (Doyamachō)',d:'Bekanntester Gay Club Osakas. Samstags Drag-Shows, wochentags Shot-Bar. Drei Räume, verschiedene Musikrichtungen. Wochenende ~1.000¥ Eintritt, wochentags oft frei.',ll:'34.7001,135.5021'},
-      {n:'EAGLE OSAKA (Doyamachō)',d:'Größte Gay-Bar Westjapans, 3 Etagen mit je eigenem Publikum & Musik. Mo–Do kein Eintritt, Wochenende ~1.000¥. Sehr freundlich gegenüber ausländischen Gästen.',ll:'34.7002,135.5022'},
-      {n:'Bar Nayuta (Namba)',d:'Kreative Cocktails abseits der Dotonbori-Touristenzone. Saisonale Eigenkreationen, japanische Spirituosen. Barkeeper spricht Englisch. ~1.500–2.000¥/Cocktail.',ll:'34.6690,135.5015'},
+      {n:'Doyamachō (Gay-Viertel)',d:"Japans entspanntestes LGBTQ+-Viertel. 5 Min. von Umeda. Ab 20 Uhr.",ll:'34.7002,135.5022'},
+      {n:'EXPLOSION (Doyamachō)',d:'Bekanntester Gay Club. Sa: Drag-Shows. Wochentags Shot-Bar.',ll:'34.7001,135.5021'},
+      {n:'EAGLE OSAKA (Doyamachō)',d:'Größte Gay-Bar Westjapans, 3 Etagen. Mo-Do kein Eintritt.',ll:'34.7002,135.5022'},
+      {n:'Bar Nayuta (Namba)',d:'Kreative Cocktails, Locals. 1.500-2.000¥.',ll:'34.6690,135.5015'},
     ],
     'Hiroshima': [
-      {n:'Bar Alegre (Naka-ku)',d:'Beste Cocktailbar Hiroshimas. Saisonale Hiroshima-Früchte (Mikan, Pfirsich, Zitrone), riesige Whisky-Auswahl. Barkeeper erklärt gern auf Englisch. 1.500–2.500¥/Cocktail. Reservierung empfohlen.',ll:'34.3968,132.4562'},
-      {n:'The Lounge Top Note',d:'Skybar mit Panoramablick über Hiroshima und die Bucht. Ideal nach dem Peace Museum zur Verarbeitung. Ruhig, elegant. Live-Musik am Wochenende. ~1.500¥/Cocktail. Kein Eintritt.',ll:'34.3970,132.4570'},
+      {n:'Bar Alegre (Naka-ku)',d:'Beste Cocktailbar Hiroshimas. Saisonale Früchte, großer Whisky. 1.500-2.500¥.',ll:'34.3968,132.4562'},
+      {n:'The Lounge Top Note',d:'Skybar — Panoramablick auf Hiroshima. Ideal nach Peace Museum.',ll:'34.3970,132.4570'},
     ],
-  };  document.getElementById('sec-bars').innerHTML = h;
+  };
+  var h = '';
+  Object.keys(B).forEach(function(city){
+    h += '<div class="sec-h">'+city+'</div><div class="card" style="padding:4px 14px">';
+    B[city].forEach(function(b){
+      h += '<div class="pi-item"><div class="pi-name">'+b.n+'</div>'
+        +'<div class="pi-desc">'+b.d+'</div>'+mp(b.n,b.ll)+'</div>';
+    });
+    h += '</div>';
+  });
+  document.getElementById('sec-bars').innerHTML = h;
 })();
 
 // ── MANAMIS TIPPS ─────────────────────────────────────────────────────────
