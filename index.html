@@ -695,7 +695,7 @@ buildCheck();
     ],
     'Hiroshima': [
       {n:'Bar Alegre (Naka-ku)',d:'Beste Cocktailbar Hiroshimas — kleines, stimmungsvolles Lokal. Saisonale Hiroshima-Früchte (Mikan, Pfirsich, Zitrone), große Whisky-Auswahl. Barkeeper erklärt gern auf Englisch. 1.500–2.500¥/Cocktail. Reservierung empfohlen.',ll:'34.3968,132.4562'},
-      {n:'The Lounge Top Note',d:'Skybar mit Panoramablick über Hiroshima und die Bucht. Ideal nach dem Peace Museum zur Verarbeitung. Ruhig, elegant. Live-Musik am Wochenende. ~1.500¥/Cocktail. Kein Eintritt.',ll:'34.3970,132.4570'},
+      {n:'The Lounge Top Note',d:'Skybar mit Panoramablick über Hiroshima und die Bucht. Ideal nach dem Peace Museum. Ruhig, elegant. Live-Musik am Wochenende. ~1.500¥/Cocktail. Kein Eintritt.',ll:'34.3970,132.4570'},
     ],
   };
   var h = '';
@@ -723,9 +723,9 @@ buildCheck();
       {n:'⭐ Nihonshu Biyori (にほん酒日和)',d:'Sushi ★4,9 — Sake-fokussiert: Chef wählt Sake passend zum Sushi. Nur 8 Plätze, extrem persönlich. Nur mit Reservierung. ~5.000¥/P.',ll:'35.6587,139.7006'},
       {n:'Sushi no Midori Shibuya',d:'Sushi ★4,3 — Bestes Preis-Leistungs-Sushi in Shibuya. Früh kommen oder lange warten. Frisch, großzügige Portionen, günstig für die Qualität.',ll:'35.6583,139.7019'},
       {n:'Tonkatsu Maisen Shibuya Hikarie',d:'Tonkatsu ★4,1 · 1.000–2.000¥ — perfekt frittiertes Schweineschnitzel, knusprig-saftig. Im Hikarie-Einkaufszentrum, gut erreichbar.',ll:'35.6589,139.7033'},
-      {n:'Jojoen Daikanyama',d:'Yakiniku ★4,3 €€€ — Premium-BBQ in Daikanyamas stylishem Flair. Hochwertige Fleischqualität, edles Ambiente. Für einen besonderen Abend abseits Shibuyos Trubels.',ll:'35.6488,139.7029'},
+      {n:'Jojoen Daikanyama',d:'Yakiniku ★4,3 €€€ — Premium-BBQ in Daikanyamas stylishem Flair. Hochwertige Fleischqualität, edles Ambiente. Für einen besonderen Abend.',ll:'35.6488,139.7029'},
       {n:'TURTLES',d:'Burger ★4,4 · ~1.000¥ — Manamis Tipp für wenn mal kein Sushi sein soll. Handgemacht, saftiger Patty, japanischer Stil. Schnell, günstig, lecker.',ll:'35.6608,139.6994'},
-      {n:'Kyobashi Sembikiya',d:'Frucht-Café ★4,0 · 2.000–3.000¥ — Luxus-Obstladen und Café seit 1834. Parfaits mit makellosem japanischen Obst, Erdbeer-Sandwiches. Exklusives Erlebnis.',ll:'35.6795,139.7708'},
+      {n:'Kyobashi Sembikiya',d:'Frucht-Café ★4,0 · 2.000–3.000¥ — Luxus-Obstladen und Café seit 1834. Parfaits mit makellosem japanischen Obst, Erdbeer-Sandwiches.',ll:'35.6795,139.7708'},
     ],
     '🍺 Bars & Gassen': [
       {n:'Shibuya Nonbei Yokocho',d:'★4,1 — Shibuyas Antwort auf Golden Gai. Enge Gassen, winzige Bars, authentische Nachbaratmosphäre. Jede Bar hat 5–10 Plätze. Ab 20 Uhr lebendig.',ll:'35.6553,139.7015'},
@@ -1593,52 +1593,16 @@ function fNext(ok) { if(ok) flashCorrect++; flashIdx++; renderFlash(); }
 
 // ── ICON ──────────────────────────────────────────────────────────────────
 
-// Service Worker als Blob registrieren (funktioniert auf GitHub Pages)
+// Service Worker für Offline-Nutzung
 if ('serviceWorker' in navigator) {
-  var swCode = `
-const CACHE = 'japan26-v1';
-self.addEventListener('install', function(e) {
-  e.waitUntil(
-    caches.open(CACHE).then(function(cache) {
-      return cache.add(self.location.href.replace('/sw-blob', '') || '/');
-    })
-  );
-  self.skipWaiting();
-});
-self.addEventListener('activate', function(e) {
-  e.waitUntil(caches.keys().then(function(keys) {
-    return Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
-  }));
-  self.clients.claim();
-});
-self.addEventListener('fetch', function(e) {
-  // Netzwerk-only für APIs (Wetter, Yen)
-  if (e.request.url.includes('open-meteo.com') || e.request.url.includes('frankfurter.app')) {
-    e.respondWith(fetch(e.request).catch(function() { return new Response('', {status: 503}); }));
-    return;
-  }
-  // Cache-first für alles andere (die App selbst)
-  e.respondWith(
-    caches.match(e.request).then(function(cached) {
-      if (cached) return cached;
-      return fetch(e.request).then(function(response) {
-        if (response && response.status === 200) {
-          var clone = response.clone();
-          caches.open(CACHE).then(function(cache) { cache.put(e.request, clone); });
-        }
-        return response;
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/Japan26/sw.js', {scope: '/Japan26/'})
+      .then(function(reg) {
+        console.log('SW registriert, scope:', reg.scope);
+      })
+      .catch(function(e) {
+        console.log('SW Fehler:', e.message);
       });
-    })
-  );
-});
-`;
-  var blob = new Blob([swCode], {type: 'application/javascript'});
-  var swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl, {scope: '/'}).then(function(reg) {
-    console.log('SW registered, scope:', reg.scope);
-  }).catch(function(e) {
-    // Blob-SW funktioniert nicht auf allen Browsern (CORS) - kein Problem
-    console.log('SW blob failed, trying path-based:', e.message);
   });
 }
 
