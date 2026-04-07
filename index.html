@@ -39,7 +39,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 /* NAV */
 .nav{display:flex;overflow-x:auto;border-bottom:0.5px solid rgba(0,0,0,0.12);background:#fff;flex-shrink:0;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
-.nb{flex-shrink:0;padding:10px 14px;font-size:12px;font-weight:500;border:none;background:none;color:#666;cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap}
+.nb{flex-shrink:0;padding:10px 14px;font-size:12px;font-weight:500;border:none;background:none;color:#333;cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap}
 .nb.on{color:#C0392B;border-bottom-color:#C0392B}
 
 /* CONTENT */
@@ -49,16 +49,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 
 /* CARDS */
 .card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:14px;margin-bottom:10px}
-.card-t{font-size:14px;font-weight:600;margin-bottom:4px}
+.card-t{font-size:14px;font-weight:600;margin-bottom:4px;color:#1c1c1e}
 .card-s{font-size:12px;color:#3a3a3a;margin-bottom:10px}
-.sec-h{font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:0.07em;margin:14px 0 6px}
+.sec-h{font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.07em;margin:14px 0 6px}
 .sec-bg{background:#f2f2f7;border-radius:8px;padding:12px;margin-bottom:10px}
 
 /* ROWS */
 .row{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid rgba(0,0,0,0.08);gap:8px}
 .row:last-child{border-bottom:none}
 .rl{font-size:12px;color:#3a3a3a;flex-shrink:0}
-.rv{font-size:12px;font-weight:500;text-align:right}
+.rv{font-size:12px;font-weight:500;text-align:right;color:#1c1c1e}
 
 /* MAPS */
 .mp{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#C0750A;background:rgba(192,117,10,0.1);padding:4px 10px;border-radius:20px;margin-top:6px;font-weight:500;text-decoration:none;cursor:pointer}
@@ -80,7 +80,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .day-d{font-size:11px;font-weight:600;color:#C0392B;margin-bottom:3px;display:flex;align-items:center;gap:6px}
 .day.today .day-d{color:#1D9E75}
 .today-pill{font-size:10px;background:#1D9E75;color:#fff;padding:1px 7px;border-radius:10px}
-.day-t{font-size:13px;line-height:1.5}
+.day-t{font-size:13px;line-height:1.5;color:#1c1c1e}
 .day-s{font-size:12px;color:#3a3a3a;margin-top:3px}
 
 /* CHECKLIST */
@@ -96,7 +96,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 
 /* HOTELS */
 .h-head{display:flex;justify-content:space-between;margin-bottom:4px}
-.h-name{font-size:14px;font-weight:600}
+.h-name{font-size:14px;font-weight:600;color:#1c1c1e}
 .h-price{font-size:12px;color:#1D9E75;font-weight:600}
 .h-type{font-size:11px;color:#C0392B;font-weight:500;margin-bottom:8px}
 .h-note{font-size:11px;color:#1c1c1e;line-height:1.5;margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08)}
@@ -105,7 +105,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .zug{background:#f2f2f7;border-radius:10px;padding:12px;margin-bottom:8px;border-left:3px solid #C0392B}
 .zug.today{border-left-color:#1D9E75;background:rgba(29,158,117,0.06)}
 .zug-r{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.zug-c{font-size:15px;font-weight:700}
+.zug-c{font-size:15px;font-weight:700;color:#1c1c1e}
 .zug-l{flex:1;height:1px;background:rgba(0,0,0,0.2);position:relative}
 .zug-l::after{content:"▶";position:absolute;right:-6px;top:-7px;font-size:10px;color:#666}
 .zug-i{font-size:12px;color:#1c1c1e;line-height:1.7}
@@ -116,7 +116,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 /* PLACES */
 .pi-item{padding:9px 0;border-bottom:0.5px solid rgba(0,0,0,0.08)}
 .pi-item:last-child{border-bottom:none}
-.pi-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.pi-name{font-size:13px;font-weight:600;margin-bottom:2px;color:#1c1c1e}
 .pi-desc{font-size:12px;color:#1c1c1e;line-height:1.5}
 
 /* PHRASES */
@@ -134,7 +134,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 
 /* QUIZ */
 .quiz-card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:20px;margin-bottom:10px;text-align:center}
-.quiz-q{font-size:15px;font-weight:600;margin-bottom:16px;line-height:1.5}
+.quiz-q{font-size:15px;font-weight:600;margin-bottom:16px;line-height:1.5;color:#1c1c1e}
 .quiz-ans{font-size:13px;color:#1c1c1e;background:#f2f2f7;border-radius:8px;padding:12px;margin-top:10px;line-height:1.6;display:none;text-align:left}
 .qbtn{display:inline-block;padding:10px 20px;background:#C0392B;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin:4px}
 .qbtn.ghost{background:#f2f2f7;color:#1c1c1e}
@@ -166,7 +166,7 @@ input[type=number]:focus{border-color:#C0392B}
 .yen-result{flex:1;padding:10px;font-size:20px;font-weight:600;color:#C0392B;background:#f2f2f7;border-radius:8px;border:1.5px solid rgba(0,0,0,0.08);text-align:right;min-width:0}
 
 /* CONTACTS */
-.con-name{font-size:13px;font-weight:600}
+.con-name{font-size:13px;font-weight:600;color:#1c1c1e}
 .con-det{font-size:12px;color:#3a3a3a;margin-top:1px}
 .con-tel{font-size:14px;color:#C0392B;font-weight:500;margin-top:3px}
 
@@ -179,7 +179,7 @@ input[type=number]:focus{border-color:#C0392B}
 /* USELESS */
 .uk{background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:14px;margin-bottom:8px}
 .uk-icon{font-size:28px;flex-shrink:0;line-height:1.2}
-.uk-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.uk-title{font-size:13px;font-weight:600;margin-bottom:4px;color:#1c1c1e}
 .uk-text{font-size:12px;color:#1c1c1e;line-height:1.6}
 
 /* COUNTDOWN */
@@ -194,6 +194,16 @@ input[type=number]:focus{border-color:#C0392B}
 #pw input{width:100%;max-width:280px;padding:14px;font-size:20px;text-align:center;letter-spacing:4px;border:1.5px solid rgba(0,0,0,0.15);border-radius:12px;margin-bottom:12px;outline:none;background:#f2f2f7}
 #pw button{width:100%;max-width:280px;padding:14px;font-size:16px;font-weight:600;background:#C0392B;color:#fff;border:none;border-radius:12px;cursor:pointer}
 #pw-err{color:#A32D2D;font-size:13px;margin-top:10px;min-height:20px}
+
+/* DARK MODE: ensure white cards keep explicit dark text */
+@media(prefers-color-scheme:dark){
+  .card{color:#1c1c1e}
+  .h-name,.pi-name,.card-t,.con-name,.uk-title,.quiz-q{color:#1c1c1e}
+  .zug-c,.zug{color:#1c1c1e}
+  .zug-i{color:#333}
+  .rv,.ct{color:#1c1c1e}
+  .day,.day-t,.day-s{color:#1c1c1e}
+}
 </style>
 </head>
 <body>
